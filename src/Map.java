@@ -3,7 +3,7 @@ public class Map {
 //A collection of tiles that contain all actors and map objects.
 	private Tile[][] map;
 	int SIZE = 50;
-	private int[][] mapData;
+	private int[][] mapData;	//the tile type for every space in the map.
 	public Map(){
 		//creates empty square map
 		for(int i = 0; i < SIZE; i++){
