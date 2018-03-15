@@ -22,7 +22,7 @@ public class Map {
 	}
 	
 	public void retrieveMapData(){
-		//collect tile types from database
+		//collect double array of tile types from database.  Used to populate all tiles on map.
 	}
 	
 	public int[][] getMapData(){
