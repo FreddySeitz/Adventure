@@ -5,11 +5,13 @@ public class Trap {
 //a spot on the map that threatens an actor.
 	int traptype;
 	boolean active;
+	double damage;
 	
 	public Trap(){
 		Random rand = new Random();
 		traptype = rand.nextInt(5)+1;	//5 kinds of traps
 		active = true;
+		damage = 9001;
 	}
 	
 	public void Trigger(){
@@ -34,5 +36,12 @@ public class Trap {
 	
 	public boolean getActive(){
 		return active;
+	}
+	
+	public void setDamage(double d){
+		damage = d;
+	}
+	public double getDamage(){
+		return damage;
 	}
 }
