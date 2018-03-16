@@ -8,14 +8,15 @@ public class Actor {
 	private Item equippedItem;
 	private int health;
 	private Tile location;
+	private int baseDamage;
 	
 	public Actor(){
 		
 	}
 	
 	// Sets inventory
-	public void setInventory(List<Item> i) {
-		this.inventory = i;
+	public void setInventory(List<Item> items) {
+		this.inventory = items;
 	}
 	
 	// Gets inventory
@@ -24,8 +25,8 @@ public class Actor {
 	}
 	
 	// Sets equipped item
-	public void setEquippedItem(Item i) {
-			this.equippedItem = i;
+	public void setEquippedItem(Item item) {
+			this.equippedItem = item;
 	}
 		
 	// Gets equipped item
@@ -34,8 +35,8 @@ public class Actor {
 	}
 	
 	// Sets a new health
-	public void setHealth(int h) {
-		this.health = h;
+	public void setHealth(int health) {
+		this.health = health;
 	}
 			
 	// Returns health of Actor
@@ -44,8 +45,8 @@ public class Actor {
 	}
 	
 	// Sets a new location
-	public void setLocation(Tile l) {
-		this.location = l;
+	public void setLocation(Tile location) {
+		this.location = location;
 	}
 				
 	// Returns location of Actor
@@ -53,12 +54,27 @@ public class Actor {
 		return location;
 	}
 	
-	public void attack() {
-		throw new UnsupportedOperationException();
+	// Sets a new base damage
+	public void setBaseDamage(int baseDamage) {
+		this.baseDamage = baseDamage;
+	}
+				
+	// Returns base damage of Actor
+	public int getBaseDamage() {
+		return baseDamage;
 	}
 	
-	public void hurt() {
-		throw new UnsupportedOperationException();
+	public void attack(Actor target) {
+		/*if(this.equippedItem instanceof Weapon) {
+			target.hurt(equippedItem.damage);
+		}
+		else{
+			target.hurt(baseDamage);
+		}*/
+	}
+	
+	public void hurt(int damage) {
+		this.health = this.health - damage;
 	}
 	
 	public void move(Tile newLocation) {
