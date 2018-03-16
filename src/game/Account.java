@@ -4,6 +4,7 @@ import java.util.List;
 
 // Accounts are unique to each user, storing games and characters
 public class Account {
+	private int id;	//necessary to connect account to multiple maps (or game models) in the database
 	private String username;
 	private String password;
 	private List<Player> characters;
@@ -12,6 +13,16 @@ public class Account {
 	public Account(String u, String p){
 		this.username = u;
 		this.password = p;
+	}
+	
+	//sets id
+	public void setId(int i){
+		id = i;
+	}
+	
+	//gets id
+	public int getId(){
+		return id;
 	}
 	
 	// Sets username

@@ -8,11 +8,15 @@ public class Map {
 	private int height;
 	private int width;
 	private int[][] mapData;	//the tile type for every space in the map.
+	
+	private String username;	//Remember what account this map is connected to.
+	private String password;
+	
 	public Map(){
 
 	}
 	//if new map is being made, call buildDefault().
-	//When edits are made, set new width and height, set mapData, then rebuildMap()
+	//When edits are made, set new width and height, set mapData or singleMapData to edit tile types, then rebuildMap()
 	//or when pulled from the database.
 
 
@@ -27,7 +31,7 @@ public class Map {
 		}
 	}
 
-	public void throwGoldEverywhere(){
+	public void throwGoldEverywhere(){	//puts treasure all over the map
 		int treasure = 20;
 		Random rand = new Random();
 		while(treasure > 0){
@@ -76,7 +80,8 @@ public class Map {
 	public void setWidth(int w){
 		width = w;
 	}
-
+	
+	//default map before editing
 	public void buildDefault(){
 		height = 20;
 		width = 20;
