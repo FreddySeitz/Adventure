@@ -111,12 +111,6 @@ public class Map {
 	public void decompileTiles(String data){	//decompresses data from database into a double array of tiles.
 		map = new Tile[height][width];
 		Tile tile = new Tile();
-		Item item;
-		try {
-			item = game.Item.class.newInstance();
-		} catch (InstantiationException | IllegalAccessException e1) {
-			e1.printStackTrace();
-		}
 		StringBuilder builder = new StringBuilder();
 		int chunk = 0;		//which part of the tile is being analyzed 0=tileType, 1=itemList, etc.
 		int mapslot = 0;	//which index of map of the currently constructed tile.
