@@ -53,4 +53,16 @@ public class Account {
 	public List<Game> getGames(){
 		return games;
 	}
+	
+	public void login() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void logout() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void createNewGame(Map map, List<Actor> actors, List<Item> items) {
+		games.add(new Game(map, actors, items));
+	}
 }
