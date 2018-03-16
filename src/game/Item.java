@@ -2,6 +2,7 @@ package game;
 // Item class file
 public class Item{
 	// Variables
+	private int itemId;
 	private String description;
 	private int weight;
 	private int damage;
@@ -17,6 +18,18 @@ public class Item{
 		health = h;
 		quest_id = q;
 		value = v;
+	}
+	
+	public Item getItem(int id){
+		return null;
+	}
+	
+	public int getId(){
+		return itemId;
+	}
+	
+	public void setId(int i){
+		itemId = i;
 	}
 	
 	// Returns description of item

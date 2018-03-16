@@ -23,7 +23,10 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Map map = new Map();
-				
+				map.setAccountId(Integer.parseInt(i.next()));		//account id
+				map.setHeight(Integer.parseInt(i.next()));			//map height
+				map.setWidth(Integer.parseInt(i.next()));			//map width
+				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
 				mapList.add(map);
 				count++;
 			}
