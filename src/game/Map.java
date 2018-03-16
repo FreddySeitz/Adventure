@@ -3,13 +3,27 @@ package game;
 public class Map {
 //A collection of tiles that contain all actors and map objects.
 	private Tile[][] map;
-	int SIZE = 50;
+	private int height;
+	private int width;
 	private int[][] mapData;	//the tile type for every space in the map.
 	public Map(){
-		//creates empty square map
-		for(int i = 0; i < SIZE; i++){
-			for(int j = 0; j < SIZE; j++){
+		
+	}
+	//if new map is being made, call buildDefault().
+	//When edits are made, set new width and height, set mapData, then rebuildMap()
+		//or when pulled from the database.
+	public void buildDefault(){
+		height = 20;
+		width = 20;
+	}
+	
+	public void rebuildMap(){
+		//call after making edits.  Does not delete mapData outside map bounds.
+		map = new Tile[height][width];
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width; j++){
 				map[i][j] = new Tile();
+				map[i][j].setType(mapData[i][j]);
 			}
 		}
 	}
@@ -18,12 +32,8 @@ public class Map {
 		return map;
 	}
 	
-	public void setMap(int i, int j, Tile t){	//i=column		j = row
+	public void setMap(int i, int j, Tile t){	//i=column(height)		j = row(width)
 		map[i][j] = t;
-	}
-	
-	public void retrieveMapData(){
-		//collect double array of tile types from database.  Used to populate all tiles on map.
 	}
 	
 	public int[][] getMapData(){
@@ -31,9 +41,27 @@ public class Map {
 	}
 	
 	public void setMapData(int[][] data){
-		//modifies one tile (from game editor)
 		mapData = data;
 	}
 	
+	public void setSingleMapData(int height, int width, int data){	//expected to be used during map editing
+		mapData[height][width] = data;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
+	public void setHeight(int h){
+		height = h;
+	}
+	
+	public int setWidth(){
+		return width;
+	}
+	
+	public void setWidth(int w){
+		width = w;
+	}
 	
 }
