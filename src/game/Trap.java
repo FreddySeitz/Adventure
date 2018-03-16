@@ -18,7 +18,7 @@ public class Trap {
 		//print riddle and check for answer
 		switch(traptype){
 		case 1: traptype = 1;
-			//riddle 1
+			riddleone();
 		case 2: traptype = 2;
 			//riddle 2
 		case 3: traptype = 3;
@@ -28,6 +28,20 @@ public class Trap {
 		case 5: traptype = 5;
 			//riddle 5
 		}
+	}
+	
+	public void riddleone(){
+		String question = "1+1 = ?";
+		String answer = "2";
+		String answer2 = "two";
+		//send question to GUI
+//		if(response.equals(answer) || response.equals(answer2)){
+//			active = false;
+//			//maybe give points or treasure
+//		}
+//		else{
+//			//deal damage
+//		}
 	}
 	
 	public void setActive(boolean a){
