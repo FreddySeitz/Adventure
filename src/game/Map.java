@@ -8,6 +8,10 @@ public class Map {
 	private int height;
 	private int width;
 	private int[][] mapData;	//the tile type for every space in the map.
+	
+	private String username;	//Remember what account this map is connected to.
+	private String password;
+	
 	public Map(){
 
 	}
