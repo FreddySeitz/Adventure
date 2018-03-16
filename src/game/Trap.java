@@ -38,6 +38,13 @@ public class Trap {
 		return active;
 	}
 	
+	public void setType(int t){
+		traptype = t;
+	}
+	public int getType(){
+		return traptype;
+	}
+	
 	public void setDamage(double d){
 		damage = d;
 	}
