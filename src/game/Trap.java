@@ -18,7 +18,7 @@ public class Trap {
 		//print riddle and check for answer
 		switch(traptype){
 		case 1: traptype = 1;
-			//riddle 1
+			riddleone();
 		case 2: traptype = 2;
 			//riddle 2
 		case 3: traptype = 3;
