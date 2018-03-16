@@ -11,7 +11,7 @@ public class Trap {
 		Random rand = new Random();
 		traptype = rand.nextInt(5)+1;	//5 kinds of traps
 		active = true;
-		damage = 9001;
+		damage = 1;
 	}
 	
 	public void Trigger(){
