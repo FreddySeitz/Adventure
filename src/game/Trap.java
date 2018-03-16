@@ -64,7 +64,16 @@ public class Trap {
 	public void setDamage(double d){
 		damage = d;
 	}
+	
 	public double getDamage(){
 		return damage;
+	}
+	
+	public void setVisible(boolean v){
+		visible = v;
+	}
+	
+	public boolean getVisible(){
+		return visible;
 	}
 }
