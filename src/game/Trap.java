@@ -5,12 +5,14 @@ public class Trap {
 //a spot on the map that threatens an actor.
 	int traptype;
 	boolean active;
+	boolean visible;
 	double damage;
 	
 	public Trap(){
 		Random rand = new Random();
 		traptype = rand.nextInt(5)+1;	//5 kinds of traps
 		active = true;
+		visible = false;
 		damage = 1;
 	}
 	
