@@ -5,28 +5,38 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import game.Map;
 import game.Tile;
 
 public class InitialData {
-	public static List<Tile> getTiles() throws IOException {
-		List<Tile> tileList = new ArrayList<Tile>();
-		ReadCSV readAuthors = new ReadCSV("database.csv");
+	public static List<Map> getMap() throws IOException {
+		List<Map> mapList = new ArrayList<Map>();
+		ReadCSV readMap = new ReadCSV("Map.csv");
+		int count = 0;
 		try {
 			while (true) {
-				List<String> tuple = readAuthors.next();
+				List<String> tuple = readMap.next();
 				if (tuple == null) {
 					break;
 				}
+				if(count == 0){
+
+				}
+				else if(count == 0){
+
+				}
+				else if(count == 0){
+
+				}
 				Iterator<String> i = tuple.iterator();
-				Tile tile = new Tile();
-				tile.setType(Integer.parseInt(i.next()));				
-				tileList.add(tile);
+				Map map = new Map();				
+				mapList.add(map);
 			}
-			return tileList;
+			return mapList;
 		} finally {
-			readAuthors.close();
+			readMap.close();
 		}
 	}
-	
-	
+
+
 }
