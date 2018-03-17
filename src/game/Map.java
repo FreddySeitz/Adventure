@@ -80,7 +80,7 @@ public class Map {
 		height = h;
 	}
 
-	public int setWidth(){
+	public int getWidth(){
 		return width;
 	}
 
