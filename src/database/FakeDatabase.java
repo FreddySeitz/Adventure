@@ -34,7 +34,41 @@ public class FakeDatabase {
 	
 	//insert queries to gather data from lists
 	
-	private void writeCSV(){
+	public boolean loadGame(String username, String password){
+		//uses private lists in this class to reconstruct all classes.
+		int id = accountExists(username, password);
+		if(id == -1){
+			return false;
+		}
+		else{
+			//TODO: load game from id
+			return true;
+		}
+	}
+	
+	public boolean newGame(String username, String password){
+		//given username and password, checks if account exists yet.
+			//if exists, return false (new account failed)
+			//else, create new account with specified credentials, create defaults, return true
+		if(accountExists(username, password) != -1){
+			return false;	//have main handle Account Exists error
+		}
+		else{
+			//TODO: create new game with defaults
+			return true;
+		}
+	}
+	
+	public int accountExists(String username, String password){
+		//TODO: finds account from database.
+			//return -1 if not found, return account id if found
+		//TODO: don't forget that users can't use '|' in their username or password
+		return -1;
+	}
+	
+	private void writeCSV(){		//aka saveGame
+		//TODO: compile all data into strings
+		//TODO: Obtain data from necessary classes, rather than using the out dated lists in this class
 		try {
 			PrintWriter accountswriter = new PrintWriter(new File("src/Account.csv"));
 			PrintWriter mapswriter = new PrintWriter(new File("src/Map.csv"));
@@ -43,6 +77,7 @@ public class FakeDatabase {
 			StringBuilder itembuilder = new StringBuilder();
 			StringBuilder accountbuilder = new StringBuilder();
 			StringBuilder mapbuilder = new StringBuilder();
+			StringBuilder actorbuilder = new StringBuilder();
 			
 			for(Item item : items){
 				itembuilder.append(item.getId());
@@ -76,14 +111,8 @@ public class FakeDatabase {
 			accountswriter.close();
 			
 			for(Actor actor : actors){
-				mapbuilder.append(actor.getAccountId());
-				mapbuilder.append("|");
-				mapbuilder.append(actor.getHeight());
-				mapbuilder.append("|");
-				mapbuilder.append(actor.getWidth());
-				mapbuilder.append("|");
-				mapbuilder.append(actor.compileTiles());
-				mapbuilder.append("\n");
+				
+				actorbuilder.append("\n");
 			}
 			
 			mapswriter.write(mapbuilder.toString());
