@@ -65,10 +65,6 @@ public class FakeDatabase {
 				accountbuilder.append(account.getUsername());
 				accountbuilder.append("|");
 				accountbuilder.append(account.getPassword());
-//				accountbuilder.append("|");
-//				accountbuilder.append(account);	//compile characters into a single string
-//				accountbuilder.append("|");
-//				accountbuilder.append(account);	//compile games list into single string
 				accountbuilder.append("\n");
 			}
 			

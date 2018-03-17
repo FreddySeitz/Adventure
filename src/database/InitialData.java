@@ -63,7 +63,7 @@ public class InitialData {
 	
 	public static List<Item> getItem() throws IOException {
 		List<Item> itemList = new ArrayList<Item>();
-		ReadCSV readAccount = new ReadCSV("Item.csv");
+		ReadCSV readAccount = new ReadCSV("Inventory.csv");
 		try {
 			while (true) {
 				List<String> tuple = readAccount.next();
