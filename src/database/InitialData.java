@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import game.Account;
+import game.Actor;
 import game.Item;
 import game.Map;
 import game.Tile;
@@ -87,8 +88,8 @@ public class InitialData {
 		}
 	}
 	
-	public static List<Item> getActor() throws IOException {
-		List<Item> itemList = new ArrayList<Item>();
+	public static List<Actor> getActor() throws IOException {
+		List<Actor> actorList = new ArrayList<Actor>();
 		ReadCSV readAccount = new ReadCSV("Inventory.csv");
 		try {
 			while (true) {
@@ -97,17 +98,10 @@ public class InitialData {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Item item = new Item("",0,0,0,0,0);
-				item.setId(Integer.parseInt(i.next()));
-				item.setDescription(i.next());
-				item.setWeight(Integer.parseInt(i.next()));
-				item.setDamage(Integer.parseInt(i.next()));
-				item.setHealth(Integer.parseInt(i.next()));
-				item.setQuestId(Integer.parseInt(i.next()));
-				item.setValue(Integer.parseInt(i.next()));
-				itemList.add(item);
+				Actor actor = new Actor();
+				actorList.add(actor);
 			}
-			return itemList;
+			return actorList;
 		} finally {
 			readAccount.close();
 		}
