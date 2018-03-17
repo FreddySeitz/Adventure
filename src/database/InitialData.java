@@ -27,7 +27,6 @@ public class InitialData {
 				map.setHeight(Integer.parseInt(i.next()));			//map height
 				map.setWidth(Integer.parseInt(i.next()));			//map width
 				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
-				map.setAccountId(Integer.parseInt(i.next()));
 				mapList.add(map);
 			}
 			return mapList;

@@ -83,8 +83,6 @@ public class FakeDatabase {
 				itembuilder.append(map.getWidth());
 				itembuilder.append("|");
 				itembuilder.append(map.compileTiles());
-				itembuilder.append("|");
-				itembuilder.append(map.getAccountId());
 				itembuilder.append("\n");
 			}
 			
