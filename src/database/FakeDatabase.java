@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import game.Account;
+import game.Actor;
 import game.Item;
 import game.Map;
 import game.Tile;
@@ -15,6 +16,7 @@ public class FakeDatabase {
 	private List<Account> accounts;
 	private List<Map> maps;
 	private List<Item> items;
+	private List<Actor> actors;
 	
 	public FakeDatabase(){
 		readInitialData();
@@ -22,7 +24,7 @@ public class FakeDatabase {
 	
 	public void readInitialData() {
 		try {
-			items.addAll(InitialData.getItem());
+			items.addAll(InitialData.getInventory());
 			accounts.addAll(InitialData.getAccount());
 			maps.addAll(InitialData.getMap());
 		} catch (IOException e) {
@@ -36,9 +38,11 @@ public class FakeDatabase {
 		try {
 			PrintWriter accountswriter = new PrintWriter(new File("src/Account.csv"));
 			PrintWriter mapswriter = new PrintWriter(new File("src/Map.csv"));
-			PrintWriter itemswriter = new PrintWriter(new File("src/Item.csv"));
+			PrintWriter itemswriter = new PrintWriter(new File("src/Inventory.csv"));
+			PrintWriter actorswriter = new PrintWriter(new File("src/Inventory.csv"));
 			StringBuilder itembuilder = new StringBuilder();
 			StringBuilder accountbuilder = new StringBuilder();
+			StringBuilder mapbuilder = new StringBuilder();
 			
 			for(Item item : items){
 				itembuilder.append(item.getId());
@@ -68,19 +72,22 @@ public class FakeDatabase {
 				accountbuilder.append("\n");
 			}
 			
-			accountswriter.write(accountswriter.toString());
+			accountswriter.write(accountbuilder.toString());
 			accountswriter.close();
 			
-			for(Map map : maps){
-				itembuilder.append(map.getAccountId());
-				itembuilder.append("|");
-				itembuilder.append(map.getHeight());
-				itembuilder.append("|");
-				itembuilder.append(map.getWidth());
-				itembuilder.append("|");
-				itembuilder.append(map.compileTiles());
-				itembuilder.append("\n");
+			for(Actor actor : actors){
+				mapbuilder.append(actor.getAccountId());
+				mapbuilder.append("|");
+				mapbuilder.append(actor.getHeight());
+				mapbuilder.append("|");
+				mapbuilder.append(actor.getWidth());
+				mapbuilder.append("|");
+				mapbuilder.append(actor.compileTiles());
+				mapbuilder.append("\n");
 			}
+			
+			mapswriter.write(mapbuilder.toString());
+			mapswriter.close();
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

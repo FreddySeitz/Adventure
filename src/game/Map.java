@@ -26,6 +26,8 @@ public class Map {
 			for(int j = 0; j < width; j++){
 				map[i][j] = new Tile();
 				map[i][j].setType(mapData[i][j]);
+				map[i][j].setX(j);
+				map[i][j].setY(i);
 			}
 		}
 	}
@@ -350,6 +352,8 @@ public class Map {
 			for(int j = 0; j < width; j++){
 				map[i][j] = new Tile();
 				map[i][j].setType(mapData[i][j]);
+				map[i][j].setX(j);
+				map[i][j].setY(i);
 			}
 		}
 		throwGoldEverywhere();

@@ -61,7 +61,33 @@ public class InitialData {
 		}
 	}
 	
-	public static List<Item> getItem() throws IOException {
+	public static List<Item> getInventory() throws IOException {
+		List<Item> itemList = new ArrayList<Item>();
+		ReadCSV readAccount = new ReadCSV("Inventory.csv");
+		try {
+			while (true) {
+				List<String> tuple = readAccount.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Item item = new Item("",0,0,0,0,0);
+				item.setId(Integer.parseInt(i.next()));
+				item.setDescription(i.next());
+				item.setWeight(Integer.parseInt(i.next()));
+				item.setDamage(Integer.parseInt(i.next()));
+				item.setHealth(Integer.parseInt(i.next()));
+				item.setQuestId(Integer.parseInt(i.next()));
+				item.setValue(Integer.parseInt(i.next()));
+				itemList.add(item);
+			}
+			return itemList;
+		} finally {
+			readAccount.close();
+		}
+	}
+	
+	public static List<Item> getActor() throws IOException {
 		List<Item> itemList = new ArrayList<Item>();
 		ReadCSV readAccount = new ReadCSV("Inventory.csv");
 		try {
