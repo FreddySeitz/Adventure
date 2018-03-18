@@ -52,8 +52,6 @@ public class InitialData {
 				account.setId(Integer.parseInt(i.next()));
 				account.setUsername(i.next());
 				account.setPassword(i.next());
-				//assemble list of characters
-				//assemble list of games
 				accountList.add(account);
 			}
 			return accountList;
@@ -100,6 +98,18 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Actor actor = new Actor();
 				actorList.add(actor);
+				
+				String inv = i.next();
+				StringBuilder item = new StringBuilder();
+				for(int k = 0; k < inv.length(); k++){
+					if(inv.charAt(k) == '|'){
+						//TODO: get item from dictionary
+						k++;
+					}
+					else{
+						item.append(inv.charAt(k));
+					}
+				}
 			}
 			return actorList;
 		} finally {
