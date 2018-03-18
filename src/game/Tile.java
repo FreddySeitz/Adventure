@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class Tile {
 //An arbitrary space on the map that can contain anything.
-	private int type = 0;
+	private int type;
 	private ArrayList<Item> items;
 	private int x;	//tiles knows where it is in the map
 	private int y;
 	//0 = unpassable space.  1 = empty room.  2 = trap
 	
 	public Tile(){	
+		type = 0;
 		x = 0;
 		y = 0;
 	}

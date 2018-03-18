@@ -61,6 +61,10 @@ public class Map {
 	public void setMap(int i, int j, Tile t){	//i=column(height)		j = row(width)
 		map[i][j] = t;
 	}
+	
+	public Tile getTile(int i, int j){
+		return map[i][j];
+	}
 
 	public int[][] getMapData(){
 		return mapData;

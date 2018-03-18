@@ -10,6 +10,7 @@ import game.Actor;
 import game.Item;
 import game.Map;
 import game.Tile;
+import game.Game;
 
 public class InitialData {
 	//unpacks everything from the database into lists
@@ -60,35 +61,9 @@ public class InitialData {
 		}
 	}
 	
-	public static List<Item> getInventory() throws IOException {
-		List<Item> itemList = new ArrayList<Item>();
-		ReadCSV readAccount = new ReadCSV("Inventory.csv");
-		try {
-			while (true) {
-				List<String> tuple = readAccount.next();
-				if (tuple == null) {
-					break;
-				}
-				Iterator<String> i = tuple.iterator();
-				Item item = new Item("",0,0,0,0,0);
-				item.setId(Integer.parseInt(i.next()));
-				item.setDescription(i.next());
-				item.setWeight(Integer.parseInt(i.next()));
-				item.setDamage(Integer.parseInt(i.next()));
-				item.setHealth(Integer.parseInt(i.next()));
-				item.setQuestId(Integer.parseInt(i.next()));
-				item.setValue(Integer.parseInt(i.next()));
-				itemList.add(item);
-			}
-			return itemList;
-		} finally {
-			readAccount.close();
-		}
-	}
-	
 	public static List<Actor> getActor() throws IOException {
 		List<Actor> actorList = new ArrayList<Actor>();
-		ReadCSV readAccount = new ReadCSV("Inventory.csv");
+		ReadCSV readAccount = new ReadCSV("Actor.csv");
 		try {
 			while (true) {
 				List<String> tuple = readAccount.next();
@@ -100,16 +75,27 @@ public class InitialData {
 				actorList.add(actor);
 				
 				String inv = i.next();
-				StringBuilder item = new StringBuilder();
+				StringBuilder item = new StringBuilder();	//reads a single item
+				List<Item> inventoryList = new ArrayList<Item>();
 				for(int k = 0; k < inv.length(); k++){
 					if(inv.charAt(k) == '|'){
-						//TODO: get item from dictionary
+						//TODO: get item name from dictionary
+						//inventoryList.add();
 						k++;
+						item.delete(0, item.length());
 					}
 					else{
 						item.append(inv.charAt(k));
 					}
 				}
+				
+				actor.setInventory(inventoryList);
+//				actor.setEquippedItem( TODO: get item from i.next());
+				actor.setHealth(Integer.parseInt(i.next()));
+				actor.setLocation(new Tile());		//TODO: set to real tile later, after game has been matched with id
+				actor.getLocation().setX(Integer.parseInt(i.next()));
+				actor.getLocation().setY(Integer.parseInt(i.next()));
+				actor.setBaseDamage(Integer.parseInt(i.next()));
 			}
 			return actorList;
 		} finally {

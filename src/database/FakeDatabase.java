@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import game.Account;
 import game.Actor;
+import game.Game;
 import game.Item;
 import game.Map;
+import game.Player;
 import game.Tile;
 
 public class FakeDatabase {
@@ -18,9 +21,11 @@ public class FakeDatabase {
 	private List<Actor> actors;
 
 	private int accountId;
+	private Game game;	//everything loaded into the game model.
 
 	public FakeDatabase(){
 		accountId = -1;
+		game = new Game(null,null, null);
 		readInitialData();
 	}
 
@@ -45,6 +50,8 @@ public class FakeDatabase {
 		else{
 			//TODO: load game from id
 				//go into other lists and pull out and set everything according to the accountId
+			
+			//TODO: don't forget to set actor location once map is found
 			return true;
 		}
 	}
@@ -58,6 +65,13 @@ public class FakeDatabase {
 		}
 		else{
 			//TODO: create new game with defaults
+			Map map = new Map();
+			map.buildDefault();
+			List<Actor> actors = new ArrayList<Actor>();
+			Player player = new Player();
+			player.setDefault();
+			actors.add(player);
+			Game game = new Game(map, actors, null);
 			return true;
 		}
 	}
