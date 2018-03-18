@@ -46,7 +46,7 @@ public class FakeDatabase {
 		accountId = accountExists(username, password);
 		if(accountId == -1){
 			return false;
-		}
+		}//lol
 		else{
 			//TODO: load game from id
 				//go into other lists and pull out and set everything according to the accountId
