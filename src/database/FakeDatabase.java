@@ -21,11 +21,9 @@ public class FakeDatabase {
 	private List<Actor> actors;
 
 	private int accountId;
-	private Game game;	//everything loaded into the game model.
 
-	public FakeDatabase(){
+	public FakeDatabase(Game g){
 		accountId = -1;
-		game = new Game(null,null, null);
 		readInitialData();
 	}
 
