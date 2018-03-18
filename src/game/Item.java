@@ -11,8 +11,9 @@ public class Item{
 	private int value;
 	
 	// Constructor
-	public Item(String d, int w, int dmg, int h, int q, int v) {
+	public Item(String d,int i, int w, int dmg, int h, int q, int v) {
 		description = d;
+		itemId = i;
 		weight = w;
 		damage = dmg;
 		health = h;
