@@ -69,7 +69,6 @@ public class FakeDatabase {
 			map.buildDefault();
 			List<Actor> actors = new ArrayList<Actor>();
 			Player player = new Player();
-			player.setDefault();
 			actors.add(player);
 			Game game = new Game(map, actors, null);
 			return true;
