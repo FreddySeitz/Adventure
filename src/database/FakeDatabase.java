@@ -44,6 +44,7 @@ public class FakeDatabase {
 		}
 		else{
 			//TODO: load game from id
+				//go into other lists and pull out and set everything according to the accountId
 			return true;
 		}
 	}

@@ -12,7 +12,7 @@ import game.Map;
 import game.Tile;
 
 public class InitialData {
-
+	//unpacks everything from the database into lists
 	public static List<Map> getMap() throws IOException {
 		List<Map> mapList = new ArrayList<Map>();
 		ReadCSV readMap = new ReadCSV("Map.csv");
