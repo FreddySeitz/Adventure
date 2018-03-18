@@ -50,6 +50,19 @@ public class FakeDatabase {
 		else{
 			//TODO: load game from id
 				//go into other lists and pull out and set everything according to the accountId
+			for(Map map : maps){
+				if(map.getAccountId() == accountId){
+					game.setMap(map);
+					break;	//stop looking through list
+				}
+			}
+			List<Actor> list = new ArrayList<Actor>();
+			for(Actor actor : actors){
+				if(actor.getAccountId() == accountId){
+					actor.setLocation(game.getMap().getTile(actor.getLocation().getX(), actor.getLocation().getY()));
+					list.add(actor);
+				}
+			}
 			
 			//TODO: don't forget to set actor location once map is found
 			return true;
@@ -64,13 +77,12 @@ public class FakeDatabase {
 			return false;	//have main handle Account Exists error
 		}
 		else{
-			//TODO: create new game with defaults
 			Map map = new Map();
 			map.buildDefault();
 			List<Actor> actors = new ArrayList<Actor>();
 			Player player = new Player();
-			actors.add(player);
-			Game game = new Game(map, actors, null);
+			actors.add(player);	//TODO: set defaults for player
+			game = new Game(map, actors, null);
 			return true;
 		}
 	}
