@@ -1,0 +1,66 @@
+<!-- User sign in page -->
+<html>
+	<head>
+		<title>Add Numbers (AJAX)</title>
+		
+		<script
+			src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+			type="text/javascript">
+		</script>
+		
+		<style type="text/css">
+		td.label {
+			text-align: right;
+			font-weight: bold;
+		}
+		
+		.error {
+			color: red;
+		}
+		</style>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#signIn").click(function() {
+					$.ajax({
+						type: 'POST',
+						url: '/Adventure/ajax/signIn',
+						data: { first: $("#userName").val(), second: $("#password").val() },
+						success:
+							function(data, textStatus, jqXHR) {
+								$("#resultElt").text(data);
+							},
+						error:
+							function(jqXHR, textStatus, errorThrown) {
+								$("#errorElt").text(textStatus + ": " + errorThrown);
+							},
+						dataType: 'text'
+					});
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<table>
+			<tr>
+				<td class="label">USERNAME:</td>
+				<td><input id="userName" type="text" size="12" /></td>
+			</tr>
+			<tr>
+				<td class="label">PASSWORD:</td>
+				<td><input id="password" type="text" size="12" /></td>
+			</tr>
+			<!--<tr>
+				<td class="label">Sign In</td>
+				<td><span id="enter"></span></td>
+			</tr>-->
+		</table>
+		<div>
+			<button id="enter">Sign In</button>
+		</div>
+		<div>
+			<span id="errorElt" class="error"></span>
+		</div>
+	</body>
+</html>
