@@ -14,6 +14,7 @@ public class Tile {
 		type = 0;
 		x = 0;
 		y = 0;
+		items = new ArrayList<Item>();
 	}
 	
 	public int getType(){

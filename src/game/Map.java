@@ -12,7 +12,7 @@ public class Map {
 	private int accountId;		//what account the map is connected to
 	
 	public Map(){
-
+		
 	}
 	//if new map is being made, call buildDefault().
 	//When edits are made, set new width and height, set mapData or singleMapData to edit tile types, then rebuildMap()
@@ -36,8 +36,8 @@ public class Map {
 		int treasure = 20;
 		Random rand = new Random();
 		while(treasure > 0){
-			int x = rand.nextInt(height)-1;
-			int y = rand.nextInt(width)-1;
+			int x = rand.nextInt(height);
+			int y = rand.nextInt(width);
 			//randomly searches map for spaces (rooms or traps) without treasure already present.
 			if(map[x][y].getType() != 0 && map[x][y].getItemList().size() == 0){
 				treasure--;
