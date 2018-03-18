@@ -40,8 +40,8 @@ public class TileTest {
 	@Test
 	public void testItems() {
 		tile = new Tile();
-		tile.addItem(new Item("name", "test", 1, 1, 1, 1, 1));
-		tile.addItem(new Item("name2", "test2", 2, 2, 2, 2, 2));
+		tile.addItem(new Item("name", "test", 1, 1, 1, 1, 1, 1));
+		tile.addItem(new Item("name2", "test2", 2, 2, 2, 2, 2, 2));
 		assertTrue(tile.getItemList().size() == 2);
 		assertTrue(tile.getItemList().get(0).getName() == "name");
 		assertTrue(tile.getItemList().get(1).getDescription() == "test2");
