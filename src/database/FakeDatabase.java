@@ -20,6 +20,7 @@ public class FakeDatabase {
 	private int accountId;
 
 	public FakeDatabase(){
+		accountId = -1;
 		readInitialData();
 	}
 
@@ -61,13 +62,16 @@ public class FakeDatabase {
 	}
 
 	public int accountExists(String username, String password){
-		//TODO: finds account from database.
+		for(Account account : accounts){
+			if(account.getUsername().equals(username) && account.getPassword().equals(password)){
+				return account.getId();
+			}
+		}
 		//return -1 if not found, return account id if found
-		//TODO: don't forget that users can't use '|' in their username or password
 		return -1;
 	}
 
-	private void writeCSV(){		//aka saveGame
+	public void writeCSV(){		//aka saveGame
 		//TODO: compile all data into strings
 		//TODO: Obtain data from necessary classes, rather than using the out dated lists in this class
 		try {
