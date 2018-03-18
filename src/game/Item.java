@@ -2,8 +2,8 @@ package game;
 // Item class file
 public class Item{
 	// Variables
-	private String name;
 	private int itemId;
+	private String name;
 	private String description;
 	private int weight;
 	private int damage;

@@ -41,7 +41,7 @@ public class FakeDatabase {
 
 	//insert queries to gather data from lists
 
-	public boolean loadGame(String username, String password){
+	public boolean loadGame(String username, String password, Game game){
 		//uses private lists in this class to reconstruct all classes.
 		accountId = accountExists(username, password);
 		if(accountId == -1){
@@ -69,7 +69,7 @@ public class FakeDatabase {
 		}
 	}
 
-	public boolean newGame(String username, String password){
+	public boolean newGame(String username, String password, Game game){
 		//given username and password, checks if account exists yet.
 		//if exists, return false (new account failed)
 		//else, create new account with specified credentials, create defaults, return true
