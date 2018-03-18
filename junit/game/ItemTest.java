@@ -11,7 +11,20 @@ public class ItemTest {
 	public void setUp() {
 		String test1 = "CS320 is fun!";
 		int test2 = 5;
-		item = new Item(test1, test2, test2, test2, test2, test2, test2);
+		item = new Item(test1, test1, test2, test2, test2, test2, test2, test2);
+	}
+	
+	@Test
+	public void testGetName() {
+		String test = "CS320 is fun!";
+		assertEquals(item.getName(), test);
+	}
+	
+	@Test
+	public void testSetName() {
+		String test = "hhghf8y47uda.v.vxnb";
+		item.setName(test);
+		assertEquals(item.getName(), test);
 	}
 	
 	@Test

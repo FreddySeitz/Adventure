@@ -4,6 +4,7 @@ public class Item{
 	// Variables
 	private int itemId;
 	private String description;
+	private String name;
 	private int weight;
 	private int damage;
 	private int health;
@@ -11,7 +12,8 @@ public class Item{
 	private int value;
 	
 	// Constructor
-	public Item(String d,int i, int w, int dmg, int h, int q, int v) {
+	public Item(String n, String d,int i, int w, int dmg, int h, int q, int v) {
+		name = n;
 		description = d;
 		itemId = i;
 		weight = w;
@@ -27,6 +29,13 @@ public class Item{
 	
 	public int getId(){
 		return itemId;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String n) {
+		name = n;
 	}
 	
 	public void setId(int i){
