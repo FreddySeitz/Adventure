@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import game.Account;
 import game.Actor;
+import game.Game;
 import game.Item;
 import game.Map;
+import game.Player;
 import game.Tile;
 
 public class FakeDatabase {
@@ -19,7 +22,8 @@ public class FakeDatabase {
 
 	private int accountId;
 
-	public FakeDatabase(){
+	public FakeDatabase(Game g){
+		accountId = -1;
 		readInitialData();
 	}
 
@@ -35,7 +39,7 @@ public class FakeDatabase {
 
 	//insert queries to gather data from lists
 
-	public boolean loadGame(String username, String password){
+	public boolean loadGame(String username, String password, Game game){
 		//uses private lists in this class to reconstruct all classes.
 		accountId = accountExists(username, password);
 		if(accountId == -1){
@@ -43,11 +47,27 @@ public class FakeDatabase {
 		}
 		else{
 			//TODO: load game from id
+				//go into other lists and pull out and set everything according to the accountId
+			for(Map map : maps){
+				if(map.getAccountId() == accountId){
+					game.setMap(map);
+					break;	//stop looking through list
+				}
+			}
+			List<Actor> list = new ArrayList<Actor>();
+			for(Actor actor : actors){
+				if(actor.getAccountId() == accountId){
+					actor.setLocation(game.getMap().getTile(actor.getLocation().getX(), actor.getLocation().getY()));
+					list.add(actor);
+				}
+			}
+			
+			//TODO: don't forget to set actor location once map is found
 			return true;
 		}
 	}
 
-	public boolean newGame(String username, String password){
+	public boolean newGame(String username, String password, Game game){
 		//given username and password, checks if account exists yet.
 		//if exists, return false (new account failed)
 		//else, create new account with specified credentials, create defaults, return true
@@ -55,19 +75,27 @@ public class FakeDatabase {
 			return false;	//have main handle Account Exists error
 		}
 		else{
-			//TODO: create new game with defaults
+			Map map = new Map();
+			map.buildDefault();
+			List<Actor> actors = new ArrayList<Actor>();
+			Player player = new Player();
+			actors.add(player);	//TODO: set defaults for player
+			game = new Game(map, actors, null);
 			return true;
 		}
 	}
 
 	public int accountExists(String username, String password){
-		//TODO: finds account from database.
+		for(Account account : accounts){
+			if(account.getUsername().equals(username) && account.getPassword().equals(password)){
+				return account.getId();
+			}
+		}
 		//return -1 if not found, return account id if found
-		//TODO: don't forget that users can't use '|' in their username or password
 		return -1;
 	}
 
-	private void writeCSV(){		//aka saveGame
+	public void writeCSV(){		//aka saveGame
 		//TODO: compile all data into strings
 		//TODO: Obtain data from necessary classes, rather than using the out dated lists in this class
 		try {
