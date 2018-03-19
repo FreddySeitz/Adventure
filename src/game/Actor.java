@@ -4,6 +4,7 @@ import java.util.List;
 
 // Actors are any object that moves around the Map
 public class Actor {
+	private int accountId;
 	private List<Item> inventory;
 	private Item equippedItem;
 	private int health;
@@ -12,6 +13,14 @@ public class Actor {
 	
 	public Actor(){
 		
+	}
+	
+	public void setAccountId(int id){
+		accountId = id;
+	}
+	
+	public int getAccountId(){
+		return accountId;
 	}
 	
 	// Sets inventory
