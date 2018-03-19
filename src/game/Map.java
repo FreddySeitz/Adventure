@@ -9,11 +9,10 @@ public class Map {
 	private int width;
 	private int[][] mapData;	//the tile type for every space in the map.
 	
-	private String username;	//Remember what account this map is connected to.
-	private String password;
+	private int accountId;		//what account the map is connected to
 	
 	public Map(){
-
+		
 	}
 	//if new map is being made, call buildDefault().
 	//When edits are made, set new width and height, set mapData or singleMapData to edit tile types, then rebuildMap()
@@ -27,6 +26,8 @@ public class Map {
 			for(int j = 0; j < width; j++){
 				map[i][j] = new Tile();
 				map[i][j].setType(mapData[i][j]);
+				map[i][j].setX(j);
+				map[i][j].setY(i);
 			}
 		}
 	}
@@ -35,8 +36,8 @@ public class Map {
 		int treasure = 20;
 		Random rand = new Random();
 		while(treasure > 0){
-			int x = rand.nextInt(height)-1;
-			int y = rand.nextInt(width)-1;
+			int x = rand.nextInt(height);
+			int y = rand.nextInt(width);
 			//randomly searches map for spaces (rooms or traps) without treasure already present.
 			if(map[x][y].getType() != 0 && map[x][y].getItemList().size() == 0){
 				treasure--;
@@ -45,12 +46,24 @@ public class Map {
 		}
 	}
 
+	public int getAccountId(){
+		return accountId;
+	}
+	
+	public void setAccountId(int i){
+		accountId = i;
+	}
+	
 	public Tile[][] getMap(){
 		return map;
 	}
 
 	public void setMap(int i, int j, Tile t){	//i=column(height)		j = row(width)
 		map[i][j] = t;
+	}
+	
+	public Tile getTile(int i, int j){
+		return map[i][j];
 	}
 
 	public int[][] getMapData(){
@@ -73,12 +86,70 @@ public class Map {
 		height = h;
 	}
 
-	public int setWidth(){
+	public int getWidth(){
 		return width;
 	}
 
 	public void setWidth(int w){
 		width = w;
+	}
+	
+	public String compileTiles(){	//gets data from all tiles on map
+		StringBuilder builder = new StringBuilder();
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width; j++){
+				builder.append(map[i][j].getType());
+				builder.append(",");	// , after every variable in Tile
+				for(int k = 0; k < map[i][j].getItemList().size(); k++){	//stores all items separated by '/'
+					builder.append(map[i][j].getItemList().get(k).toString());
+					if(k != map[i][j].getItemList().size()-1){
+						builder.append('/');
+					}
+				}
+				builder.append(",");
+				builder.append('.');	// . indicates tile is done, following text is the next tile
+			}
+		}
+		
+		return builder.toString();
+	}
+	
+	public void decompileTiles(String data){	//decompresses data from database into a double array of tiles.
+		map = new Tile[height][width];
+		Tile tile = new Tile();
+		StringBuilder builder = new StringBuilder();
+		int chunk = 0;		//which part of the tile is being analyzed 0=tileType, 1=itemList, etc.
+		int mapslot = 0;	//which index of map of the currently constructed tile.
+		for(int i = 0; i < data.length(); i++){
+			if(data.indexOf(i) == '.'){
+				i++;
+				map[mapslot/width][mapslot%width] = tile;	//width determines when to move to next row. width = 20, slot 23 = [1][3]
+			}
+			else if(data.indexOf(i) == ','){	//constructing one tile
+				if(chunk == 0){	//tile type
+					tile.setType(Integer.parseInt(builder.toString()));
+					builder.delete(0, builder.length());
+					chunk++;
+				}
+				else if(chunk == 1){
+					while(data.indexOf(i) != ','){
+						if(data.indexOf(i) == '/'){
+							//tile.addItem( TODO: get item by its name or id );
+							builder.delete(0, builder.length());
+							i++;
+						}
+						else{
+							builder.append(data.indexOf(i));
+						}
+					}
+					i++;	//avoid ,
+					chunk = 0; //found all data for tile, start over for next tile.
+				}
+			}
+			else{	//builder does not append , or .
+				builder.append(data.indexOf(i));
+			}
+		}
 	}
 	
 	//default map before editing
@@ -285,6 +356,8 @@ public class Map {
 			for(int j = 0; j < width; j++){
 				map[i][j] = new Tile();
 				map[i][j].setType(mapData[i][j]);
+				map[i][j].setX(j);
+				map[i][j].setY(i);
 			}
 		}
 		throwGoldEverywhere();
