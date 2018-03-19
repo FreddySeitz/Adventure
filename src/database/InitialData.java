@@ -72,7 +72,7 @@ public class InitialData {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Item item = new Item("",0,0,0,0,0);
+				Item item = new Item("","",0,0,0,0,0,0);
 				item.setId(Integer.parseInt(i.next()));
 				item.setDescription(i.next());
 				item.setWeight(Integer.parseInt(i.next()));
