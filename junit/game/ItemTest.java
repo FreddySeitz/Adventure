@@ -11,7 +11,7 @@ public class ItemTest {
 	public void setUp() {
 		String test1 = "CS320 is fun!";
 		int test2 = 5;
-		item = new Item(test1, test1, test2, test2, test2, test2, test2, test2);
+		item = new Item(test1, test1, test2, test2, test2, test2, test2, test2, test2);
 	}
 	
 	@Test
