@@ -19,6 +19,7 @@ public class FakeDatabase {
 	private List<Account> accounts;
 	private List<Map> maps;
 	private List<Actor> actors;
+	private List<Item> items;
 
 	private int accountId;
 
@@ -32,6 +33,7 @@ public class FakeDatabase {
 			accounts.addAll(InitialData.getAccount());
 			maps.addAll(InitialData.getMap());
 			actors.addAll(InitialData.getActor());
+			items.addAll(InitialData.getItem());
 		} catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
 		}
