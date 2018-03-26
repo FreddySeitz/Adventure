@@ -1,16 +1,17 @@
-package database;
+package ycp.edu.cs320.adventure.database;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import game.Account;
-import game.Actor;
-import game.Item;
-import game.Map;
-import game.Tile;
-import game.Game;
+import ycp.edu.cs320.adventure.game.Account;
+import ycp.edu.cs320.adventure.game.Actor;
+import ycp.edu.cs320.adventure.game.Game;
+import ycp.edu.cs320.adventure.game.Inventory;
+import ycp.edu.cs320.adventure.game.Item;
+import ycp.edu.cs320.adventure.game.Map;
+import ycp.edu.cs320.adventure.game.Tile;
 
 public class InitialData {
 	//unpacks everything from the database into lists
@@ -88,8 +89,8 @@ public class InitialData {
 						item.append(inv.charAt(k));
 					}
 				}
-				
-				actor.setInventory(inventoryList);
+				Inventory inventory = new Inventory(inventoryList);
+				actor.setInventory(inventory);
 //				actor.setEquippedItem( TODO: get item from i.next());
 				actor.setHealth(Integer.parseInt(i.next()));
 				actor.setLocation(new Tile());		//TODO: set to real tile later, after game has been matched with id

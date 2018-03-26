@@ -4,6 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.*;
 
+import ycp.edu.cs320.adventure.game.Actor;
+import ycp.edu.cs320.adventure.game.Inventory;
+import ycp.edu.cs320.adventure.game.Item;
+import ycp.edu.cs320.adventure.game.Tile;
+
 public class ActorTest {
 	private Actor actor;
 	private Item item1;

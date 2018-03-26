@@ -1,4 +1,4 @@
-package game;
+package ycp.edu.cs320.adventure.game;
 
 // Actors are any object that moves around the Map
 public class Actor {

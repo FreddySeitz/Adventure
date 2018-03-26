@@ -39,8 +39,6 @@
 			<input type="Submit" name="Sign In" value="signin">
 			
 			
-			<!-- Guessing Game -->
-			
 			</form>
 	</body>
 </html>
