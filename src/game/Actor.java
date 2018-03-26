@@ -1,11 +1,9 @@
 package game;
 
-import java.util.List;
-
 // Actors are any object that moves around the Map
 public class Actor {
 	private int accountId;
-	private List<Item> inventory;
+	private Inventory inventory;
 	private Item equippedItem;
 	private int health;
 	private Tile location;
@@ -24,12 +22,12 @@ public class Actor {
 	}
 	
 	// Sets inventory
-	public void setInventory(List<Item> items) {
+	public void setInventory(Inventory items) {
 		this.inventory = items;
 	}
 	
 	// Gets inventory
-	public List<Item> getInventory(){
+	public Inventory getInventory(){
 		return inventory;
 	}
 	
@@ -75,15 +73,15 @@ public class Actor {
 	
 	public void attack(Actor target) {
 		/*if(this.equippedItem instanceof Weapon) {
-			target.hurt(equippedItem.damage);
+			target.hurt(equippedItem.getDamage());
 		}
 		else{
 			target.hurt(baseDamage);
 		}*/
 	}
 	
-	public void hurt(int damage) {
-		this.health = this.health - damage;
+	public void hurt(int damageTaken) {
+		this.health = this.health - damageTaken;
 	}
 	
 	public void move(Tile newLocation) {
