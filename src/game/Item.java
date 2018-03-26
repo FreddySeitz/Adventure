@@ -2,6 +2,7 @@ package game;
 // Item class file
 public class Item{
 	// Variables
+	private int accountId;
 	private int itemId;
 	private String description;
 	private String name;
@@ -12,9 +13,10 @@ public class Item{
 	private int value;
 	
 	// Constructor
-	public Item(String n, String d,int i, int w, int dmg, int h, int q, int v) {
+	public Item(String n, String d,int a, int i, int w, int dmg, int h, int q, int v) {
 		name = n;
 		description = d;
+		accountId = a;
 		itemId = i;
 		weight = w;
 		damage = dmg;
@@ -23,12 +25,19 @@ public class Item{
 		value = v;
 	}
 	
-	public Item getItem(int id){
-		return null;
+
+	public int getAccountId(){
+		return accountId;
+	}
+	public void setAccountId(int i){
+		accountId = i;
 	}
 	
 	public int getId(){
 		return itemId;
+	}
+	public void setId(int i){
+		itemId = i;
 	}
 	
 	public String getName() {
@@ -36,10 +45,6 @@ public class Item{
 	}
 	public void setName(String n) {
 		name = n;
-	}
-	
-	public void setId(int i){
-		itemId = i;
 	}
 	
 	// Returns description of item
