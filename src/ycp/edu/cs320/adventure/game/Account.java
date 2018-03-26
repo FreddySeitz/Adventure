@@ -10,14 +10,14 @@ public class Account {
 	private List<Player> characters;
 	private List<Game> games;
 	
-	public Account(String u, String p){
-		this.username = u;
-		this.password = p;
+	public Account(String username, String password){
+		this.username = username;
+		this.password = password;
 	}
 	
 	//sets id
-	public void setId(int i){
-		id = i;
+	public void setId(int id){
+		this.id = id;
 	}
 	
 	//gets id
@@ -26,8 +26,8 @@ public class Account {
 	}
 	
 	// Sets username
-	public void setUsername(String u) {
-		this.username = u;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	// Gets username
@@ -36,8 +36,8 @@ public class Account {
 	}
 	
 	// Sets password
-	public void setPassword(String p) {
-		this.password = p;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 		
 	// Gets password
@@ -46,8 +46,8 @@ public class Account {
 	}
 	
 	// Sets characters for an Account
-	public void setCharacters(List<Player> c) {
-		this.characters = c;
+	public void setCharacters(List<Player> characters) {
+		this.characters = characters;
 	}
 			
 	// Returns characters for an Account

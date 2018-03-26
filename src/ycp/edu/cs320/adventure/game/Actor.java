@@ -13,10 +13,12 @@ public class Actor {
 		
 	}
 	
+	// Sets the Account ID
 	public void setAccountId(int id){
 		accountId = id;
 	}
 	
+	// Gets the Account ID
 	public int getAccountId(){
 		return accountId;
 	}
