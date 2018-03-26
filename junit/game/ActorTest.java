@@ -2,6 +2,9 @@ package game;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.*;
 
 import ycp.edu.cs320.adventure.game.Actor;
@@ -20,22 +23,31 @@ public class ActorTest {
 	
 	@Before
 	public void setUp() {
+		actor = new Actor();
+		actor.setAccountId(0);
+		actor.setBaseDamage(1);
+		actor.setHealth(100);
+		
 		item1 = new Item("Stick", "Small Branch", actor.getAccountId(), 1, 0, 5, 10, 0, 0);
 		item2 = new Item("Big Stick", "Bigger Branch", actor.getAccountId(), 2, 2, 10, 20, 0, 0);
-		inventory1.addToInventory(item1);
-		inventory2.addToInventory(item1);
-		inventory2.addToInventory(item2);
+		
+		List<Item> items = new ArrayList<Item>();
+		items.add(item1);
+		inventory1 = new Inventory(items);
+		items.add(item2);
+		inventory2 = new Inventory(items);
+		
+		tile1 = new Tile();
 		tile1.setType(1);
 		tile1.setX(0);
 		tile1.setY(0);
+		
+		tile2 = new Tile();
 		tile2.setType(2);
 		tile2.setX(1);
 		tile2.setY(1);
 		
-		actor.setAccountId(0);
-		actor.setBaseDamage(1);
 		actor.setEquippedItem(item1);
-		actor.setHealth(100);
 		actor.setInventory(inventory1);
 		actor.setLocation(tile1);
 	}
