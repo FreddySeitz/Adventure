@@ -1,4 +1,4 @@
-package database;
+package ycp.edu.cs320.adventure.database;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.Account;
-import game.Actor;
-import game.Game;
-import game.Item;
-import game.Map;
-import game.Player;
-import game.Tile;
+import ycp.edu.cs320.adventure.game.Account;
+import ycp.edu.cs320.adventure.game.Actor;
+import ycp.edu.cs320.adventure.game.Game;
+import ycp.edu.cs320.adventure.game.Item;
+import ycp.edu.cs320.adventure.game.Map;
+import ycp.edu.cs320.adventure.game.Player;
+import ycp.edu.cs320.adventure.game.Tile;
 
 public class FakeDatabase {
 	private List<Account> accounts;

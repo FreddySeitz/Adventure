@@ -1,4 +1,4 @@
-package servlets;
+package ycp.edu.cs320.adventure.servlets;
 
 import java.io.IOException;
 

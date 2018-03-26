@@ -1,4 +1,4 @@
-package game;
+package ycp.edu.cs320.adventure.game;
 
 // Players are the Actors that Users will control
 public class Player extends Actor {

@@ -1,4 +1,4 @@
-package game;
+package ycp.edu.cs320.adventure.game;
 // Item class file
 public class Item{
 	// Variables

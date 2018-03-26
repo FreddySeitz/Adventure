@@ -8,8 +8,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import database.InitialData;
-import game.Tile;
+import ycp.edu.cs320.adventure.database.InitialData;
+import ycp.edu.cs320.adventure.game.Item;
+import ycp.edu.cs320.adventure.game.Tile;
 
 public class TileTest {
 	private Tile tile;
