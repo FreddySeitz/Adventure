@@ -14,30 +14,6 @@ import game.Game;
 
 public class InitialData {
 	//unpacks everything from the database into lists
-	public static List<Map> getMap() throws IOException {
-		List<Map> mapList = new ArrayList<Map>();
-		ReadCSV readMap = new ReadCSV("Map.csv");
-		try {
-			while (true) {
-				List<String> tuple = readMap.next();
-				if (tuple == null) {
-					break;
-				}
-				Iterator<String> i = tuple.iterator();
-				Map map = new Map();
-				map.setAccountId(Integer.parseInt(i.next()));		//account id
-				map.setHeight(Integer.parseInt(i.next()));			//map height
-				map.setWidth(Integer.parseInt(i.next()));			//map width
-				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
-				mapList.add(map);
-			}
-			return mapList;
-		} finally {
-			readMap.close();
-		}
-	}
-
-
 	public static List<Account> getAccount() throws IOException {
 		List<Account> accountList = new ArrayList<Account>();
 		ReadCSV readAccount = new ReadCSV("Account.csv");
@@ -61,6 +37,29 @@ public class InitialData {
 		}
 	}
 	
+	public static List<Map> getMap() throws IOException {
+		List<Map> mapList = new ArrayList<Map>();
+		ReadCSV readMap = new ReadCSV("Map.csv");
+		try {
+			while (true) {
+				List<String> tuple = readMap.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Map map = new Map();
+				map.setAccountId(Integer.parseInt(i.next()));		//account id
+				map.setHeight(Integer.parseInt(i.next()));			//map height
+				map.setWidth(Integer.parseInt(i.next()));			//map width
+				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
+				mapList.add(map);
+			}
+			return mapList;
+		} finally {
+			readMap.close();
+		}
+	}
+	
 	public static List<Actor> getActor() throws IOException {
 		List<Actor> actorList = new ArrayList<Actor>();
 		ReadCSV readAccount = new ReadCSV("Actor.csv");
@@ -77,6 +76,7 @@ public class InitialData {
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item
 				List<Item> inventoryList = new ArrayList<Item>();
+				//inventory
 				for(int k = 0; k < inv.length(); k++){
 					if(inv.charAt(k) == '|'){
 						//TODO: get item name from dictionary
@@ -100,6 +100,36 @@ public class InitialData {
 			return actorList;
 		} finally {
 			readAccount.close();
+		}
+	}
+	
+	public static List<Item> getItem() throws IOException {
+		List<Item> itemList = new ArrayList<Item>();
+		ReadCSV readItem = new ReadCSV("Item.csv");
+		try {
+			while (true) {
+				List<String> tuple = readItem.next();
+				if (tuple == null) {
+					break;
+				}
+				
+				Iterator<String> i = tuple.iterator();
+				Item item = new Item("","",0,0,0,0,0,0,0);
+				item.setId(Integer.parseInt(i.next()));
+				item.setName(i.next());
+				item.setDescription(i.next());
+				item.setAccountId(Integer.parseInt(i.next()));
+				item.setId(Integer.parseInt(i.next()));
+				item.setWeight(Integer.parseInt(i.next()));
+				item.setDamage(Integer.parseInt(i.next()));
+				item.setHealth(Integer.parseInt(i.next()));
+				item.setQuestId(Integer.parseInt(i.next()));
+				item.setValue(Integer.parseInt(i.next()));
+				itemList.add(item);
+			}
+			return itemList;
+		} finally {
+			readItem.close();
 		}
 	}
 }
