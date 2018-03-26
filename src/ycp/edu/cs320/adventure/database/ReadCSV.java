@@ -1,4 +1,4 @@
-package database;
+package ycp.edu.cs320.adventure.database;
 
 import java.io.BufferedReader;
 import java.io.Closeable;

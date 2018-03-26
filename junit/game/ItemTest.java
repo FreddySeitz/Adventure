@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.*;
 
+import ycp.edu.cs320.adventure.game.Item;
+
 public class ItemTest {
 	private Item item;
 	

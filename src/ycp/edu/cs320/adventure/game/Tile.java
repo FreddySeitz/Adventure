@@ -1,4 +1,4 @@
-package game;
+package ycp.edu.cs320.adventure.game;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package main;
+package ycp.edu.cs320.adventure.main;
 
 import java.lang.management.ManagementFactory;
 
