@@ -20,6 +20,9 @@
   			/* bring your own prefixes */
   			transform: translate(-50%, -50%);
 		}
+		.success{
+			color:green;
+			}
 		</style>
 	</head>
 
@@ -28,7 +31,9 @@
 		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
-		
+		<c:if test="${! empty successMessage}">
+			<div class="success">${successMessage}</div>
+		</c:if>
 		<!-- TODO: INDEX SERVLET -->
 		
 		<form action="${pageContext.servletContext.contextPath}/index" method="post">
