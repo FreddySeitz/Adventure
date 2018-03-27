@@ -13,6 +13,13 @@
 		td.label {
 			text-align: right;
 		}
+		.centered {
+  			position: fixed;
+  			top: 50%;
+  			left: 50%;
+  			/* bring your own prefixes */
+  			transform: translate(-50%, -50%);
+		}
 		</style>
 	</head>
 
@@ -24,6 +31,7 @@
 		<!-- TODO: INDEX SERVLET -->
 		
 		<form action="${pageContext.servletContext.contextPath}/index" method="post">
+			<div class = "centered">
 			<table>
 				<tr>
 					<td class="label">USERNAME: </td>
@@ -36,9 +44,9 @@
 				
 				
 			</table>
-			<input type="Submit" name="Sign In" value="signin">
+			<input type="Submit" name="Sign In" value="Log In">
 			
-			
+			</div>
 			</form>
 	</body>
 </html>
