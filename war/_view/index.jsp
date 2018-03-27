@@ -24,6 +24,7 @@
 	</head>
 
 	<body>
+		<div class = "centered">
 		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
@@ -31,7 +32,7 @@
 		<!-- TODO: INDEX SERVLET -->
 		
 		<form action="${pageContext.servletContext.contextPath}/index" method="post">
-			<div class = "centered">
+			
 			<table>
 				<tr>
 					<td class="label">USERNAME: </td>
@@ -44,7 +45,7 @@
 				
 				
 			</table>
-			<input type="Submit" name="Sign In" value="Log In">
+			<input type="Submit" name="signin" value="Sign In">
 			
 			</div>
 			</form>
