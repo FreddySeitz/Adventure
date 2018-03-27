@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ycp.edu.cs320.adventure.game.Account;
+
 public class IndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
@@ -25,24 +27,32 @@ public class IndexServlet extends HttpServlet {
         
         System.out.println("index Servlet: doPost");
         String errorMessage = null;
-
         
-        //numController.setFirst(getDoubleFromParameter(req.getParameter("first")));
+        // TODO: replace username & password with an account object
+        // TODO: test if username/password are contained in the database
+        // TODO: if successful login, go to next page
+        
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        
+        Account account = new Account(username, password);
+        
+        // set to true if valid login credentials have been given
+        boolean login = false;
         
         String testUserName = "username";
         String testPassword = "password";
         
         // username and password match
-        if((username.equals(testUserName)) && (password.equals(testPassword))) {
+        if((account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))) {
+        	login = true;
         	errorMessage = "Successful login";
         	req.setAttribute("errorMessage",  errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
         
         // username matches but password does not
-        else if((username.equals(testUserName)) && (!password.equals(testPassword))) {
+        else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
         	errorMessage = "Error: Username Exists with different password.";
             req.setAttribute("errorMessage", errorMessage);
             req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
@@ -53,7 +63,11 @@ public class IndexServlet extends HttpServlet {
         	req.setAttribute("errorMessage", errorMessage);
             req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
-
+        
+        // if successful login, do something
+        if(login) {
+        	System.out.println("Successful log in :)");
+        }
 
     }
 }
