@@ -1,10 +1,8 @@
 package ycp.edu.cs320.adventure.game;
 
-import java.util.ArrayList;
-
 // Operates on the current Game object
 public class GameEngine {
-	private ArrayList<Command> validCommands;
+	private Game currentGame;
 	
 	public GameEngine() {
 		
@@ -16,8 +14,8 @@ public class GameEngine {
 	}
 	
 	// Loads a game
-	public Game loadGame(int game_id) {
-		return null;
+	public void loadGame(Game game) {
+		currentGame = game;
 	}
 	
 	// Prompts the user for a new command
