@@ -13,17 +13,31 @@
 		td.label {
 			text-align: right;
 		}
+		.centered {
+  			position: fixed;
+  			top: 50%;
+  			left: 50%;
+  			/* bring your own prefixes */
+  			transform: translate(-50%, -50%);
+		}
+		.success{
+			color:green;
+			}
 		</style>
 	</head>
 
 	<body>
+		<div class = "centered">
 		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
-		
+		<c:if test="${! empty successMessage}">
+			<div class="success">${successMessage}</div>
+		</c:if>
 		<!-- TODO: INDEX SERVLET -->
 		
 		<form action="${pageContext.servletContext.contextPath}/index" method="post">
+			
 			<table>
 				<tr>
 					<td class="label">USERNAME: </td>
@@ -36,9 +50,9 @@
 				
 				
 			</table>
-			<input type="Submit" name="Sign In" value="signin">
+			<input type="Submit" name="signin" value="Sign In">
 			
-			
+			</div>
 			</form>
 	</body>
 </html>
