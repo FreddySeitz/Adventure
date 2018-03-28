@@ -7,8 +7,9 @@ public class Game {
 	private Map map;
 	private List<Actor> actors;
 	private List<Item> items;
+	private List<Command> commands;
 	
-	public Game(Map map, List<Actor> actors, List<Item> items) {
+	public Game(Map map, List<Actor> actors, List<Item> items, List<Command> commands) {
 		this.map = map;
 		this.actors = actors;
 		this.items = items;
@@ -42,5 +43,15 @@ public class Game {
 	// Gets the game items
 	public List<Item> getItems(){
 		return items;
+	}
+	
+	// Sets the game items
+	public void setCommands(List<Command> commands) {
+		this.commands = commands;
+	}
+		
+	// Gets the game items
+	public List<Command> getCommands(){
+		return commands;
 	}
 }

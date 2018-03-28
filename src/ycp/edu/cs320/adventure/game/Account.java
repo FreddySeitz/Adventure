@@ -73,7 +73,7 @@ public class Account {
 		throw new UnsupportedOperationException();
 	}
 	
-	public void createNewGame(Map map, List<Actor> actors, List<Item> items) {
-		games.add(new Game(map, actors, items));
+	public void createNewGame(Map map, List<Actor> actors, List<Item> items, List<Command> commands) {
+		games.add(new Game(map, actors, items, commands));
 	}
 }

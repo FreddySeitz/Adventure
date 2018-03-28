@@ -66,8 +66,8 @@ public class AccountTest {
 		actors1 = new ArrayList<Actor>();
 		actors1.addAll(characters1);
 		
-		game1 = new Game(map, actors1, items1);
-		game2 = new Game(map, actors2, items2);
+		game1 = new Game(map, actors1, items1, null);
+		game2 = new Game(map, actors2, items2, null);
 		
 		games1 = new ArrayList<Game>();
 		games1.add(game1);
