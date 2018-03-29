@@ -75,13 +75,13 @@ public class InitialData {
 				actorList.add(actor);
 				
 				String inv = i.next();
-				StringBuilder item = new StringBuilder();	//reads a single item
+				StringBuilder item = new StringBuilder();	//reads a single item ID
 				List<Item> inventoryList = new ArrayList<Item>();
 				//inventory
 				for(int k = 0; k < inv.length(); k++){
-					if(inv.charAt(k) == '|'){
-						//TODO: get item name from dictionary
-						//inventoryList.add();
+					if(inv.charAt(k) == ','){
+						//just add item ID, when game gets loaded, fill in rest of item data for the item set for that account
+						inventoryList.add(new Item("", "", Integer.parseInt(item.toString()),0,0,0,0,0,0));
 						k++;
 						item.delete(0, item.length());
 					}
@@ -91,9 +91,9 @@ public class InitialData {
 				}
 				Inventory inventory = new Inventory(inventoryList);
 				actor.setInventory(inventory);
-//				actor.setEquippedItem( TODO: get item from i.next());
+				actor.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));	//TODO: fill in item details by item ID
 				actor.setHealth(Integer.parseInt(i.next()));
-				actor.setLocation(new Tile());		//TODO: set to real tile later, after game has been matched with id
+				actor.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
 				actor.getLocation().setX(Integer.parseInt(i.next()));
 				actor.getLocation().setY(Integer.parseInt(i.next()));
 				actor.setBaseDamage(Integer.parseInt(i.next()));

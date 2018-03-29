@@ -13,6 +13,7 @@ public class Game {
 		this.map = map;
 		this.actors = actors;
 		this.items = items;
+		this.commands = commands;
 	}
 	
 	// Sets the game map

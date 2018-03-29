@@ -82,7 +82,7 @@ public class FakeDatabase {
 			List<Actor> actors = new ArrayList<Actor>();
 			Player player = new Player();
 			actors.add(player);	//TODO: set defaults for player
-			game = new Game(map, actors, null);
+			game = new Game(map, actors, null, null);
 			return true;
 		}
 	}
