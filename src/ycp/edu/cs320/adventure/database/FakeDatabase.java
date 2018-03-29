@@ -197,7 +197,8 @@ public class FakeDatabase {
 			actorswriter.write(actorbuilder.toString());
 			actorswriter.close();
 
-			for(Item i : game.getItems()){	//putting current game data on top of database
+			//putting current game data on top of database
+			for(Item i : game.getItems()){
 				itembuilder.append(i.getId());
 				itembuilder.append("|");
 				itembuilder.append(i.getName());
