@@ -74,6 +74,8 @@ public class InitialData {
 				Actor actor = new Actor();
 				actorList.add(actor);
 				
+				actor.setAccountId(Integer.parseInt(i.next()));
+				
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item ID
 				List<Item> inventoryList = new ArrayList<Item>();
@@ -91,7 +93,7 @@ public class InitialData {
 				}
 				Inventory inventory = new Inventory(inventoryList);
 				actor.setInventory(inventory);
-				actor.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));	//TODO: fill in item details by item ID
+				actor.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
 				actor.setHealth(Integer.parseInt(i.next()));
 				actor.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
 				actor.getLocation().setX(Integer.parseInt(i.next()));

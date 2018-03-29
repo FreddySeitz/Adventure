@@ -45,7 +45,7 @@ public class FakeDatabase {
 	public boolean loadGame(String username, String password, Game game){
 		//uses private lists in this class to reconstruct all classes.
 		GameEngine engine = new GameEngine();
-		
+
 		accountId = accountExists(username, password);
 		if(accountId == -1){
 			return false;	//failed
@@ -57,7 +57,7 @@ public class FakeDatabase {
 					break;	//stop looking through list
 				}
 			}
-			
+
 			List<Item> itemlist = new ArrayList<Item>();
 			for(Item item : items){
 				if(item.getAccountId() == accountId){
@@ -65,7 +65,7 @@ public class FakeDatabase {
 				}
 			}
 			game.setItems(itemlist);
-			
+
 			List<Actor> list = new ArrayList<Actor>();
 			for(Actor actor : actors){
 				if(actor.getAccountId() == accountId){
@@ -74,7 +74,7 @@ public class FakeDatabase {
 				}
 			}
 			game.setActors(list);
-			
+
 			//setting items to inventory
 			for(Actor actor: game.getActors()){	//actors
 				itemlist = new ArrayList<Item>();
@@ -105,7 +105,7 @@ public class FakeDatabase {
 			map.buildDefault();
 			List<Actor> actors = new ArrayList<Actor>();
 			Player player = new Player();
-			actors.add(player);	//TODO: set defaults for player
+			actors.add(player);
 			game = new Game(map, actors, null, null);
 			return true;
 		}
@@ -128,25 +128,153 @@ public class FakeDatabase {
 			PrintWriter accountswriter = new PrintWriter(new File("src/Account.csv"));
 			PrintWriter mapswriter = new PrintWriter(new File("src/Map.csv"));
 			PrintWriter actorswriter = new PrintWriter(new File("src/Actor.csv"));
+			PrintWriter itemswriter = new PrintWriter(new File("src/Item.csv"));
 			StringBuilder accountbuilder = new StringBuilder();
 			StringBuilder mapbuilder = new StringBuilder();
 			StringBuilder actorbuilder = new StringBuilder();
-			//TODO: mix inventory with actors, since each actor has their own inventory
+			StringBuilder itembuilder = new StringBuilder();
+
+			//TODO: write current data first so it's on top of the list.
 			for(Account account : accounts){
-				accountbuilder.append(account.getId());
-				accountbuilder.append("|");
-				accountbuilder.append(account.getUsername());
-				accountbuilder.append("|");
-				accountbuilder.append(account.getPassword());
-				accountbuilder.append("\n");
+				if(false){
+					//TODO: if accountId == accounts ID, skip the data in accounts List
+				}
+				else{
+					accountbuilder.append(account.getId());
+					accountbuilder.append("|");
+					accountbuilder.append(account.getUsername());
+					accountbuilder.append("|");
+					accountbuilder.append(account.getPassword());
+					accountbuilder.append("\n");
+				}
 			}
 
 			accountswriter.write(accountbuilder.toString());
 			accountswriter.close();
 
-			for(Actor actor : actors){
-
+			for(Actor a : game.getActors()){	//putting current game data on top of database
+				actorbuilder.append(a.getAccountId());
+				actorbuilder.append("|");
+				for(Item item : a.getInventory().getInventory()){
+					actorbuilder.append(item.getId());
+					actorbuilder.append(',');
+				}
+				actorbuilder.append(a.getEquippedItem().getId());
+				actorbuilder.append("|");
+				actorbuilder.append(a.getHealth());
+				actorbuilder.append("|");
+				actorbuilder.append(a.getLocation().getX());
+				actorbuilder.append("|");
+				actorbuilder.append(a.getLocation().getY());
+				actorbuilder.append("|");
+				actorbuilder.append(a.getBaseDamage());
 				actorbuilder.append("\n");
+			}
+			for(Actor actor : actors){
+				if(false){
+					//TODO: if accountId == accounts ID, skip the data in actors List.  Already added to be on top of written file
+				}
+				else{
+					actorbuilder.append(actor.getAccountId());
+					actorbuilder.append("|");
+					for(Item item : actor.getInventory().getInventory()){
+						actorbuilder.append(item.getId());
+						actorbuilder.append(',');
+					}
+					actorbuilder.append(actor.getEquippedItem().getId());
+					actorbuilder.append("|");
+					actorbuilder.append(actor.getHealth());
+					actorbuilder.append("|");
+					actorbuilder.append(actor.getLocation().getX());
+					actorbuilder.append("|");
+					actorbuilder.append(actor.getLocation().getY());
+					actorbuilder.append("|");
+					actorbuilder.append(actor.getBaseDamage());
+					actorbuilder.append("\n");
+				}
+			}
+
+			actorswriter.write(actorbuilder.toString());
+			actorswriter.close();
+
+			for(Item i : game.getItems()){	//putting current game data on top of database
+				itembuilder.append(i.getId());
+				itembuilder.append("|");
+				itembuilder.append(i.getName());
+				itembuilder.append("|");
+				itembuilder.append(i.getDescription());
+				itembuilder.append("|");
+				itembuilder.append(i.getAccountId());
+				itembuilder.append("|");
+				itembuilder.append(i.getId());
+				itembuilder.append("|");
+				itembuilder.append(i.getWeight());
+				itembuilder.append("|");
+				itembuilder.append(i.getDamage());
+				itembuilder.append("|");
+				itembuilder.append(i.getHealth());
+				itembuilder.append("|");
+				itembuilder.append(i.getQuestId());
+				itembuilder.append("|");
+				itembuilder.append(i.getValue());
+				itembuilder.append("/n");
+			}
+			for(Item i : items){
+				if(false){
+					//TODO: if accountId == accounts ID, skip the data in actors List.  Already added to be on top of written file
+				}
+				else{
+					itembuilder.append(i.getId());
+					itembuilder.append("|");
+					itembuilder.append(i.getName());
+					itembuilder.append("|");
+					itembuilder.append(i.getDescription());
+					itembuilder.append("|");
+					itembuilder.append(i.getAccountId());
+					itembuilder.append("|");
+					itembuilder.append(i.getId());
+					itembuilder.append("|");
+					itembuilder.append(i.getWeight());
+					itembuilder.append("|");
+					itembuilder.append(i.getDamage());
+					itembuilder.append("|");
+					itembuilder.append(i.getHealth());
+					itembuilder.append("|");
+					itembuilder.append(i.getQuestId());
+					itembuilder.append("|");
+					itembuilder.append(i.getValue());
+					itembuilder.append("/n");
+				}
+			}
+
+			itemswriter.write(itembuilder.toString());
+			itemswriter.close();
+
+			//putting current game data on top of database
+			Map map = game.getMap();
+			mapbuilder.append(map.getAccountId());
+			mapbuilder.append("|");
+			mapbuilder.append(map.getHeight());
+			mapbuilder.append("|");
+			mapbuilder.append(map.getWidth());
+			mapbuilder.append("|");
+			mapbuilder.append(map.compileTiles());
+			mapbuilder.append("\n");
+
+			for(Map m : maps){
+				if(false){
+					//TODO: if accountId == accounts ID, skip the data in maps List.  Already added to be on top of written file
+				}
+				else{
+					mapbuilder.append(map.getAccountId());
+					mapbuilder.append("|");
+					mapbuilder.append(map.getHeight());
+					mapbuilder.append("|");
+					mapbuilder.append(map.getWidth());
+					mapbuilder.append("|");
+					mapbuilder.append(map.compileTiles());
+					mapbuilder.append("\n");
+				}
 			}
 
 			mapswriter.write(mapbuilder.toString());

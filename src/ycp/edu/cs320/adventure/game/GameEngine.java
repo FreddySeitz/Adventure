@@ -16,9 +16,16 @@ public class GameEngine {
 	}
 	
 	// Loads a game
-	public void loadGame(Game game) {
-		currentGame = game;
-	}
+	//database calls loadGame (database needs gameEngine)
+//	public void loadGame(Game game) {
+//		currentGame = game;
+//	}
+	
+	//gameEngine calls database (gameEngine needs database)
+//	public void loadGame(){
+//		//from where ever the fakedatabase instance is
+//		FakeDatabase.loadGame(username, password, currentGame);
+//	}
 	
 	// Prompts the user for a new command
 	public void prompt(String command) {
@@ -27,7 +34,7 @@ public class GameEngine {
 	
 	// Stores the current Game object in the database
 	public void saveGame(){
-		new FakeDatabase().writeCSV(currentGame);
+		
 	}
 	
 	// Updates the current Game object
