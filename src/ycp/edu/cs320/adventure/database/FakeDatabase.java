@@ -10,6 +10,7 @@ import java.util.List;
 import ycp.edu.cs320.adventure.game.Account;
 import ycp.edu.cs320.adventure.game.Actor;
 import ycp.edu.cs320.adventure.game.Game;
+import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
@@ -23,7 +24,7 @@ public class FakeDatabase {
 
 	private int accountId;
 
-	public FakeDatabase(Game g){
+	public FakeDatabase(){
 		accountId = -1;
 		readInitialData();
 	}
@@ -43,19 +44,28 @@ public class FakeDatabase {
 
 	public boolean loadGame(String username, String password, Game game){
 		//uses private lists in this class to reconstruct all classes.
+		GameEngine engine = new GameEngine();
+		
 		accountId = accountExists(username, password);
 		if(accountId == -1){
-			return false;
+			return false;	//failed
 		}
 		else{
-			//TODO: load game from id
-				//go into other lists and pull out and set everything according to the accountId
 			for(Map map : maps){
 				if(map.getAccountId() == accountId){
 					game.setMap(map);
 					break;	//stop looking through list
 				}
 			}
+			
+			List<Item> itemlist = new ArrayList<Item>();
+			for(Item item : items){
+				if(item.getAccountId() == accountId){
+					itemlist.add(item);
+				}
+			}
+			game.setItems(itemlist);
+			
 			List<Actor> list = new ArrayList<Actor>();
 			for(Actor actor : actors){
 				if(actor.getAccountId() == accountId){
@@ -63,9 +73,23 @@ public class FakeDatabase {
 					list.add(actor);
 				}
 			}
+			game.setActors(list);
 			
-			//TODO: don't forget to set actor location once map is found
-			return true;
+			//setting items to inventory
+			for(Actor actor: game.getActors()){	//actors
+				itemlist = new ArrayList<Item>();
+				for(Item actoritem: actor.getInventory().getInventory()){	//inventory
+					for(Item item : game.getItems()){	//item list
+						if(actoritem.getId() == item.getId()){	//if inventory item == item list
+							itemlist.add(engine.createItem(actoritem.getId()));
+							break;
+						}
+					}
+				}
+				actor.getInventory().setInventory(itemlist);
+				actor.setEquippedItem(engine.createItem(actor.getEquippedItem().getId()));	//placing correct item equipped
+			}
+			return true;	//sucessful
 		}
 	}
 
@@ -97,7 +121,7 @@ public class FakeDatabase {
 		return -1;
 	}
 
-	public void writeCSV(){		//aka saveGame
+	public void writeCSV(Game game){		//aka saveGame
 		//TODO: compile all data into strings
 		//TODO: Obtain data from necessary classes, rather than using the out dated lists in this class
 		try {
