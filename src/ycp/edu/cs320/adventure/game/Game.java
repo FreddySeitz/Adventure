@@ -5,12 +5,12 @@ import java.util.List;
 // Games are all of the information that makes up each game
 public class Game {
 	private Map map;
-	private Actor player;
-	private List<Actor> creatures;
+	private Player player;
+	private List<Creature> creatures;
 	private List<Item> items;
 	private List<Command> commands;
 
-	public Game(Map map, Actor player, List<Actor> creatures, List<Item> items, List<Command> commands) {
+	public Game(Map map, Player player, List<Creature> creatures, List<Item> items, List<Command> commands) {
 		this.map = map;
 		this.player = player;
 		this.creatures = creatures;
@@ -29,22 +29,22 @@ public class Game {
 	}
 
 	// Sets the game player
-	public void setPlayer(Actor player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
 	// Gets the game player
-	public Actor getPlayer(){
+	public Player getPlayer(){
 		return player;
 	}
 
 	// Sets the game creatures
-	public void setCreatures(List<Actor> creatures) {
+	public void setCreatures(List<Creature> creatures) {
 		this.creatures = creatures;
 	}
 
 	// Gets the game creatures
-	public List<Actor> getCreatures(){
+	public List<Creature> getCreatures(){
 		return creatures;
 	}
 
