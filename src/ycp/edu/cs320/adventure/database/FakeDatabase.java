@@ -9,6 +9,7 @@ import java.util.List;
 
 import ycp.edu.cs320.adventure.game.Account;
 import ycp.edu.cs320.adventure.game.Actor;
+import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.Game;
 import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
@@ -19,7 +20,8 @@ import ycp.edu.cs320.adventure.game.Tile;
 public class FakeDatabase {
 	private List<Account> accounts;
 	private List<Map> maps;
-	private List<Actor> actors;
+	private List<Player> players;
+	private List<Creature> creatures;
 	private List<Item> items;
 
 	private int accountId;
@@ -33,7 +35,8 @@ public class FakeDatabase {
 		try {
 			accounts.addAll(InitialData.getAccount());
 			maps.addAll(InitialData.getMap());
-			actors.addAll(InitialData.getActor());
+			players.addAll(InitialData.getPlayer());
+			creatures.addAll(InitialData.getCreature());
 			items.addAll(InitialData.getItem());
 		} catch (IOException e) {
 			throw new IllegalStateException("Couldn't read initial data", e);
@@ -65,30 +68,49 @@ public class FakeDatabase {
 				}
 			}
 			game.setItems(itemlist);
-
-			List<Actor> list = new ArrayList<Actor>();
-			for(Actor actor : actors){
-				if(actor.getAccountId() == accountId){
-					actor.setLocation(game.getMap().getTile(actor.getLocation().getX(), actor.getLocation().getY()));
-					list.add(actor);
+			//finding all creatures
+			List<Creature> list = new ArrayList<Creature>();
+			for(Creature creature : creatures){
+				if(creature.getAccountId() == accountId){
+					creature.setLocation(game.getMap().getTile(creature.getLocation().getX(), creature.getLocation().getY()));
+					list.add(creature);
 				}
 			}
-			game.setActors(list);
+			game.setCreatures(list);
+			
+			for(Player player : players){
+				if(player.getAccountId() == accountId){
+					player.setLocation(game.getMap().getTile(player.getLocation().getX(), player.getLocation().getY()));
+					game.setPlayer(player);
+				}
+			}
 
-			//setting items to inventory
-			for(Actor actor: game.getActors()){	//actors
+			//setting items to inventory for creature
+			for(Creature creature: game.getCreatures()){	//actors
 				itemlist = new ArrayList<Item>();
-				for(Item actoritem: actor.getInventory().getInventory()){	//inventory
+				for(Item creatureitem : creature.getInventory().getInventory()){	//inventory
 					for(Item item : game.getItems()){	//item list
-						if(actoritem.getId() == item.getId()){	//if inventory item == item list
-							itemlist.add(engine.createItem(actoritem.getId()));
-							break;
+						if(creatureitem.getId() == item.getId()){	//if inventory item == item list
+							itemlist.add(engine.createItem(creatureitem.getId()));
+							break;	//item found, search for next item
 						}
 					}
 				}
-				actor.getInventory().setInventory(itemlist);
-				actor.setEquippedItem(engine.createItem(actor.getEquippedItem().getId()));	//placing correct item equipped
+				creature.getInventory().setInventory(itemlist);
+				creature.setEquippedItem(engine.createItem(creature.getEquippedItem().getId()));	//placing correct item equipped
 			}
+			
+			//setting inventory for player
+			itemlist = new ArrayList<Item>();
+			for(Item playeritem : game.getPlayer().getInventory().getInventory()){	//inventory
+				for(Item item : game.getItems()){	//item list
+					if(playeritem.getId() == item.getId()){	//if inventory item == item list
+						itemlist.add(engine.createItem(playeritem.getId()));
+						break;	//item found, search for next item
+					}
+				}
+			}
+			game.getPlayer().setEquippedItem(engine.createItem(game.getPlayer().getEquippedItem().getId()));
 			return true;	//sucessful
 		}
 	}
@@ -101,12 +123,16 @@ public class FakeDatabase {
 			return false;	//have main handle Account Exists error
 		}
 		else{
+			GameEngine engine = new GameEngine();
+			Account a = new Account(username, password);
+			accountId = accounts.get(accounts.size()-1).getId() + 1;	//set id +1 of currently highest id in list
+			a.setId(accountId);
+			accounts.add(a);
 			Map map = new Map();
 			map.buildDefault();
-			List<Actor> actors = new ArrayList<Actor>();
+			List<Creature> actors = new ArrayList<Creature>();
 			Player player = new Player();
-			actors.add(player);
-			game = new Game(map, actors, null, null);
+			game = new Game(map, player, actors, engine.defaultItemList(accountId), null);
 			return true;
 		}
 	}

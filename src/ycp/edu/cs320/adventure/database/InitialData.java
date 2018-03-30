@@ -7,10 +7,12 @@ import java.util.List;
 
 import ycp.edu.cs320.adventure.game.Account;
 import ycp.edu.cs320.adventure.game.Actor;
+import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.Game;
 import ycp.edu.cs320.adventure.game.Inventory;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
+import ycp.edu.cs320.adventure.game.Player;
 import ycp.edu.cs320.adventure.game.Tile;
 
 public class InitialData {
@@ -61,20 +63,18 @@ public class InitialData {
 		}
 	}
 	
-	public static List<Actor> getActor() throws IOException {
-		List<Actor> actorList = new ArrayList<Actor>();
-		ReadCSV readAccount = new ReadCSV("Actor.csv");
+	public static List<Player> getPlayer() throws IOException {
+		List<Player> playerList = new ArrayList<Player>();
+		ReadCSV readPlayer = new ReadCSV("Player.csv");
 		try {
 			while (true) {
-				List<String> tuple = readAccount.next();
+				List<String> tuple = readPlayer.next();
 				if (tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Actor actor = new Actor();
-				actorList.add(actor);
-				
-				actor.setAccountId(Integer.parseInt(i.next()));
+				Player player = new Player();
+				player.setAccountId(Integer.parseInt(i.next()));
 				
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item ID
@@ -92,17 +92,66 @@ public class InitialData {
 					}
 				}
 				Inventory inventory = new Inventory(inventoryList);
-				actor.setInventory(inventory);
-				actor.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
-				actor.setHealth(Integer.parseInt(i.next()));
-				actor.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
-				actor.getLocation().setX(Integer.parseInt(i.next()));
-				actor.getLocation().setY(Integer.parseInt(i.next()));
-				actor.setBaseDamage(Integer.parseInt(i.next()));
+				player.setInventory(inventory);
+				player.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
+				player.setHealth(Integer.parseInt(i.next()));
+				player.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
+				player.getLocation().setX(Integer.parseInt(i.next()));
+				player.getLocation().setY(Integer.parseInt(i.next()));
+				player.setBaseDamage(Integer.parseInt(i.next()));
+				player.setScore(Integer.parseInt(i.next()));
+				
+				playerList.add(player);
 			}
-			return actorList;
+			return playerList;
 		} finally {
-			readAccount.close();
+			readPlayer.close();
+		}
+	}
+	
+	public static List<Creature> getCreature() throws IOException {
+		List<Creature> creatureList = new ArrayList<Creature>();
+		ReadCSV readCreature = new ReadCSV("Creature.csv");
+		try {
+			while (true) {
+				List<String> tuple = readCreature.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Creature creature = new Creature();
+				creature.setAccountId(Integer.parseInt(i.next()));
+				
+				String inv = i.next();
+				StringBuilder item = new StringBuilder();	//reads a single item ID
+				List<Item> inventoryList = new ArrayList<Item>();
+				//inventory
+				for(int k = 0; k < inv.length(); k++){
+					if(inv.charAt(k) == ','){
+						//just add item ID, when game gets loaded, fill in rest of item data for the item set for that account
+						inventoryList.add(new Item("", "", Integer.parseInt(item.toString()),0,0,0,0,0,0));
+						k++;
+						item.delete(0, item.length());
+					}
+					else{
+						item.append(inv.charAt(k));
+					}
+				}
+				Inventory inventory = new Inventory(inventoryList);
+				creature.setInventory(inventory);
+				creature.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
+				creature.setHealth(Integer.parseInt(i.next()));
+				creature.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
+				creature.getLocation().setX(Integer.parseInt(i.next()));
+				creature.getLocation().setY(Integer.parseInt(i.next()));
+				creature.setBaseDamage(Integer.parseInt(i.next()));
+				creature.setMovementSpeed(Integer.parseInt(i.next()));
+				
+				creatureList.add(creature);
+			}
+			return creatureList;
+		} finally {
+			readCreature.close();
 		}
 	}
 	

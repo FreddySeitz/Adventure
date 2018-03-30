@@ -1,5 +1,8 @@
 package ycp.edu.cs320.adventure.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ycp.edu.cs320.adventure.database.FakeDatabase;
 
 // Operates on the current Game object
@@ -60,5 +63,20 @@ public class GameEngine {
 			}
 		}
 		return item;
+	}
+	
+	//the list of items that can exist in an unedited new game
+	public List<Item> defaultItemList(int accountId){
+		List<Item> itemList = new ArrayList<Item>();
+		int itemID = 0;
+		Item sword = new Item("Sword", "Sharpened on lost souls", accountId, itemID, 1, 10, 5, 0, 0);
+		itemID++;
+		Item pebble = new Item("Pebble", "Hard and small", accountId, itemID, 1, 10, 5, 0, 0);
+		itemID++;
+		
+		itemList.add(sword);
+		itemList.add(pebble);
+		
+		return itemList;
 	}
 }
