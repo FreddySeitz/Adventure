@@ -68,7 +68,7 @@ public class FakeDatabase {
 				}
 			}
 			game.setItems(itemlist);
-			//finding all creatures
+			//finding all creatures and setting tile location
 			List<Creature> list = new ArrayList<Creature>();
 			for(Creature creature : creatures){
 				if(creature.getAccountId() == accountId){
@@ -77,7 +77,7 @@ public class FakeDatabase {
 				}
 			}
 			game.setCreatures(list);
-
+			//finding player and setting tile location
 			for(Player player : players){
 				if(player.getAccountId() == accountId){
 					player.setLocation(game.getMap().getTile(player.getLocation().getX(), player.getLocation().getY()));
@@ -178,8 +178,6 @@ public class FakeDatabase {
 	}
 
 	public void writeCSV(Game game, int id){		//aka saveGame
-		//TODO: compile all data into strings
-		//TODO: Obtain data from necessary classes, rather than using the out dated lists in this class
 		try {
 			PrintWriter mapswriter = new PrintWriter(new File("src/Map.csv"));
 			PrintWriter playerswriter = new PrintWriter(new File("src/Player.csv"));
