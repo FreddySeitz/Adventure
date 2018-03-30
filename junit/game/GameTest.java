@@ -7,38 +7,36 @@ import java.util.List;
 
 import org.junit.*;
 
-import ycp.edu.cs320.adventure.game.Account;
+import ycp.edu.cs320.adventure.game.Command;
 import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.Game;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
 
-public class AccountTest {
-	private Account account;
+public class GameTest {
 	private List<Player> characters1;
 	private List<Player> characters2;
 	private List<Creature> creatures1;
 	private List<Creature> creatures2;
 	private List<Item> items1;
 	private List<Item> items2;
-	private List<Game> games1;
-	private List<Game> games2;
+	private List<Command> commands1;
+	private List<Command> commands2;
 	private Player player1;
 	private Player player2;
 	private Creature creature1;
 	private Creature creature2;
 	private Item item1;
 	private Item item2;
-	private Map map;
-	private Game game1;
-	private Game game2;
+	private Command command1;
+	private Command command2;
+	private Map map1;
+	private Map map2;
+	private Game game;
 	
 	@Before
-	public void setUp() {
-		account = new Account("username", "password");
-		account.setId(0);
-		
+	public void setUp() {		
 		player1 = new Player();
 		player1.setScore(100);
 		
@@ -72,76 +70,76 @@ public class AccountTest {
 		items2.add(item1);
 		items2.add(item2);
 		
-		map = new Map();
-		map.buildDefault();
+		command1 = new Command();
+		command2 = new Command();
+		
+		commands1 = new ArrayList<Command>();
+		commands1.add(command1);
+		
+		commands2 = new ArrayList<Command>();
+		commands2.add(command1);
+		commands2.add(command2);
+		
+		map1 = new Map();
+		map1.buildDefault();
+		
+		map2 = new Map();
 				
-		game1 = new Game(map, player1, creatures1, items1, null);
-		game2 = new Game(map, player2, creatures2, items2, null);
-		
-		games1 = new ArrayList<Game>();
-		games1.add(game1);
-		
-		games2 = new ArrayList<Game>();
-		games2.add(game1);
-		games2.add(game2);
-		
-		account.setCharacters(characters1);
-		account.setGames(games1);
+		game = new Game(map1, player1, creatures1, items1, commands1);
 	}
 	
 	@Test
-	public void testGetId() {
-		assertEquals(0, account.getId());
+	public void testGetMap() {
+		assertEquals(map1, game.getMap());
 	}
 	
 	@Test
-	public void testSetId() {
-		account.setId(1);
-		assertEquals(1, account.getId());
+	public void testSetMap() {
+		game.setMap(map2);
+		assertEquals(map2, game.getMap());
 	}
 	
 	@Test
-	public void testGetPassword() {
-		assertEquals("password", account.getPassword());
+	public void testGetPlayer() {
+		assertEquals(player1, game.getPlayer());
 	}
 	
 	@Test
-	public void testSetPassword() {
-		String test = "pass";
-		account.setPassword(test);
-		assertEquals(test, account.getPassword());
+	public void testSetPlayer() {
+		game.setPlayer(player2);
+		assertEquals(player2, game.getPlayer());
 	}
 	
 	@Test
-	public void testGetUsername() {
-		assertEquals("username", account.getUsername());
+	public void testGetCreatures() {
+		assertEquals(creatures1, game.getCreatures());
 	}
 	
 	@Test
-	public void testSetUsername() {
-		account.setUsername("user");
-		assertEquals("user", account.getUsername());
+	public void testSetCreatures() {
+		game.setCreatures(creatures2);
+		assertEquals(creatures2, game.getCreatures());
 	}
 	
 	@Test
-	public void testGetCharacters() {
-		assertEquals(characters1, account.getCharacters());
+	public void testGetItems() {
+		assertEquals(items1, game.getItems());
 	}
 	
 	@Test
-	public void testSetCharacters() {
-		account.setCharacters(characters2);
-		assertEquals(characters2, account.getCharacters());
+	public void testSetItems() {
+		game.setItems(items2);
+		assertEquals(items2, game.getItems());
 	}
 	
 	@Test
-	public void testGetGames() {
-		assertEquals(games1, account.getGames());
+	public void testGetCommands() {
+		assertEquals(commands1, game.getCommands());
 	}
 	
 	@Test
-	public void testSetGames() {
-		account.setGames(games2);
-		assertEquals(games2, account.getGames());
+	public void testSetCommands() {
+		game.setCommands(commands2);
+		assertEquals(commands2, game.getCommands());
 	}
 }
