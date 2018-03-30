@@ -32,7 +32,7 @@ public class Map {
 		}
 	}
 
-	public void throwGoldEverywhere(){	//puts treasure all over the map
+	public void throwGoldEverywhere(GameEngine engine){	//puts treasure all over the map
 		int treasure = 20;
 		Random rand = new Random();
 		while(treasure > 0){
@@ -41,7 +41,7 @@ public class Map {
 			//randomly searches map for spaces (rooms or traps) without treasure already present.
 			if(map[x][y].getType() != 0 && map[x][y].getItemList().size() == 0){
 				treasure--;
-				//map[x][y].addItem(TREASURE);	//TODO: create treasure item
+				map[x][y].addItem(engine.createItem(0));
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class Map {
 				else if(chunk == 1){
 					while(data.indexOf(i) != ','){
 						if(data.indexOf(i) == '/'){
-							//tile.addItem( TODO: get item by its id );
+//							tile.addItem(TODO: add item by id);
 							builder.delete(0, builder.length());
 							i++;
 						}
@@ -153,7 +153,7 @@ public class Map {
 	}
 	
 	//default map before editing
-	public void buildDefault(){
+	public void buildDefault(GameEngine engine){
 		height = 20;
 		width = 20;
 		map = new Tile[height][width];
@@ -360,6 +360,6 @@ public class Map {
 				map[i][j].setY(i);
 			}
 		}
-		throwGoldEverywhere();
+		throwGoldEverywhere(engine);
 	}
 }

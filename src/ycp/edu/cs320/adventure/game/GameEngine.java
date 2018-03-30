@@ -2,6 +2,7 @@ package ycp.edu.cs320.adventure.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import ycp.edu.cs320.adventure.database.FakeDatabase;
 
@@ -11,6 +12,14 @@ public class GameEngine {
 	
 	public GameEngine() {
 		
+	}
+	
+	public void setGame(Game g){
+		currentGame = g;
+	}
+	
+	public Game getGame(){
+		return currentGame;
 	}
 	
 	// Ends the game, incorporating checks for winning
@@ -69,11 +78,16 @@ public class GameEngine {
 	public List<Item> defaultItemList(int accountId){
 		List<Item> itemList = new ArrayList<Item>();
 		int itemID = 0;
+		//ensure treasure is Itemid 0
+		Random rand = new Random();
+		Item treasure = new Item("Treasure", "ohhhh shiny!", accountId,itemID,0,1,0,0,rand.nextInt(200) + 400); //random value between 400-600
+		itemID++;
 		Item sword = new Item("Sword", "Sharpened on lost souls", accountId, itemID, 1, 10, 5, 0, 0);
 		itemID++;
 		Item pebble = new Item("Pebble", "Hard and small", accountId, itemID, 1, 10, 5, 0, 0);
 		itemID++;
 		
+		itemList.add(treasure);
 		itemList.add(sword);
 		itemList.add(pebble);
 		

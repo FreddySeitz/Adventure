@@ -95,7 +95,7 @@ public class InitialData {
 				player.setInventory(inventory);
 				player.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
 				player.setHealth(Integer.parseInt(i.next()));
-				player.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
+				player.setLocation(new Tile());
 				player.getLocation().setX(Integer.parseInt(i.next()));
 				player.getLocation().setY(Integer.parseInt(i.next()));
 				player.setBaseDamage(Integer.parseInt(i.next()));
@@ -141,7 +141,7 @@ public class InitialData {
 				creature.setInventory(inventory);
 				creature.setEquippedItem(new Item("","",Integer.parseInt(i.next()),0,0,0,0,0,0));
 				creature.setHealth(Integer.parseInt(i.next()));
-				creature.setLocation(new Tile());		//TODO: set to the real tile later, after game has been matched with id
+				creature.setLocation(new Tile());
 				creature.getLocation().setX(Integer.parseInt(i.next()));
 				creature.getLocation().setY(Integer.parseInt(i.next()));
 				creature.setBaseDamage(Integer.parseInt(i.next()));
