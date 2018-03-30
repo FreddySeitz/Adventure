@@ -101,7 +101,7 @@ public class Map {
 				builder.append(map[i][j].getType());
 				builder.append(",");	// , after every variable in Tile
 				for(int k = 0; k < map[i][j].getItemList().size(); k++){	//stores all items separated by '/'
-					builder.append(map[i][j].getItemList().get(k).toString());
+					builder.append(map[i][j].getItemList().get(k).getId());
 					if(k != map[i][j].getItemList().size()-1){
 						builder.append('/');
 					}
@@ -134,7 +134,7 @@ public class Map {
 				else if(chunk == 1){
 					while(data.indexOf(i) != ','){
 						if(data.indexOf(i) == '/'){
-							//tile.addItem( TODO: get item by its name or id );
+							//tile.addItem( TODO: get item by its id );
 							builder.delete(0, builder.length());
 							i++;
 						}

@@ -1,5 +1,7 @@
 package ycp.edu.cs320.adventure.game;
 
+import java.util.ArrayList;
+
 // Players are the Actors that Users will control
 public class Player extends Actor {
 	private int score;

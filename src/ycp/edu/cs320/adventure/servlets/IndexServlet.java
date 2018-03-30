@@ -68,6 +68,7 @@ public class IndexServlet extends HttpServlet {
         	// if successful login, do something
         	if(login) {
         		System.out.println("Successful log in :)");
+        		resp.sendRedirect("/_view/index.jsp");
         	}
 
         }

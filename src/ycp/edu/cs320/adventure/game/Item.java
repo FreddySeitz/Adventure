@@ -13,7 +13,7 @@ public class Item{
 	private int value;
 	
 	// Constructor
-	public Item(String n, String d,int a, int i, int w, int dmg, int h, int q, int v) {
+	public Item(String n, String d, int a, int i, int w, int dmg, int h, int q, int v) {
 		name = n;
 		description = d;
 		accountId = a;
