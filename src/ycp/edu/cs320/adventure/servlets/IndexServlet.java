@@ -68,8 +68,8 @@ public class IndexServlet extends HttpServlet {
         // if successful login, do something
         if(login) {
         	System.out.println("Successful log in :)");
-    		// redirect to /index page
-        	resp.sendRedirect("/_view/titleScreen");
+    		// redirect to /titleScreen page
+			resp.sendRedirect(req.getContextPath() + "/titleScreen");
     		return;
         	
    			}
