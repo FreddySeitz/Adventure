@@ -10,11 +10,8 @@
 		<servlet-name>IndexServlet</servlet-name>
 		<servlet-class>ycp.edu.cs320.adventure.servlets.IndexServlet</servlet-class>
 	</servlet>
-	<servlet>
-		<servlet-name>TitleScreenServlet</servlet-name>
-		<servlet-class>ycp.edu.cs320.adventure.servlets.TitleScreenServlet</servlet-class>
-	</servlet>
   
+  	
 <!-- AJAX servlets -->
   
 <!-- Servlet mappings -->
@@ -22,11 +19,7 @@
     	<servlet-name>IndexServlet</servlet-name>
     	<url-pattern>/index</url-pattern>
 	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>TitleScreenServlet</servlet-name>
-    	<url-pattern>/titleScreen</url-pattern>
-	</servlet-mapping>
-  
+	
 <welcome-file-list>
 	<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
