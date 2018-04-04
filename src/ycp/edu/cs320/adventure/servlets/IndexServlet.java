@@ -32,51 +32,49 @@ public class IndexServlet extends HttpServlet {
         // TODO: test if username/password are contained in the database
         // TODO: if successful login, go to next page
         
-        try {
-        	String username = req.getParameter("username");
-        	String password = req.getParameter("password");
         
-        	Account account = new Account(username, password);
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
         
-        	// set to true if valid login credentials have been given
-        	boolean login = false;
+        Account account = new Account(username, password);
         
-        	String testUserName = "username";
-        	String testPassword = "password";
+        // set to true if valid login credentials have been given
+        boolean login = false;
         
-        	// username and password match
-        	if((account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))) {
-        		login = true;
-        		errorMessage = "Successful login";
-        		req.setAttribute("successMessage",  successMessage);
-        		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
-        	}
+        String testUserName = "username";
+        String testPassword = "password";
         
-        	// username matches but password does not
-        	else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
-        		errorMessage = "Error: Username Exists with different password.";
-        		req.setAttribute("errorMessage", errorMessage);
-        		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
-        	}	
-        
-        	else {
-        		errorMessage = "Error: account does not exist";
-        		req.setAttribute("errorMessage", errorMessage);
-        		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
-        	}
-        
-        	// if successful login, do something
-        	if(login) {
-        		System.out.println("Successful log in :)");
-        		resp.sendRedirect("/_view/index.jsp");
-        	}
-
+        // username and password match
+        if((account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))) {
+        	login = true;
+        	errorMessage = "Successful login";
+        	req.setAttribute("successMessage",  successMessage);
+        	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
-        catch (Exception e) {
-        	errorMessage = e.getMessage();
+        
+        // username matches but password does not
+        else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
+        	errorMessage = "Error: Username Exists with different password.";
         	req.setAttribute("errorMessage", errorMessage);
-    		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+        	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }	
+        
+        else {
+        	errorMessage = "Error: account does not exist";
+        	req.setAttribute("errorMessage", errorMessage);
+        	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+        }
+        
+        // if successful login, do something
+        if(login) {
+        	System.out.println("Successful log in :)");
+    		// redirect to /titleScreen page
+			resp.sendRedirect(req.getContextPath() + "/titleScreen");
+    		return;
+        	
+   			}
+
+        
     }
 }
 

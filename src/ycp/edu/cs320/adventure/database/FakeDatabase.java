@@ -124,12 +124,18 @@ public class FakeDatabase {
 		}
 		else{
 			GameEngine engine = new GameEngine();
+
 			Account a = new Account(username, password);
 			accountId = accounts.get(accounts.size()-1).getId() + 1;	//set id +1 of currently highest id in list
 			a.setId(accountId);
 			accounts.add(a);
+			
+			game.setItems(engine.defaultItemList(accountId));
+			
+			engine.setGame(game);
 			Map map = new Map();
-			map.buildDefault();
+			map.buildDefault(engine);
+			
 			List<Creature> actors = new ArrayList<Creature>();
 			Player player = new Player();
 			game = new Game(map, player, actors, engine.defaultItemList(accountId), null);
