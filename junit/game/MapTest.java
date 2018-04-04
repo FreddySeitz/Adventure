@@ -79,7 +79,7 @@ public class MapTest {
 	public void testDecompileAndCompile() {
 		map.buildDefault(engine);
 		String compiled = map.compileTiles();
-		System.out.println(compiled);
+		//System.out.println(compiled);
 		
 		Map map2 = new Map();
 		map2.decompileTiles(compiled);
@@ -90,7 +90,14 @@ public class MapTest {
 				System.out.println(i);
 				System.out.println(j + "\n");
 				if(map.getTile(i, j).getType() != map2.getTile(i, j).getType()){
+					System.out.println("Broken");
+					System.out.println(map.getTile(i, j).getType());
+					System.out.println(map2.getTile(i, j).getType() + "/n");
 					test = false;
+				}
+				else{
+					System.out.println(map.getTile(i, j).getType());
+					System.out.println(map2.getTile(i, j).getType() + "/n");
 				}
 			}
 		}
