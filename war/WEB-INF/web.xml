@@ -5,27 +5,25 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
          
-<!-- Servlets -->
+	<!-- Servlets -->
 	<servlet>
-	<servlet-name>IndexServlet</servlet-name>
-	<servlet-class>ycp.edu.cs320.adventure.servlets.IndexServlet</servlet-class>
+		<servlet-name>IndexServlet</servlet-name>
+		<servlet-class>ycp.edu.cs320.adventure.servlets.IndexServlet</servlet-class>
 	</servlet>
 	
   	<servlet>
-  	<servlet-name>TitleScreenServlet</servlet-name>
-  	<servlet-class>ycp.edu.cs320.adventure.servlets.TitleScreenServlet</servlet-class>
+  		<servlet-name>TitleScreenServlet</servlet-name>
+  		<servlet-class>ycp.edu.cs320.adventure.servlets.TitleScreenServlet</servlet-class>
   	</servlet>
-  	
-<!-- AJAX servlets -->
-  
-<!-- Servlet mappings -->
+  	  
+	<!-- Servlet mappings -->
 	<servlet-mapping>
-    <servlet-name>IndexServlet</servlet-name>
-    <url-pattern>/index</url-pattern>
+    	<servlet-name>IndexServlet</servlet-name>
+    	<url-pattern>/index</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-	<servlet-name>TitleScreenServlet</servlet-name>
-	<url-pattern>/titleScreen</url-pattern>
+		<servlet-name>TitleScreenServlet</servlet-name>
+		<url-pattern>/titleScreen</url-pattern>
 	</servlet-mapping>
 </web-app>
