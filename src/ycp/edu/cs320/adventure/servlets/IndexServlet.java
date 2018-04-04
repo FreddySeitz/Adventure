@@ -64,7 +64,6 @@ public class IndexServlet extends HttpServlet {
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
-        
     }
 }
 

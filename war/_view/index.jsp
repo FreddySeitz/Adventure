@@ -27,6 +27,7 @@
 
 	<body>
 		<div class = "centered">
+		<h1>Adventure Sign In</h1>
 		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
@@ -44,7 +45,7 @@
 				</tr>
 				<tr>
 					<td class="label">PASSWORD: </td>
-					<td><input type="text" name="password" size="12" value="${password}" /></td>
+					<td><input type="password" name="password" size="12" value="${password}" /></td>
 				</tr>
 				
 				
