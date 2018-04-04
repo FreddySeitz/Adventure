@@ -10,6 +10,7 @@ import org.junit.*;
 import ycp.edu.cs320.adventure.game.Command;
 import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.Game;
+import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
@@ -34,6 +35,7 @@ public class GameTest {
 	private Map map1;
 	private Map map2;
 	private Game game;
+	private GameEngine gameEngine;
 	
 	@Before
 	public void setUp() {		
@@ -80,8 +82,10 @@ public class GameTest {
 		commands2.add(command1);
 		commands2.add(command2);
 		
+		gameEngine = new GameEngine();
+		
 		map1 = new Map();
-		map1.buildDefault();
+		map1.buildDefault(gameEngine);
 		
 		map2 = new Map();
 				

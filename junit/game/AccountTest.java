@@ -10,6 +10,7 @@ import org.junit.*;
 import ycp.edu.cs320.adventure.game.Account;
 import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.Game;
+import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
@@ -33,6 +34,7 @@ public class AccountTest {
 	private Map map;
 	private Game game1;
 	private Game game2;
+	private GameEngine gameEngine;
 	
 	@Before
 	public void setUp() {
@@ -72,8 +74,10 @@ public class AccountTest {
 		items2.add(item1);
 		items2.add(item2);
 		
+		gameEngine = new GameEngine();
+		
 		map = new Map();
-		map.buildDefault();
+		map.buildDefault(gameEngine);
 				
 		game1 = new Game(map, player1, creatures1, items1, null);
 		game2 = new Game(map, player2, creatures2, items2, null);

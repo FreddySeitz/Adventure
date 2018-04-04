@@ -93,4 +93,8 @@ public class GameEngine {
 		
 		return itemList;
 	}
+
+	public static void createNewGame(String username, String password) {
+				
+	}
 }

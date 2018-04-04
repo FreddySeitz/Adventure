@@ -6,8 +6,14 @@ import java.util.ArrayList;
 public class Player extends Actor {
 	private int score;
 	
+	// Parameterless Constructor
 	public Player(){
 		
+	}
+	
+	// Constructor
+	public Player(int score) {
+		this.score = score;
 	}
 	
 	// Sets a new score

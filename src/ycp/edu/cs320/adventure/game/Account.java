@@ -10,6 +10,12 @@ public class Account {
 	private List<Player> characters;
 	private List<Game> games;
 	
+	// Parameterless Constructor
+	public Account() {
+		
+	}
+	
+	// Constructor
 	public Account(String username, String password){
 		this.username = username;
 		this.password = password;
@@ -73,7 +79,7 @@ public class Account {
 		throw new UnsupportedOperationException();
 	}
 	
-	public void createNewGame(Map map, Player player, List<Creature> creatures, List<Item> items, List<Command> commands) {
-		games.add(new Game(map, player, creatures, items, commands));
+	public void createNewGame() {
+		GameEngine.createNewGame(this.username, this.password);
 	}
 }

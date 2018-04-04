@@ -4,8 +4,14 @@ package ycp.edu.cs320.adventure.game;
 public class Creature extends Actor {
 	private int movementSpeed;
 	
+	// Parameterless Constructor
 	public Creature() {
 		
+	}
+	
+	// Constructor
+	public Creature(int movementSpeed) {
+		this.movementSpeed = movementSpeed;
 	}
 	
 	// Sets the movementSpeed of the current Creature object
