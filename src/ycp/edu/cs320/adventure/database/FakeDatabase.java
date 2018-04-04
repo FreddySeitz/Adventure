@@ -140,18 +140,6 @@ public class FakeDatabase {
 
 	//note: unique usernames
 	public boolean newGame(String username, GameEngine engine){
-		//given username and password, checks if account exists yet.
-		//if exists, return false (new account failed)
-		//else, create new account with specified credentials, create defaults, return true
-		//		if(accountExists(username) != -1){
-		//			return false;	//have main handle Account Exists error
-		//		}
-
-		//			Account a = new Account(username, password);
-		//			accountId = accounts.get(accounts.size()-1).getId() + 1;	//set id +1 of currently highest id in list
-		//			a.setId(accountId);
-		//			accounts.add(a);
-
 		engine.getGame().setItems(engine.defaultItemList(accountId));
 
 		Map map = new Map();
@@ -164,7 +152,6 @@ public class FakeDatabase {
 		engine.getGame().setPlayer(player);
 		engine.getGame().setItems(engine.defaultItemList(accountId));
 
-		//		addAccount(username, password, accountId);	//saves account to CSV immediately
 		return true;
 
 	}
