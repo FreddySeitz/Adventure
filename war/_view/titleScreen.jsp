@@ -28,6 +28,7 @@
 
 
 	<body>
+	<div class = "centered">
 	<form action="${pageContext.servletContext.contextPath}/titleScreen" method="post">
 		
     		<input type="submit" value="Load Game" />
@@ -40,5 +41,6 @@
 
     		<input type="submit" value="Edit Game" />
 	</form>
+	</div>
 	</body>
 </html>
