@@ -28,16 +28,17 @@
 
 
 	<body>
-		<form action="load.html">
-    		<input type="submit" value="Load Game" />
-		</form>
-
-		<form action="new.html">
-    		<input type="submit" value="New Game" />
-		</form>
+	<form action="${pageContext.servletContext.contextPath}/titleScreen" method="post">
 		
-		<form action="edit.html">
+    		<input type="submit" value="Load Game" />
+
+
+
+    		<input type="submit" value="New Game" />
+
+		
+
     		<input type="submit" value="Edit Game" />
-		</form>
+	</form>
 	</body>
 </html>
