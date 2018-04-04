@@ -27,10 +27,14 @@ public class GameServlet extends HttpServlet{
 		System.out.println("Game Servlet: doPost");
         String response = null;
         
+        //********** Testing **********
         response = "test response from game successful.";
         req.setAttribute("response",  response);
     	req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
-
+    	//********** Testing **********
+    	
+    	//********** Actual Game Code Below **********
+    	
 	}
 	        
 }
