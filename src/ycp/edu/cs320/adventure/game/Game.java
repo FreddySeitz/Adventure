@@ -10,6 +10,12 @@ public class Game {
 	private List<Item> items;
 	private List<Command> commands;
 
+	// Parameterless Constructor
+	public Game() {
+		
+	}
+	
+	// Constructor
 	public Game(Map map, Player player, List<Creature> creatures, List<Item> items, List<Command> commands) {
 		this.map = map;
 		this.player = player;

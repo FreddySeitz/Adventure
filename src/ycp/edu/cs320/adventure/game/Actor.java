@@ -9,8 +9,19 @@ public class Actor {
 	private Tile location;
 	private int baseDamage;
 	
+	// Parameterless Constructor
 	public Actor(){
 		
+	}
+	
+	// Constructor
+	public Actor(int accountId, Inventory inventory, Item equippedItem, int health, Tile location, int baseDamage){
+		this.accountId = accountId;
+		this.inventory = inventory;
+		this.equippedItem = equippedItem;
+		this.health = health;
+		this.location = location;
+		this.baseDamage = baseDamage;
 	}
 	
 	// Sets the Account ID

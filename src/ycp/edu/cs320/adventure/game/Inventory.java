@@ -6,6 +6,12 @@ import java.util.List;
 public class Inventory {
 	private List<Item> inventory;
 	
+	// Parameterless Constructor
+	public Inventory() {
+		
+	}
+	
+	// Constructor
 	public Inventory(List<Item> items){
 		inventory = items;
 	}
