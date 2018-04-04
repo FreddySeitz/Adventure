@@ -171,7 +171,6 @@ public class InitialData {
 				item.setName(i.next());
 				item.setDescription(i.next());
 				item.setAccountId(Integer.parseInt(i.next()));
-				item.setId(Integer.parseInt(i.next()));
 				item.setWeight(Integer.parseInt(i.next()));
 				item.setDamage(Integer.parseInt(i.next()));
 				item.setHealth(Integer.parseInt(i.next()));
