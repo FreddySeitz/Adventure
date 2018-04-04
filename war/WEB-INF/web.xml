@@ -16,6 +16,11 @@
   		<servlet-class>ycp.edu.cs320.adventure.servlets.TitleScreenServlet</servlet-class>
   	</servlet>
   	  
+  	<servlet>
+  		<servlet-name>GameServlet</servlet-name>
+  		<servlet-class>ycp.edu.cs320.adventure.servlets.GameServlet</servlet-class>
+  	</servlet>
+  	  
 	<!-- Servlet mappings -->
 	<servlet-mapping>
     	<servlet-name>IndexServlet</servlet-name>
@@ -25,5 +30,10 @@
 	<servlet-mapping>
 		<servlet-name>TitleScreenServlet</servlet-name>
 		<url-pattern>/titleScreen</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>GameServlet</servlet-name>
+		<url-pattern>/game</url-pattern>
 	</servlet-mapping>
 </web-app>

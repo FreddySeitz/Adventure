@@ -54,7 +54,7 @@ public class IndexServlet extends HttpServlet {
         
         // username matches but password does not
         else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
-        	errorMessage = "Error: Username Exists with different password.";
+        	errorMessage = "Error: Username or password is incorrect.";
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }	
@@ -69,7 +69,7 @@ public class IndexServlet extends HttpServlet {
         if(login) {
         	System.out.println("Successful log in :)");
     		// redirect to /titleScreen page
-			resp.sendRedirect(req.getContextPath() + "/titleScreen");
+			resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
     		return;
         	
    			}
