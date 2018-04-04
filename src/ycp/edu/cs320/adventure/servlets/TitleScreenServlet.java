@@ -22,8 +22,22 @@ public class TitleScreenServlet extends HttpServlet{
 	            throws ServletException, IOException {
 	        
 	        System.out.println("Title Servlet: doPost");
+        	
+	        String button = req.getParameter("button");
+	        
+	        if (button.equals("New Game")) {
+	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
+	            return; 
+	        } 
+	        
+	        else if (button.equals("Edit Game")) {
+	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
+	            return; 
+	        } 
+	        
+	        else if (button.equals("Load Game")){
+	          	resp.sendRedirect(req.getContextPath() + "/_view/loadGame.jsp");
+	          	return; 
+	        }
 	    }
-
-
-
 }
