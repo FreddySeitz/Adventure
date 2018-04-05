@@ -173,7 +173,17 @@ public class FakeDatabase implements IDatabase {
 		return -1;
 	}
 	
-	
+	public boolean login(String username, String password){
+		for(Account account : accounts){
+			if(account.getUsername().equals(username)){
+				if(account.getPassword().equals(password)) {
+					return true;
+				}
+			}
+		}
+		//return -1 if not found, return account id if found
+		return false;
+	}
 
 	//accounts are separate, changing account shouldn't be necessary to saving a game.  Account should already exist
 	public void addAccount(String username, String password, int id){
