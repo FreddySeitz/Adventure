@@ -1,5 +1,6 @@
 package ycp.edu.cs320.adventure.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Actors are any object that moves around the Map
@@ -8,7 +9,7 @@ public class Inventory {
 	
 	// Parameterless Constructor
 	public Inventory() {
-		
+		inventory = new ArrayList<Item>();
 	}
 	
 	// Constructor

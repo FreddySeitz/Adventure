@@ -11,7 +11,9 @@ public class Actor {
 	
 	// Parameterless Constructor
 	public Actor(){
-		
+		inventory = new Inventory();
+		equippedItem = new Item();
+		location = new Tile();
 	}
 	
 	// Constructor
