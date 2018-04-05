@@ -6,7 +6,6 @@ public class Trap {
 	int traptype;
 	boolean active;
 	boolean visible;
-	double damage;
 	String question;
 	String answer;
 	
@@ -16,7 +15,6 @@ public class Trap {
 		traptype = rand.nextInt(5)+1;	//5 kinds of traps
 		active = true;
 		visible = false;
-		damage = 1;
 	}
 	
 	public void Trigger(){
@@ -51,13 +49,6 @@ public class Trap {
 		return traptype;
 	}
 	
-	public void setDamage(double d){
-		damage = d;
-	}
-	
-	public double getDamage(){
-		return damage;
-	}
 	
 	public void setVisible(boolean v){
 		visible = v;
