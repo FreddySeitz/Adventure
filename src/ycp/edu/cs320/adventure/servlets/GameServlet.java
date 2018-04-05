@@ -6,12 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ycp.edu.cs320.adventure.game.GameEngine;
-import ycp.edu.cs320.adventure.game.Map;
-import ycp.edu.cs320.adventure.game.Player;
-
-
+import ycp.edu.cs320.adventure.game.*;
 
 public class GameServlet extends HttpServlet{
 
