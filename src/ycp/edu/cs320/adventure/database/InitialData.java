@@ -176,7 +176,6 @@ public class InitialData {
 		List<Item> itemList = new ArrayList<Item>();
 		ReadCSV readItem = new ReadCSV("Item.csv");
 		try {
-			int accountId = 1;
 			int itemId = 1;
 			while (true) {
 				List<String> tuple = readItem.next();
@@ -190,8 +189,7 @@ public class InitialData {
 				itemId++;
 				item.setName(i.next());
 				item.setDescription(i.next());
-				item.setAccountId(accountId);
-				accountId++;
+				item.setAccountId(Integer.parseInt(i.next()));
 				item.setWeight(Integer.parseInt(i.next()));
 				item.setDamage(Integer.parseInt(i.next()));
 				item.setHealth(Integer.parseInt(i.next()));
