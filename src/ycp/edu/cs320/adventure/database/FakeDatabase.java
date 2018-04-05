@@ -17,7 +17,7 @@ import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
 import ycp.edu.cs320.adventure.game.Tile;
 
-public class FakeDatabase {
+public class FakeDatabase implements IDatabase {
 	private List<Account> accounts;
 	private List<Map> maps;
 	private List<Player> players;
