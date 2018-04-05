@@ -21,6 +21,7 @@ public class InitialData {
 		List<Account> accountList = new ArrayList<Account>();
 		ReadCSV readAccount = new ReadCSV("Account.csv");
 		try {
+			int accountId = 1;
 			while (true) {
 				List<String> tuple = readAccount.next();
 				if (tuple == null) {
@@ -29,8 +30,11 @@ public class InitialData {
 				
 				Iterator<String> i = tuple.iterator();
 				Account account = new Account("","");
-				account.setId(Integer.parseInt(i.next()));
-				account.setUsername(i.next());
+				String temp = i.next();
+				temp.substring(1);
+				account.setId(accountId);
+				accountId++;
+				account.setUsername(temp);
 				account.setPassword(i.next());
 				accountList.add(account);
 			}
@@ -44,15 +48,20 @@ public class InitialData {
 		List<Map> mapList = new ArrayList<Map>();
 		ReadCSV readMap = new ReadCSV("Map.csv");
 		try {
+			int accountId = 1;
 			while (true) {
 				List<String> tuple = readMap.next();
 				if (tuple == null) {
 					break;
 				}
+				
 				Iterator<String> i = tuple.iterator();
 				Map map = new Map();
-				map.setAccountId(Integer.parseInt(i.next()));		//account id
-				map.setHeight(Integer.parseInt(i.next()));			//map height
+				map.setAccountId(accountId);		//account id
+				accountId++;
+				String temp = i.next();
+				temp = temp.substring(1, temp.length());
+				map.setHeight(Integer.parseInt(temp));			//map height
 				map.setWidth(Integer.parseInt(i.next()));			//map width
 				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
 				mapList.add(map);
@@ -67,6 +76,7 @@ public class InitialData {
 		List<Player> playerList = new ArrayList<Player>();
 		ReadCSV readPlayer = new ReadCSV("Player.csv");
 		try {
+			int accountId = 1;
 			while (true) {
 				List<String> tuple = readPlayer.next();
 				if (tuple == null) {
@@ -74,13 +84,14 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Player player = new Player();
-				player.setAccountId(Integer.parseInt(i.next()));
 				
+				player.setAccountId(accountId);
+				accountId++;
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item ID
 				List<Item> inventoryList = new ArrayList<Item>();
 				//inventory
-				for(int k = 0; k < inv.length(); k++){
+				for(int k = 1; k < inv.length(); k++){
 					if(inv.charAt(k) == ','){
 						//just add item ID, when game gets loaded, fill in rest of item data for the item set for that account
 						inventoryList.add(new Item("", "", Integer.parseInt(item.toString()),0,0,0,0,0,0));
@@ -99,7 +110,9 @@ public class InitialData {
 				player.getLocation().setX(Integer.parseInt(i.next()));
 				player.getLocation().setY(Integer.parseInt(i.next()));
 				player.setBaseDamage(Integer.parseInt(i.next()));
-				player.setScore(Integer.parseInt(i.next()));
+				String temp = i.next();
+				temp = temp.substring(0, temp.length()-1);
+				player.setScore(Integer.parseInt(temp));
 				
 				playerList.add(player);
 			}
@@ -113,6 +126,7 @@ public class InitialData {
 		List<Creature> creatureList = new ArrayList<Creature>();
 		ReadCSV readCreature = new ReadCSV("Creature.csv");
 		try {
+			int accountId = 1;
 			while (true) {
 				List<String> tuple = readCreature.next();
 				if (tuple == null) {
@@ -120,13 +134,14 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Creature creature = new Creature();
-				creature.setAccountId(Integer.parseInt(i.next()));
+				creature.setAccountId(accountId);
+				accountId++;
 				
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item ID
 				List<Item> inventoryList = new ArrayList<Item>();
 				//inventory
-				for(int k = 0; k < inv.length(); k++){
+				for(int k = 1; k < inv.length(); k++){
 					if(inv.charAt(k) == ','){
 						//just add item ID, when game gets loaded, fill in rest of item data for the item set for that account
 						inventoryList.add(new Item("", "", Integer.parseInt(item.toString()),0,0,0,0,0,0));
@@ -145,7 +160,9 @@ public class InitialData {
 				creature.getLocation().setX(Integer.parseInt(i.next()));
 				creature.getLocation().setY(Integer.parseInt(i.next()));
 				creature.setBaseDamage(Integer.parseInt(i.next()));
-				creature.setMovementSpeed(Integer.parseInt(i.next()));
+				String temp = i.next();
+				temp = temp.substring(0, temp.length()-1);
+				creature.setMovementSpeed(Integer.parseInt(temp));
 				
 				creatureList.add(creature);
 			}
@@ -159,6 +176,8 @@ public class InitialData {
 		List<Item> itemList = new ArrayList<Item>();
 		ReadCSV readItem = new ReadCSV("Item.csv");
 		try {
+			int accountId = 1;
+			int itemId = 1;
 			while (true) {
 				List<String> tuple = readItem.next();
 				if (tuple == null) {
@@ -167,10 +186,12 @@ public class InitialData {
 				
 				Iterator<String> i = tuple.iterator();
 				Item item = new Item("","",0,0,0,0,0,0,0);
-				item.setId(Integer.parseInt(i.next()));
+				item.setId(itemId);
+				itemId++;
 				item.setName(i.next());
 				item.setDescription(i.next());
-				item.setAccountId(Integer.parseInt(i.next()));
+				item.setAccountId(accountId);
+				accountId++;
 				item.setWeight(Integer.parseInt(i.next()));
 				item.setDamage(Integer.parseInt(i.next()));
 				item.setHealth(Integer.parseInt(i.next()));

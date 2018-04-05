@@ -29,6 +29,12 @@ public class FakeDatabase implements IDatabase {
 
 	public FakeDatabase(){
 		accountId = -1;
+		accounts = new ArrayList<Account>();
+		maps = new ArrayList<Map>();
+		creatures = new ArrayList<Creature>();
+		items = new ArrayList<Item>();
+		players = new ArrayList<Player>();
+		engine = new GameEngine();
 		readInitialData();
 	}
 	//Make edits to prepare multiple games per account.  Account and game must now be separated.
