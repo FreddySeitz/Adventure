@@ -8,6 +8,7 @@ public class Tile {
 	private ArrayList<Item> items;
 	private int x;	//tiles knows where it is in the map
 	private int y;
+	private String description;
 	//0 = unpassable space.  1 = empty room.  2 = trap
 	
 	public Tile(){	
@@ -39,6 +40,14 @@ public class Tile {
 	
 	public void setY(int wye){
 		y = wye;
+	}
+	
+	public String getDescription(){
+		return description;
+	}
+	
+	public void setDescription(String d){
+		description = d;
 	}
 	
 	public void addItem(Item i){

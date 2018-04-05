@@ -183,6 +183,10 @@ public class Map {
 			}
 		}
 		map[0][1].addItem(engine.createItem(0));
+		map[0][0].setDescription("The entrance.");
+		map[0][1].setDescription("A dangerous place. Why would you ever bring me here?");
+		map[1][0].setDescription("This space is plain.");
+		map[1][1].setDescription("I can exit through here.");
 	}
 	
 	//default map before editing

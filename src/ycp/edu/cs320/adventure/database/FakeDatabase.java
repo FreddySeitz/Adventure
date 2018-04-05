@@ -57,7 +57,7 @@ public class FakeDatabase implements IDatabase {
 	//insert queries to gather data from lists
 
 	public boolean loadGame(String username, String password, GameEngine engine){
-		accountId = accountExists(username, password);
+		accountId = accountExists(username);
 		if(accountId == -1){
 			return false;	//failed
 		}
@@ -125,7 +125,7 @@ public class FakeDatabase implements IDatabase {
 	}
 
 	public boolean newAccount(String username, String password, GameEngine engine){
-		if(accountExists(username, password) != -1){
+		if(accountExists(username) != -1){
 			return false;	//have main handle Account Exists error
 		}
 		else{
@@ -157,15 +157,17 @@ public class FakeDatabase implements IDatabase {
 
 	}
 
-	public int accountExists(String username, String password){
+	public int accountExists(String username){
 		for(Account account : accounts){
-			if(account.getUsername().equals(username) && account.getPassword().equals(password)){
+			if(account.getUsername().equals(username)){
 				return account.getId();
 			}
 		}
 		//return -1 if not found, return account id if found
 		return -1;
 	}
+	
+	
 
 	//accounts are separate, changing account shouldn't be necessary to saving a game.  Account should already exist
 	public void addAccount(String username, String password, int id){

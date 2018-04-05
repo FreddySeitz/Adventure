@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ycp.edu.cs320.adventure.database.FakeDatabase;
 import ycp.edu.cs320.adventure.game.Account;
 
 public class IndexServlet extends HttpServlet {
@@ -36,28 +37,30 @@ public class IndexServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         
-        Account account = new Account(username, password);
-                
-        String testUserName = "username";
-        String testPassword = "password";
+        //Account account = new Account(username, password);
+        
+        //database query
+        FakeDatabase database = new FakeDatabase();
+        int accountId = database.accountExists(username);
+        //String testUserName = "username";
+        //String testPassword = "password";
+        
         
         // username and password match
-        if((account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))) {
+        if(accountId >= 0/*(account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))*/) {
         	errorMessage = "Successful login";
         	System.out.println("Successful log in :)");
     		// redirect to /titleScreen page
-        	
         	resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
-       
-        	return; 	
+        	return;
         }
         
-        // username matches but password does not
-        else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
+        //username matches but password does not
+        else if(accountId == -2/*(account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))*/) {
         	errorMessage = "Error: Username or password is incorrect.";
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
-        }	
+        }
         
         else {
         	errorMessage = "Error: account does not exist";
