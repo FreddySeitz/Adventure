@@ -1,5 +1,6 @@
 package ycp.edu.cs320.adventure.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Accounts are unique to each user, storing games and characters
@@ -12,7 +13,8 @@ public class Account {
 	
 	// Parameterless Constructor
 	public Account() {
-		
+		characters = new ArrayList<Player>();
+		games = new ArrayList<Game>();
 	}
 	
 	// Constructor

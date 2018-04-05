@@ -12,6 +12,11 @@ public class Item{
 	private int quest_id;
 	private int value;
 	
+	// Parameterless Constructor
+	public Item() {
+		
+	}
+	
 	// Constructor
 	public Item(String n, String d, int a, int i, int w, int dmg, int h, int q, int v) {
 		name = n;

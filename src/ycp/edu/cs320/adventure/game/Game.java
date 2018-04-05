@@ -1,5 +1,6 @@
 package ycp.edu.cs320.adventure.game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Games are all of the information that makes up each game
@@ -12,7 +13,11 @@ public class Game {
 
 	// Parameterless Constructor
 	public Game() {
-		
+		map = new Map();
+		player = new Player();
+		creatures = new ArrayList<Creature>();
+		items = new ArrayList<Item>();
+		commands = new ArrayList<Command>();
 	}
 	
 	// Constructor
