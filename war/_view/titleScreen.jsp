@@ -23,22 +23,28 @@
 		.success{
 			color:green;
 			}
+		.user{
+			color:black;
+			}
 		</style>
 	</head>
 
 
 	<body>
+	<div class="user">Welcome, ${username}</div>
+	
+	<div class = "centered">
+	<h3>make a selection</h3><h1> PLEASE</h1>
 	<form action="${pageContext.servletContext.contextPath}/titleScreen" method="post">
 		
-    		<input type="submit" value="Load Game" />
+    		<input type="submit" name="button" value="Load Game" />
 
 
-
-    		<input type="submit" value="New Game" />
-
+    		<input type="submit" name="button" value="New Game" />
 		
 
-    		<input type="submit" value="Edit Game" />
+    		<input type="submit" name="button" value="Edit Game" />
 	</form>
+	</div>
 	</body>
 </html>

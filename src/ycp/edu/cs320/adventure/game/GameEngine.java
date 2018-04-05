@@ -95,6 +95,6 @@ public class GameEngine {
 	}
 
 	public static void createNewGame(String username, String password) {
-				
+			
 	}
 }

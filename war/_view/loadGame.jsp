@@ -31,23 +31,24 @@
 
 	<body>
 		<div class = "centered">
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
-		<c:if test="${! empty response}">
-			<div class="success">${response}</div>
-		</c:if>
+			<c:if test="${! empty errorMessage}">
+				<div class="error">${errorMessage}</div>
+			</c:if>
+			<c:if test="${! empty response}">
+				<div class="response">${response}</div>
+			</c:if>
 		
-		<form action="${pageContext.servletContext.contextPath}/game" method="post">
-			
-			<div class="label">Enter Command: </div>
-			<input type="text" name="username" size="12" value="${username}" />
-			
+			<form action="${pageContext.servletContext.contextPath}/loadGame" method="post">
+				<table>
+					<td class="label">Enter Command: </td>
+					<td><input type="text" name="userInput" size="12" value="${userInput}" /></td>
+				</table>
 	
-			<input type="Submit" name="signin" value="Sign In">
+				<input type="Submit" name="Submit" value="Submit">
 		
 			
-			</div>
+		
 			</form>
+		</div>
 	</body>
 </html>

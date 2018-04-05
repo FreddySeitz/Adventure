@@ -37,24 +37,24 @@ public class IndexServlet extends HttpServlet {
         String password = req.getParameter("password");
         
         Account account = new Account(username, password);
-        
-        // set to true if valid login credentials have been given
-        boolean login = false;
-        
+                
         String testUserName = "username";
         String testPassword = "password";
         
         // username and password match
         if((account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))) {
-        	login = true;
         	errorMessage = "Successful login";
-        	req.setAttribute("successMessage",  successMessage);
-        	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+        	System.out.println("Successful log in :)");
+    		// redirect to /titleScreen page
+        	
+        	resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
+       
+        	return; 	
         }
         
         // username matches but password does not
         else if((account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))) {
-        	errorMessage = "Error: Username Exists with different password.";
+        	errorMessage = "Error: Username or password is incorrect.";
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }	
@@ -64,17 +64,6 @@ public class IndexServlet extends HttpServlet {
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
-        
-        // if successful login, do something
-        if(login) {
-        	System.out.println("Successful log in :)");
-    		// redirect to /titleScreen page
-			resp.sendRedirect(req.getContextPath() + "/titleScreen");
-    		return;
-        	
-   			}
-
-        
     }
 }
 

@@ -25,10 +25,20 @@ public class FakeDatabase {
 	private List<Item> items;
 
 	private int accountId;
+	private GameEngine engine;
 
 	public FakeDatabase(){
 		accountId = -1;
 		readInitialData();
+	}
+	//
+
+	public void setGameEngine(GameEngine engine){
+		this.engine = engine;
+	}
+
+	public GameEngine getGameEngine(){
+		return this.engine;
 	}
 
 	public void readInitialData() {
@@ -45,18 +55,16 @@ public class FakeDatabase {
 
 	//insert queries to gather data from lists
 
-	public boolean loadGame(String username, String password, Game game){
-		//uses private lists in this class to reconstruct all classes.
-		GameEngine engine = new GameEngine();
-
+	public boolean loadGame(String username, String password, GameEngine engine){
 		accountId = accountExists(username, password);
 		if(accountId == -1){
 			return false;	//failed
 		}
+
 		else{
 			for(Map map : maps){
 				if(map.getAccountId() == accountId){
-					game.setMap(map);
+					engine.getGame().setMap(map);
 					break;	//stop looking through list
 				}
 			}
@@ -67,29 +75,29 @@ public class FakeDatabase {
 					itemlist.add(item);
 				}
 			}
-			game.setItems(itemlist);
+			engine.getGame().setItems(itemlist);
 			//finding all creatures and setting tile location
 			List<Creature> list = new ArrayList<Creature>();
 			for(Creature creature : creatures){
 				if(creature.getAccountId() == accountId){
-					creature.setLocation(game.getMap().getTile(creature.getLocation().getX(), creature.getLocation().getY()));
+					creature.setLocation(engine.getGame().getMap().getTile(creature.getLocation().getX(), creature.getLocation().getY()));
 					list.add(creature);
 				}
 			}
-			game.setCreatures(list);
+			engine.getGame().setCreatures(list);
 			//finding player and setting tile location
 			for(Player player : players){
 				if(player.getAccountId() == accountId){
-					player.setLocation(game.getMap().getTile(player.getLocation().getX(), player.getLocation().getY()));
-					game.setPlayer(player);
+					player.setLocation(engine.getGame().getMap().getTile(player.getLocation().getX(), player.getLocation().getY()));
+					engine.getGame().setPlayer(player);
 				}
 			}
 
 			//setting items to inventory for creature
-			for(Creature creature: game.getCreatures()){	//actors
+			for(Creature creature: engine.getGame().getCreatures()){	//actors
 				itemlist = new ArrayList<Item>();
 				for(Item creatureitem : creature.getInventory().getInventory()){	//inventory
-					for(Item item : game.getItems()){	//item list
+					for(Item item : engine.getGame().getItems()){	//item list
 						if(creatureitem.getId() == item.getId()){	//if inventory item == item list
 							itemlist.add(engine.createItem(creatureitem.getId()));
 							break;	//item found, search for next item
@@ -102,47 +110,50 @@ public class FakeDatabase {
 
 			//setting inventory for player
 			itemlist = new ArrayList<Item>();
-			for(Item playeritem : game.getPlayer().getInventory().getInventory()){	//inventory
-				for(Item item : game.getItems()){	//item list
+			for(Item playeritem : engine.getGame().getPlayer().getInventory().getInventory()){	//inventory
+				for(Item item : engine.getGame().getItems()){	//item list
 					if(playeritem.getId() == item.getId()){	//if inventory item == item list
 						itemlist.add(engine.createItem(playeritem.getId()));
 						break;	//item found, search for next item
 					}
 				}
 			}
-			game.getPlayer().setEquippedItem(engine.createItem(game.getPlayer().getEquippedItem().getId()));
+			engine.getGame().getPlayer().setEquippedItem(engine.createItem(engine.getGame().getPlayer().getEquippedItem().getId()));
 			return true;	//sucessful
 		}
 	}
 
-	public boolean newGame(String username, String password, Game game){
-		//given username and password, checks if account exists yet.
-		//if exists, return false (new account failed)
-		//else, create new account with specified credentials, create defaults, return true
+	public boolean newAccount(String username, String password, GameEngine engine){
 		if(accountExists(username, password) != -1){
 			return false;	//have main handle Account Exists error
 		}
 		else{
-			GameEngine engine = new GameEngine();
-
 			Account a = new Account(username, password);
 			accountId = accounts.get(accounts.size()-1).getId() + 1;	//set id +1 of currently highest id in list
 			a.setId(accountId);
 			accounts.add(a);
 			
-			game.setItems(engine.defaultItemList(accountId));
-			
-			engine.setGame(game);
-			Map map = new Map();
-			map.buildDefault(engine);
-			
-			List<Creature> actors = new ArrayList<Creature>();
-			Player player = new Player();
-			game = new Game(map, player, actors, engine.defaultItemList(accountId), null);
-			
 			addAccount(username, password, accountId);	//saves account to CSV immediately
 			return true;
 		}
+	}
+
+	//note: unique usernames
+	public boolean newGame(String username, GameEngine engine){
+		engine.getGame().setItems(engine.defaultItemList(accountId));
+
+		Map map = new Map();
+		map.buildDefault(engine);
+
+		List<Creature> actors = new ArrayList<Creature>();
+		Player player = new Player();
+		engine.getGame().setCreatures(actors);
+		engine.getGame().setMap(map);
+		engine.getGame().setPlayer(player);
+		engine.getGame().setItems(engine.defaultItemList(accountId));
+
+		return true;
+
 	}
 
 	public int accountExists(String username, String password){
@@ -175,7 +186,7 @@ public class FakeDatabase {
 			accountbuilder.append("|");
 			accountbuilder.append(id);
 			accountbuilder.append("\n");
-			
+
 			accountswriter.write(accountbuilder.toString());
 			accountswriter.close();
 		} catch (FileNotFoundException e) {

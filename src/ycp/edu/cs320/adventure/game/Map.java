@@ -124,6 +124,9 @@ public class Map {
 			if(data.indexOf(i) == '.'){
 				i++;
 				map[mapslot/width][mapslot%width] = tile;	//width determines when to move to next row. width = 20, slot 23 = [1][3]
+				mapslot++;
+				tile = new Tile();
+				chunk = 0;
 			}
 			else if(data.indexOf(i) == ','){	//constructing one tile
 				if(chunk == 0){	//tile type
@@ -133,8 +136,8 @@ public class Map {
 				}
 				else if(chunk == 1){
 					while(data.indexOf(i) != ','){
-						if(data.indexOf(i) == '/'){
-//							tile.addItem(TODO: add item by id);
+						if(data.indexOf(i) == '/' || data.indexOf(i+1) == ','){
+							tile.addItem(new Item("temp item", "this is a placeholder, we done messed up", 0, Integer.parseInt(builder.toString()), 0, 0, 0, 0, 0));
 							builder.delete(0, builder.length());
 							i++;
 						}
@@ -142,7 +145,7 @@ public class Map {
 							builder.append(data.indexOf(i));
 						}
 					}
-					i++;	//avoid ,
+					i++;	//avoid last ,
 					chunk = 0; //found all data for tile, start over for next tile.
 				}
 			}
