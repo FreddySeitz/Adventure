@@ -121,7 +121,9 @@ public class Map {
 		int chunk = 0;		//which part of the tile is being analyzed 0=tileType, 1=itemList, etc.
 		int mapslot = 0;	//which index of map of the currently constructed tile.
 		for(int i = 0; i < data.length(); i++){
+			//System.out.println(builder.toString());
 			if(data.indexOf(i) == '.'){
+				System.out.println("submit");
 				i++;
 				map[mapslot/width][mapslot%width] = tile;	//width determines when to move to next row. width = 20, slot 23 = [1][3]
 				mapslot++;
@@ -133,20 +135,22 @@ public class Map {
 					tile.setType(Integer.parseInt(builder.toString()));
 					builder.delete(0, builder.length());
 					chunk++;
+					i++;
 				}
 				else if(chunk == 1){
-					while(data.indexOf(i) != ','){
+					while(data.indexOf(i-1) != ','){
 						if(data.indexOf(i) == '/' || data.indexOf(i+1) == ','){
-							tile.addItem(new Item("temp item", "this is a placeholder, we done messed up", 0, Integer.parseInt(builder.toString()), 0, 0, 0, 0, 0));
+							tile.addItem(new Item("temp item", "this is a placeholder, we done messed up.  Check map class, decompile creates temporary items with the correct item ID. The real item of the appropriate itemId needs to replace this one.", 0, Integer.parseInt(builder.toString()), 0, 0, 0, 0, 0));
 							builder.delete(0, builder.length());
-							i++;
 						}
 						else{
 							builder.append(data.indexOf(i));
 						}
+						i++;
 					}
-					i++;	//avoid last ,
+					//i++; //skip last ,
 					chunk = 0; //found all data for tile, start over for next tile.
+					builder.delete(0, builder.length());
 				}
 			}
 			else{	//builder does not append , or .
