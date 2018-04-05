@@ -41,13 +41,10 @@ public class IndexServlet extends HttpServlet {
         
         //database query
         FakeDatabase database = new FakeDatabase();
-        int accountId = database.accountExists(username);
-        //String testUserName = "username";
-        //String testPassword = "password";
-        
+        int accountId = database.accountExists(username);        
         
         // username and password match
-        if(accountId >= 0/*(account.getUsername().equals(testUserName)) && (account.getPassword().equals(testPassword))*/) {
+        if(accountId >= 0 && database.login(username, password)) {
         	errorMessage = "Successful login";
         	System.out.println("Successful log in :)");
     		// redirect to /titleScreen page
