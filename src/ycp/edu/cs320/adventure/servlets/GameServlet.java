@@ -151,7 +151,9 @@ public class GameServlet extends HttpServlet{
 
 		// If player has a location 
 		if(player.getLocation() != null) {
-			response = String.valueOf(player.getLocation());
+			
+			response = String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY());
+			
 		}
 
 		// If player does not have a location 
