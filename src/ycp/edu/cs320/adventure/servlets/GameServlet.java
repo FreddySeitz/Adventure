@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ycp.edu.cs320.adventure.game.GameEngine;
+import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
 
 
@@ -30,8 +32,11 @@ public class GameServlet extends HttpServlet{
 
 		// False while player is playing
 
+		GameEngine engine = new GameEngine();
+		Map map = new Map();
+		map.buildSmallDefault(engine);
 		Player player = new Player();
-
+		
 		String input = req.getParameter("userInput");
 
 		System.out.println("Game Servlet: doPost");
