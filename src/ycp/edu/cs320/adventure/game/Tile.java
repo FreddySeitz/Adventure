@@ -9,6 +9,7 @@ public class Tile {
 	private int x;	//tiles knows where it is in the map
 	private int y;
 	private String description;
+	private int damage;
 	//0 = unpassable space.  1 = empty room.  2 = trap
 	
 	public Tile(){	
@@ -16,6 +17,7 @@ public class Tile {
 		x = 0;
 		y = 0;
 		items = new ArrayList<Item>();
+		damage = 0;
 	}
 	
 	public int getType(){
@@ -60,5 +62,12 @@ public class Tile {
 	
 	public ArrayList<Item> getItemList(){
 		return items;
+	}
+	public void setDamage(int d){
+		damage = d;
+	}
+	
+	public int getDamage(){
+		return damage;
 	}
 }

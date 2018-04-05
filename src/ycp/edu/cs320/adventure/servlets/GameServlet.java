@@ -25,28 +25,33 @@ public class GameServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		// False while player is playing
-
+		// Necessary objects & game setup
+		Tile start = new Tile();
+		start.setX(0);
+		start.setY(0);
+	
+		Game game = new Game();
 		GameEngine engine = new GameEngine();
+		
 		Map map = new Map();
 		map.buildSmallDefault(engine);
-		Player player = new Player();
 		
+		Player player = new Player();
+		player.setLocation(start);
+		
+		// User input from jsp
 		String input = req.getParameter("userInput");
-
-		System.out.println("Game Servlet: doPost");
+		
+		// Games response to user
 		String response = null;
+		
+		System.out.println("Game Servlet: doPost");
 
-		//********** Testing **********
+		//********** Play Game Below **********
 
-		//		req.setAttribute("response",  response);
-		//		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
-		//********** Testing **********
-
-		//********** Actual Game Code Below **********
-
-
-
+		
+		/* Handling user input */
+		
 		// Player moves down
 		if(input.equalsIgnoreCase("move down")) {
 			response = input;
@@ -128,6 +133,19 @@ public class GameServlet extends HttpServlet{
 
 		// Player picks up item from tile 
 		else if(input.equalsIgnoreCase("pick up item")) {
+			
+			// If tile has an item 
+			if(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList() != null){
+				Inventory newInv = new Inventory();
+				newInv.addMultipleToInventory(player.getInventory().getInventory());
+				newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
+				player.setInventory(newInv);
+				response = "You found an item! View Inventory to see it.";
+			}
+			
+			else {
+				response = "Theres nothing here but dirt!";
+			}
 		}
 
 		// Player enters unknown command
@@ -135,6 +153,18 @@ public class GameServlet extends HttpServlet{
 			response = "I'm not quite sure what that means... try again please";
 		}
 
+		/* Checking for environment conditions */
+		
+		// If player steps on trap
+		if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
+			player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
+		}
+		
+		// if input = exit
+		// check if player is on exit tile
+		//		if yes, exit
+		//		if no, response = "You are not on an exit tile."
+		
 		req.setAttribute("response",  response);
 
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
