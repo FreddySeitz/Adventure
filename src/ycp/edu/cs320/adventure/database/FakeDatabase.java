@@ -31,7 +31,8 @@ public class FakeDatabase implements IDatabase {
 		accountId = -1;
 		readInitialData();
 	}
-	//
+	//Make edits to prepare multiple games per account.  Account and game must now be separated.
+	//Also try to request password as little as possible for security's sake
 
 	public void setGameEngine(GameEngine engine){
 		this.engine = engine;
