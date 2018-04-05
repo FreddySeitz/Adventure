@@ -56,15 +56,18 @@ public class GameServlet extends HttpServlet{
 		// Player moves down
 		if(input.equalsIgnoreCase("move down")) {
 			// If valid move
-			if(player.getLocation().getY() < map.getHeight()) {
+			System.out.println("Player X pos - " + player.getLocation().getX());
+			System.out.println("Player Y pos - " + player.getLocation().getY());
+			if(player.getLocation().getY() < map.getHeight() - 1) {
 				// Move player
+				System.out.println("Before-" + player.getLocation().getY());
 				int newY = player.getLocation().getY() + 1;
-
+				System.out.println("After-" + newY);
 				Tile newLoc = new Tile();
 				newLoc.setX(player.getLocation().getX());
 				newLoc.setY(newY);
 
-				player.setLocation(newLoc);
+				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 
 				response = "You moved down.";
 			}
@@ -96,7 +99,11 @@ public class GameServlet extends HttpServlet{
 		// Player moves right
 		else if(input.equalsIgnoreCase("move right")) {
 			// If valid move
-			if(player.getLocation().getY() < map.getWidth()) {
+			//System.out.println("WIDTH: " + map.getWidth());
+			//System.out.println("HEIGHT: " + map.getHeight());
+			System.out.println("Player X pos - " + player.getLocation().getX());
+			System.out.println("Player Y pos - " + player.getLocation().getY());
+			if(player.getLocation().getX() < map.getWidth()) {
 				// Move player
 				int newX = player.getLocation().getX() + 1;
 
@@ -104,21 +111,19 @@ public class GameServlet extends HttpServlet{
 				newLoc.setY(player.getLocation().getY());
 				newLoc.setX(newX);
 
-				player.setLocation(newLoc);
+				player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 
-				response = "You moved left.";
+				response = "You moved right.";
 			}
-			else {
+			else if(player.getLocation().getX() == map.getWidth()){
 				response = "You can't move there!";
 			}		
 		}
 
-	
-
 	// Player moves up
 	else if(input.equalsIgnoreCase("move up")) {
 		// If valid move
-		if(player.getLocation().getY() < map.getHeight()) {
+		if(player.getLocation().getY() < 0) {
 			// Move player
 			int newY = player.getLocation().getY() - 1;
 
