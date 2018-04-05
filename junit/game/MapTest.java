@@ -84,6 +84,8 @@ public class MapTest {
 		Map map2 = new Map();
 		map2.decompileTiles(compiled);
 		
+		System.out.println(map2.getMap().length);
+		
 		boolean test = true;
 		for(int i = 0; i < map.getHeight(); i++){
 			for(int j = 0; j < map.getWidth(); j++){
