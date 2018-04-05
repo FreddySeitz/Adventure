@@ -26,9 +26,7 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		// Necessary objects & game setup
-		Tile start = new Tile();
-		start.setX(0);
-		start.setY(0);
+		
 
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
@@ -36,7 +34,10 @@ public class GameServlet extends HttpServlet{
 		
 		Map map = new Map();
 		map.buildSmallDefault(engine);
-
+		
+		Tile start = new Tile();
+		start = map.getTile(0, 0);
+		
 		Player player = new Player();
 		player.setLocation(start);
 
@@ -63,9 +64,6 @@ public class GameServlet extends HttpServlet{
 				System.out.println("Before-" + player.getLocation().getY());
 				int newY = player.getLocation().getY() + 1;
 				System.out.println("After-" + newY);
-				Tile newLoc = new Tile();
-				newLoc.setX(player.getLocation().getX());
-				newLoc.setY(newY);
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 
@@ -107,9 +105,9 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newX = player.getLocation().getX() + 1;
 
-				Tile newLoc = new Tile();
-				newLoc.setY(player.getLocation().getY());
-				newLoc.setX(newX);
+				//Tile newLoc = new Tile();
+				//newLoc.setY(player.getLocation().getY());
+				//newLoc.setX(newX);
 
 				player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 
