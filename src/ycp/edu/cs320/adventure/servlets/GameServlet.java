@@ -26,7 +26,7 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		// Necessary objects & game setup
-		
+
 
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
@@ -34,10 +34,10 @@ public class GameServlet extends HttpServlet{
 
 		Map map = new Map();
 		map.buildSmallDefault(engine);
-		
+
 		Tile start = new Tile();
 		start = map.getTile(0, 0);
-		
+
 		Player player = new Player();
 		player.setLocation(start);
 
@@ -156,12 +156,13 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("item")) {
 
 			// If player actually has an item 
-			if(player.getEquippedItem() != null) {
-				response = String.valueOf(player.getEquippedItem());
+			try {
+				if(player.getEquippedItem().getName().equalsIgnoreCase("")) {
+					response = player.getEquippedItem().getName();
+				}
 			}
-
 			// If player has no item equipped
-			else {
+			catch(NullPointerException e) {
 				response = "No item equipped.";
 			}
 		}
@@ -170,8 +171,8 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("view inventory")) {
 
 			// If inventory is NOT empty
-			if(player.getInventory() != null) {
-				response = String.valueOf(player.getInventory());
+			if(!player.getInventory().getInventory().isEmpty()) {
+				response = String.valueOf(player.getInventory().getInventory());
 			}
 
 			// Inventory is empty
