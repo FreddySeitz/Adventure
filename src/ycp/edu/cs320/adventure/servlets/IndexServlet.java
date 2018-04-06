@@ -60,7 +60,7 @@ public class IndexServlet extends HttpServlet {
         }
         
         else {
-        	errorMessage = "Error: account does not exist";
+        	errorMessage = "Error: Username or password is incorrect.";
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
         }
