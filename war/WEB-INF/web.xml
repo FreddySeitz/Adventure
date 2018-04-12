@@ -26,6 +26,10 @@
   		<servlet-class>ycp.edu.cs320.adventure.servlets.LoadGameServlet</servlet-class>
   	</servlet>
   	  
+  	<servlet>
+  		<servlet-name>CreateAccountServlet</servlet-name>
+  		<servlet-class>ycp.edu.cs320.adventure.servlets.CreateAccountServlet</servlet-class>
+  	</servlet>
 	<!-- Servlet mappings -->
 	<servlet-mapping>
     	<servlet-name>IndexServlet</servlet-name>
@@ -45,5 +49,10 @@
 	<servlet-mapping>
 		<servlet-name>LoadGameServlet</servlet-name>
 		<url-pattern>/loadGame</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CreateAccountServlet</servlet-name>
+		<url-pattern>/createAccount</url-pattern>
 	</servlet-mapping>
 </web-app>
