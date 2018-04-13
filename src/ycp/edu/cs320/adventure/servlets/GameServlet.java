@@ -26,9 +26,7 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		// Necessary objects & game setup
-		Tile start = new Tile();
-		start.setX(0);
-		start.setY(0);
+
 
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
@@ -36,6 +34,9 @@ public class GameServlet extends HttpServlet{
 
 		Map map = new Map();
 		map.buildSmallDefault(engine);
+
+		Tile start = new Tile();
+		start = map.getTile(0, 0);
 
 		Player player = new Player();
 		player.setLocation(start);
@@ -59,6 +60,7 @@ public class GameServlet extends HttpServlet{
 			if(player.getLocation().getY() < map.getHeight() - 1) {
 				// Move player
 				int newY = player.getLocation().getY() + 1;
+
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 
@@ -93,6 +95,7 @@ public class GameServlet extends HttpServlet{
 			if(player.getLocation().getX() < map.getWidth()) {
 				// Move player
 				int newX = player.getLocation().getX() + 1;
+
 
 				player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 
@@ -153,12 +156,13 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("item")) {
 
 			// If player actually has an item 
-			if(player.getEquippedItem() != null) {
-				response = String.valueOf(player.getEquippedItem());
+			try {
+				if(player.getEquippedItem().getName().equalsIgnoreCase("")) {
+					response = player.getEquippedItem().getName();
+				}
 			}
-
 			// If player has no item equipped
-			else {
+			catch(NullPointerException e) {
 				response = "No item equipped.";
 			}
 		}
@@ -167,8 +171,8 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("view inventory")) {
 
 			// If inventory is NOT empty
-			if(player.getInventory() != null) {
-				response = String.valueOf(player.getInventory());
+			if(!player.getInventory().getInventory().isEmpty()) {
+				response = String.valueOf(player.getInventory().getInventory());
 			}
 
 			// Inventory is empty
@@ -186,7 +190,7 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("pick up item")) {
 
 			// If tile has an item 
-			if(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList() != null){
+			if(!map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().isEmpty()){
 				Inventory newInv = new Inventory();
 				newInv.addMultipleToInventory(player.getInventory().getInventory());
 				newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
