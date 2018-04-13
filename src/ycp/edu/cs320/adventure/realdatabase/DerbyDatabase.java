@@ -308,11 +308,9 @@ public class DerbyDatabase {
 				PreparedStatement stmt3 = null;
 				PreparedStatement stmt4 = null;
 				PreparedStatement stmt5 = null;
-					/////////////BIG
-						//connect account to game table with account id.  return all games.
-							//player chooses game
-						//access all in game data with game_id instead of account id.  game_id is a unique key, already associated with account.
-				try {
+				PreparedStatement stmt6 = null;
+				PreparedStatement stmt7 = null;
+					try {
 					stmt1 = conn.prepareStatement(
 							"create table accounts (" +
 									"	account_id integer primary key " +
@@ -320,30 +318,63 @@ public class DerbyDatabase {
 									"	username varchar(40)," +
 									"	password varchar(40)" +
 									")"
-							);	
+							);
 					stmt1.executeUpdate();
 
 					stmt2 = conn.prepareStatement(
-							"create table creatures (" +
-									"	creature_id integer primary key " +
-									"		generated always as identity (start with 1, increment by 1), " +
-									"	account_id integer constraint account_id references accounts, " +
-									"   game_id integer," +
-									"	inventory varchar(50)," +
-									"   equippedItem integer," +
-									"   health integer," +
-									"   x_location integer," +
-									"   y_location integer," +
-									"   baseDamage integer " +
+							"create table games (" +
+									"	game_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +									
+									"	account_id integer constraint account_id references accounts" +
 									")"
-							);
+							);	
 					stmt2.executeUpdate();
 					
 					stmt3 = conn.prepareStatement(
-							"create table item (" +
+							"create table items (" +
 									"	item_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	account_id integer constraint account_id references accounts, " +
+									"	game_id integer constraint game_id references games, " +
+									"	name varchar(35)," +
+									"   description varchar(300)," +
+									"   weight integer," +
+									"   damage integer," +
+									"   health integer," +
+									"   quest_id integer, " +
+									"   value integer " +
+									")"
+							);
+					stmt3.executeUpdate();
+					
+					stmt4 = conn.prepareStatement(
+							"create table maps (" +
+									"	map_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
+									"	game_id integer constraint game_id references games, " +
+									"	height integer," +
+									"   width integer" +
+									")"
+							);
+					stmt4.executeUpdate();
+					
+					stmt5 = conn.prepareStatement(
+							"create table tiles (" +
+									"	tile_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
+									"	map_id integer constraint map_id references maps, " +
+									"	type integer," +
+									"   x integer," +
+									"   y integer," +
+									"   items varchar(200)" +
+									")"
+							);
+					stmt5.executeUpdate();
+					
+					stmt6 = conn.prepareStatement(
+							"create table creatures (" +
+									"	creature_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
+									"	game_id integer constraint game_id references games, " +
 									"	inventory varchar(50)," +
 									"   equippedItem integer," +
 									"   health integer," +
@@ -352,7 +383,24 @@ public class DerbyDatabase {
 									"   baseDamage integer " +
 									")"
 							);
-					stmt3.executeUpdate();
+					stmt6.executeUpdate();
+					
+					stmt7 = conn.prepareStatement(
+							"create table players (" +
+									"	player_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
+									"	game_id integer constraint game_id references games, " +
+									"	inventory varchar(50)," +
+									"   equippedItem integer," +
+									"   health integer," +
+									"   x_location integer," +
+									"   y_location integer," +
+									"   baseDamage integer " +
+									")"
+							);
+					stmt7.executeUpdate();
+					
+					
 
 					return true;
 				} finally {
