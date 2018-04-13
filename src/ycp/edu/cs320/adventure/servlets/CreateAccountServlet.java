@@ -26,7 +26,21 @@ private static final long serialVersionUID = 1L;
         
         System.out.println("CreateAccount Servlet: doPost");
         String errorMessage = null;
+        String successMessage = "Account created.";
         
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        
+        FakeDatabase database = new FakeDatabase();
+        int accountId = database.accountExists(username);
+        
+        // username and password match
+        if(accountId >= 0) {
+        	System.out.println(successMessage);
+    		// redirect to /titleScreen page
+        	resp.sendRedirect(req.getContextPath() + "/_view/index.jsp");
+        	return;
+        }
     }
         
 }
