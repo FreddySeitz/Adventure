@@ -242,17 +242,18 @@ public class DerbyDatabase {
 
 	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
 		Connection conn = connect();
-
 		try {
 			int numAttempts = 0;
 			boolean success = false;
 			ResultType result = null;
-
 			while (!success && numAttempts < MAX_ATTEMPTS) {
 				try {
 					result = txn.execute(conn);
+					System.out.println("1");
 					conn.commit();
+					System.out.println("2");
 					success = true;
+					System.out.println("3");
 				} catch (SQLException e) {
 					if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
 						// Deadlock: retry (unless max retry count has been reached)
@@ -263,11 +264,10 @@ public class DerbyDatabase {
 					}
 				}
 			}
-
+			System.out.println("4");
 			if (!success) {
 				throw new SQLException("Transaction failed (too many retries)");
 			}
-
 			// Success!
 			return result;
 		} finally {
@@ -350,12 +350,13 @@ public class DerbyDatabase {
 							"create table maps (" +
 									"	map_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	game_id integer constraint game_id references games, " +
-									"	height integer," +
-									"   width integer" +
+									"	game_id integer, " +
+									"	height integer, " +
+									"   width integer " +
 									")"
 							);
 					stmt4.executeUpdate();
+						
 					
 					stmt5 = conn.prepareStatement(
 							"create table tiles (" +
@@ -374,7 +375,7 @@ public class DerbyDatabase {
 							"create table creatures (" +
 									"	creature_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	game_id integer constraint game_id references games, " +
+									"	game_id integer, " +
 									"	inventory varchar(50)," +
 									"   equippedItem integer," +
 									"   health integer," +
@@ -389,7 +390,7 @@ public class DerbyDatabase {
 							"create table players (" +
 									"	player_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	game_id integer constraint game_id references games, " +
+									"	game_id integer, " +
 									"	inventory varchar(50)," +
 									"   equippedItem integer," +
 									"   health integer," +
@@ -399,76 +400,26 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt7.executeUpdate();
-					
-					
 
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
 					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);
+					DBUtil.closeQuietly(stmt4);
+					DBUtil.closeQuietly(stmt5);
+					DBUtil.closeQuietly(stmt6);
+					DBUtil.closeQuietly(stmt7);
 				}
 			}
 		});
 	}
-
-//	public void loadInitialData() {
-//		executeTransaction(new Transaction<Boolean>() {
-//			@Override
-//			public Boolean execute(Connection conn) throws SQLException {
-//				List<Author> authorList;
-//				List<Book> bookList;
-//
-//				try {
-//					authorList = InitialData.getAuthors();
-//					bookList = InitialData.getBooks();
-//				} catch (IOException e) {
-//					throw new SQLException("Couldn't read initial data", e);
-//				}
-//
-//				PreparedStatement insertAuthor = null;
-//				PreparedStatement insertBook   = null;
-//
-//				try {
-//					// populate authors table (do authors first, since author_id is foreign key in books table)
-//					insertAuthor = conn.prepareStatement("insert into authors (lastname, firstname) values (?, ?)");
-//					for (Author author : authorList) {
-//						//						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
-//						insertAuthor.setString(1, author.getLastname());
-//						insertAuthor.setString(2, author.getFirstname());
-//						insertAuthor.addBatch();
-//					}
-//					insertAuthor.executeBatch();
-//
-//					// populate books table (do this after authors table,
-//					// since author_id must exist in authors table before inserting book)
-//					insertBook = conn.prepareStatement("insert into books (author_id, title, isbn, published) values (?, ?, ?, ?)");
-//					for (Book book : bookList) {
-//						//						insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
-//						insertBook.setInt(1, book.getAuthorId());
-//						insertBook.setString(2, book.getTitle());
-//						insertBook.setString(3, book.getIsbn());
-//						insertBook.setInt(4,  book.getPublished());
-//						insertBook.addBatch();
-//					}
-//					insertBook.executeBatch();
-//
-//					return true;
-//				} finally {
-//					DBUtil.closeQuietly(insertBook);
-//					DBUtil.closeQuietly(insertAuthor);
-//				}
-//			}
-//		});
-//	}
 
 	// The main method creates the database tables and loads the initial data.
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
 		db.createTables();
-
-		System.out.println("Loading initial data...");
-		//db.loadInitialData();
 
 		System.out.println("Success!");
 	}
