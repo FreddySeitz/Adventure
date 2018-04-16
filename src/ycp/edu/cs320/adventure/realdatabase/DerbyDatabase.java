@@ -27,208 +27,32 @@ public class DerbyDatabase {
 
 	private static final int MAX_ATTEMPTS = 10;
 
-//	@Override
-//	public List<Pair<Author, Book>> findAuthorAndBookByTitle(final String title) {
-//		return executeTransaction(new Transaction<List<Pair<Author,Book>>>() {
-//			@Override
-//			public List<Pair<Author, Book>> execute(Connection conn) throws SQLException {
-//				PreparedStatement stmt = null;
-//				ResultSet resultSet = null;
-//
-//				try {
-//					// retreive all attributes from both Books and Authors tables
-//					stmt = conn.prepareStatement(
-//							"select authors.*, books.* " +
-//									"  from authors, books " +
-//									" where authors.author_id = books.author_id " +
-//									"   and books.title = ?"
-//							);
-//					stmt.setString(1, title);
-//
-//					List<Pair<Author, Book>> result = new ArrayList<Pair<Author,Book>>();
-//
-//					resultSet = stmt.executeQuery();
-//
-//					// for testing that a result was returned
-//					Boolean found = false;
-//
-//					while (resultSet.next()) {
-//						found = true;
-//
-//						// create new Author object
-//						// retrieve attributes from resultSet starting with index 1
-//						Author author = new Author();
-//						loadAuthor(author, resultSet, 1);
-//
-//						// create new Book object
-//						// retrieve attributes from resultSet starting at index 4
-//						Book book = new Book();
-//						loadBook(book, resultSet, 4);
-//
-//						result.add(new Pair<Author, Book>(author, book));
-//					}
-//
-//					// check if the title was found
-//					if (!found) {
-//						System.out.println("<" + title + "> was not found in the books table");
-//					}
-//
-//					return result;
-//				} finally {
-//					DBUtil.closeQuietly(resultSet);
-//					DBUtil.closeQuietly(stmt);
-//				}
-//			}
-//		});
-//	}
+	//@Override
+	public void createAccount(final String username, final String password) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
 
-//	public List<Pair<Author, Book>> BooksByAuthorLastNameQuery(final String lastname) {
-//		return executeTransaction(new Transaction<List<Pair<Author,Book>>>() {
-//			@Override
-//			public List<Pair<Author, Book>> execute(Connection conn) throws SQLException {
-//				PreparedStatement stmt = null;
-//				ResultSet resultSet = null;
-//
-//				try {
-//					// retreive all attributes from both Books and Authors tables
-//					stmt = conn.prepareStatement(
-//							"select authors.*, books.* " +
-//									"  from authors, books " +
-//									" where authors.author_id = books.author_id " +
-//									"   and authors.lastname = ?" +
-//									" order by books.title asc"
-//							);
-//					stmt.setString(1, lastname);
-//
-//					List<Pair<Author, Book>> result = new ArrayList<Pair<Author,Book>>();
-//
-//					resultSet = stmt.executeQuery();
-//
-//					// for testing that a result was returned
-//					Boolean found = false;
-//
-//					while (resultSet.next()) {
-//						found = true;
-//
-//						// create new Author object
-//						// retrieve attributes from resultSet starting with index 1
-//						Author author = new Author();
-//						loadAuthor(author, resultSet, 1);
-//
-//						// create new Book object
-//						// retrieve attributes from resultSet starting at index 4
-//						Book book = new Book();
-//						loadBook(book, resultSet, 4);
-//
-//						result.add(new Pair<Author, Book>(author, book));
-//					}
-//
-//					// check if the title was found
-//					if (!found) {
-//						System.out.println("<" + lastname + "> was not found in the authors table");
-//					}
-//
-//					return result;
-//				} finally {
-//					DBUtil.closeQuietly(resultSet);
-//					DBUtil.closeQuietly(stmt);
-//				}
-//			}
-//		});
-//	}
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO accounts (USERNAME, PASSWORD) " + 
+									"	VALUES (?, ?);	"
+							);
+					stmt.setString(1, username);
+					stmt.setString(2, password);
 
-//	@Override
-//	public void InsertNewBookWithAuthor(String lastname, String firstname, String title, String isbn, String year) {
-//		Connection conn = null;
-//		PreparedStatement checkexistence = null;
-//		PreparedStatement addauthor = null;
-//		PreparedStatement obtainauthor = null;
-//		PreparedStatement addbook = null;	
-//		ResultSet checkexistenceresult = null;
-//		ResultSet getauthorresult = null;
-//		try {
-//			conn = DriverManager.getConnection("jdbc:derby:test.db;create=true");
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-//		try {
-//			//			conn.setAutoCommit(false);
-//			conn.setAutoCommit(false);
-//
-//			//checking if author already exists
-//			checkexistence = conn.prepareStatement(
-//					"select authors.author_id"
-//							+ "  from authors"
-//							+ "  where authors.lastname = ? and authors.firstname = ?"
-//					);
-//			checkexistence.setString(1, lastname);
-//			checkexistence.setString(2, firstname);
-//			checkexistenceresult = checkexistence.executeQuery();
-//			String authorid = "";
-//			//checkexistenceresult.next();
-//			ResultSetMetaData existenceSchema = checkexistence.getMetaData();
-//			while (checkexistenceresult.next()) {
-//				for (int i = 1; i <= existenceSchema.getColumnCount(); i++) {
-//					Object obj = checkexistenceresult.getObject(i);
-//					authorid = obj.toString();
-//				}
-//			}
-//			if(!authorid.equals("")){
-//				System.out.println("Adding book to existing author");
-//			}
-//			else{
-//				//adding new author
-//				addauthor = conn.prepareStatement(
-//						"INSERT INTO authors (FIRSTNAME, LASTNAME)"
-//								+ "VALUES (?, ?)"	
-//						);
-//				addauthor.setString(1, firstname);
-//				addauthor.setString(2, lastname);
-//				addauthor.executeUpdate();
-//				System.out.println("New author has been added.");
-//
-//				//getting authorID
-//				obtainauthor = conn.prepareStatement(
-//						"select authors.author_id"
-//								+ " from authors"
-//								+ " where authors.firstname = ? and authors.lastname = ?"
-//						);
-//				obtainauthor.setString(1, firstname);
-//				obtainauthor.setString(2, lastname);
-//				getauthorresult = obtainauthor.executeQuery();
-//				getauthorresult.next();
-//				Object addobject = getauthorresult.getObject(1);
-//				authorid = addobject.toString();
-//			}
-//			// a canned query to find book information (including author name) from title
-//			addbook = conn.prepareStatement(
-//					"INSERT INTO books (AUTHOR_ID, TITLE, ISBN, PUBLISHED)"
-//							+ " VALUES (?, ?, ?, ?)"
-//					);
-//
-//			// substitute the title entered by the user for the placeholder in the query
-//			addbook.setString(1, authorid);
-//			addbook.setString(2, title);
-//			addbook.setString(3, isbn);
-//			addbook.setString(4, year);
-//
-//			// execute the query
-//			addbook.executeUpdate();
-//			System.out.println("Book added");
-//			
-//			conn.commit();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			// close result set, statement, connection
-//			DBUtil.closeQuietly(checkexistenceresult);
-//			DBUtil.closeQuietly(checkexistence);
-//			DBUtil.closeQuietly(addauthor);
-//			DBUtil.closeQuietly(obtainauthor);
-//			DBUtil.closeQuietly(getauthorresult);
-//			DBUtil.closeQuietly(conn);
-//		}
-//	}
+					stmt.executeQuery();
+
+					return true;
+					
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
 
 
 
@@ -310,12 +134,14 @@ public class DerbyDatabase {
 				PreparedStatement stmt5 = null;
 				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
+				PreparedStatement stmt8 = null;
+				
 					try {
 					stmt1 = conn.prepareStatement(
 							"create table accounts (" +
 									"	account_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +									
-									"	username varchar(40)," +
+									"	username varchar(40) UNIQUE," +
 									"	password varchar(40)" +
 									")"
 							);
@@ -325,16 +151,16 @@ public class DerbyDatabase {
 							"create table games (" +
 									"	game_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +									
-									"	account_id integer constraint account_id references accounts" +
+									"	account_id integer " +
 									")"
-							);	
+							);
 					stmt2.executeUpdate();
 					
 					stmt3 = conn.prepareStatement(
 							"create table items (" +
 									"	item_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	game_id integer constraint game_id references games, " +
+									"	game_id integer, " +
 									"	name varchar(35)," +
 									"   description varchar(300)," +
 									"   weight integer," +
@@ -347,6 +173,17 @@ public class DerbyDatabase {
 					stmt3.executeUpdate();
 					
 					stmt4 = conn.prepareStatement(
+							"create table inventories (" +
+									"	game_id integer, " +
+									"	creature_id integer, " +
+									"	player_id integer, " +
+									"	tile_id integer, " +
+									"	item_id integer " +
+									")"
+							);
+					stmt4.executeUpdate();
+					
+					stmt5 = conn.prepareStatement(
 							"create table maps (" +
 									"	map_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
@@ -355,43 +192,25 @@ public class DerbyDatabase {
 									"   width integer " +
 									")"
 							);
-					stmt4.executeUpdate();
-						
-					
-					stmt5 = conn.prepareStatement(
-							"create table tiles (" +
-									"	tile_id integer primary key " +
-									"		generated always as identity (start with 1, increment by 1), " +
-									"	map_id integer constraint map_id references maps, " +
-									"	type integer," +
-									"   x integer," +
-									"   y integer," +
-									"   items varchar(200)" +
-									")"
-							);
 					stmt5.executeUpdate();
 					
 					stmt6 = conn.prepareStatement(
-							"create table creatures (" +
-									"	creature_id integer primary key " +
+							"create table tiles (" +
+									"	tile_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
-									"	game_id integer, " +
-									"	inventory varchar(50)," +
-									"   equippedItem integer," +
-									"   health integer," +
-									"   x_location integer," +
-									"   y_location integer," +
-									"   baseDamage integer " +
+									"	map_id integer, " +
+									"	type integer," +
+									"   x integer," +
+									"   y integer" +
 									")"
 							);
 					stmt6.executeUpdate();
 					
 					stmt7 = conn.prepareStatement(
-							"create table players (" +
-									"	player_id integer primary key " +
+							"create table creatures (" +
+									"	creature_id integer primary key " +
 									"		generated always as identity (start with 1, increment by 1), " +
 									"	game_id integer, " +
-									"	inventory varchar(50)," +
 									"   equippedItem integer," +
 									"   health integer," +
 									"   x_location integer," +
@@ -400,6 +219,20 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt7.executeUpdate();
+					
+					stmt8 = conn.prepareStatement(
+							"create table players (" +
+									"	player_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
+									"	game_id integer, " +
+									"   equippedItem integer," +
+									"   health integer," +
+									"   x_location integer," +
+									"   y_location integer," +
+									"   baseDamage integer " +
+									")"
+							);
+					stmt8.executeUpdate();
 
 					return true;
 				} finally {
@@ -410,6 +243,7 @@ public class DerbyDatabase {
 					DBUtil.closeQuietly(stmt5);
 					DBUtil.closeQuietly(stmt6);
 					DBUtil.closeQuietly(stmt7);
+					DBUtil.closeQuietly(stmt8);
 				}
 			}
 		});
