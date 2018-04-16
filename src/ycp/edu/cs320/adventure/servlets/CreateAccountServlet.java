@@ -49,6 +49,7 @@ private static final long serialVersionUID = 1L;
         	successMessage = "Account creation successful";
         	req.setAttribute("successMessage", successMessage);
         	req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
+        	// Add new account & password to database
         	// Also redirect to game.jsp
         }
         else {
