@@ -27,14 +27,14 @@
 
 	<body>
 		<div class = "centered">
-		<h1>Adventure Create Account</h1>
+		<h1>Adventure Account Create</h1>
 		<c:if test="${! empty errorMessage}">
 			<div class="error">${errorMessage}</div>
 		</c:if>
 		<c:if test="${! empty successMessage}">
 			<div class="success">${successMessage}</div>
 		</c:if>
-		<!-- TODO: ACCOUNT SERVLET -->
+		<!-- TODO: INDEX SERVLET -->
 		
 		<form action="${pageContext.servletContext.contextPath}/createAccount" method="post">
 			
@@ -47,12 +47,17 @@
 					<td class="label">PASSWORD: </td>
 					<td><input type="password" name="password" size="12" value="${password}" /></td>
 				</tr>
+				<tr>
+					<td class="label">CONFIRM PASSWORD: </td>
+					<td><input type="password" name="password2" size="12" value="${password2}" /></td>
+				</tr>
 				
 				
 			</table>
-			<input type="Submit" name="createAccount" value="Create Account">
+			<input type="Submit" name="signin" value="Sign In">
+		
 			
 			</div>
-		</form>
+			</form>
 	</body>
 </html>
