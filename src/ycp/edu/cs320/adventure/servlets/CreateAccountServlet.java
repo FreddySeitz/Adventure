@@ -44,6 +44,18 @@ private static final long serialVersionUID = 1L;
         System.out.println("Password1: " + password);
         System.out.println("Password2: " + password2);
         
+        FakeDatabase database = new FakeDatabase();
+        int accountId = database.accountExists(username);
+        
+        // username and password match
+        if(accountId >= 0) {
+        	System.out.println(successMessage);
+    		// redirect to /titleScreen page
+        	resp.sendRedirect(req.getContextPath() + "/_view/index.jsp");
+        	return;
+        }
+
+        
         //else{
         if(password.equals(password2)) {
         	successMessage = "Account creation successful";
