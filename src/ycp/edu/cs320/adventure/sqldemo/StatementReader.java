@@ -1,4 +1,4 @@
-package ycp.edu.cs320.adventure.database;
+package ycp.edu.cs320.adventure.sqldemo;
 
 import java.io.IOException;
 import java.io.Reader;

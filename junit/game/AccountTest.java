@@ -111,9 +111,8 @@ public class AccountTest {
 	
 	@Test
 	public void testSetPassword() {
-		String test = "pass";
-		account.setPassword(test);
-		assertEquals(test, account.getPassword());
+		account.setPassword("pass");
+		assertEquals("pass", account.getPassword());
 	}
 	
 	@Test
