@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class DerbyDatabase {
 					stmt.executeQuery();
 
 					return true;
-					
+
 				} finally {
 					DBUtil.closeQuietly(stmt);
 				}
@@ -54,6 +53,92 @@ public class DerbyDatabase {
 		});
 	}
 
+	//@Override
+	public void getAccount(final String username) {
+		executeTransaction(new Transaction<Integer>() {
+			@Override
+			public Integer execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" SELECT accounts.account_id " + 
+							"FROM accounts " + 
+							"WHERE accounts.username = ? "
+							);
+					stmt.setString(1, username);
+
+					resultSet = stmt.executeQuery();
+
+					return resultSet.getInt(1);
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public void createGame(final int account_id) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO games (account_id) " + 
+									"	VALUES (?);	"
+							);
+					stmt.setInt(1, account_id);
+
+					stmt.executeQuery();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+	
+	//@Override
+		public void getGame(final int account_id) {
+			executeTransaction(new Transaction<List<Integer>>() {
+				@Override
+				public List<Integer> execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+					
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" INSERT INTO games (account_id) " + 
+										"	VALUES (?);	"
+								);
+						stmt.setInt(1, account_id);
+
+						resultSet = stmt.executeQuery();
+						
+						List<Integer> result = new ArrayList<Integer>();
+						
+						while (resultSet.next()) {
+							result.add(resultSet.getInt(1));
+						}
+						
+						return result;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
@@ -73,11 +158,8 @@ public class DerbyDatabase {
 			while (!success && numAttempts < MAX_ATTEMPTS) {
 				try {
 					result = txn.execute(conn);
-					System.out.println("1");
 					conn.commit();
-					System.out.println("2");
 					success = true;
-					System.out.println("3");
 				} catch (SQLException e) {
 					if (e.getSQLState() != null && e.getSQLState().equals("41000")) {
 						// Deadlock: retry (unless max retry count has been reached)
@@ -88,7 +170,6 @@ public class DerbyDatabase {
 					}
 				}
 			}
-			System.out.println("4");
 			if (!success) {
 				throw new SQLException("Transaction failed (too many retries)");
 			}
@@ -109,20 +190,6 @@ public class DerbyDatabase {
 		return conn;
 	}
 
-//	private void loadAuthor(Author author, ResultSet resultSet, int index) throws SQLException {
-//		author.setAuthorId(resultSet.getInt(index++));
-//		author.setLastname(resultSet.getString(index++));
-//		author.setFirstname(resultSet.getString(index++));
-//	}
-
-//	private void loadBook(Book book, ResultSet resultSet, int index) throws SQLException {
-//		book.setBookId(resultSet.getInt(index++));
-//		book.setAuthorId(resultSet.getInt(index++));
-//		book.setTitle(resultSet.getString(index++));
-//		book.setIsbn(resultSet.getString(index++));
-//		book.setPublished(resultSet.getInt(index++));		
-//	}
-
 	public void createTables() {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
@@ -135,8 +202,8 @@ public class DerbyDatabase {
 				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
 				PreparedStatement stmt8 = null;
-				
-					try {
+
+				try {
 					stmt1 = conn.prepareStatement(
 							"create table accounts (" +
 									"	account_id integer primary key " +
@@ -155,7 +222,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt2.executeUpdate();
-					
+
 					stmt3 = conn.prepareStatement(
 							"create table items (" +
 									"	item_id integer primary key " +
@@ -171,7 +238,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt3.executeUpdate();
-					
+
 					stmt4 = conn.prepareStatement(
 							"create table inventories (" +
 									"	game_id integer, " +
@@ -182,7 +249,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt4.executeUpdate();
-					
+
 					stmt5 = conn.prepareStatement(
 							"create table maps (" +
 									"	map_id integer primary key " +
@@ -193,7 +260,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt5.executeUpdate();
-					
+
 					stmt6 = conn.prepareStatement(
 							"create table tiles (" +
 									"	tile_id integer primary key " +
@@ -205,7 +272,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt6.executeUpdate();
-					
+
 					stmt7 = conn.prepareStatement(
 							"create table creatures (" +
 									"	creature_id integer primary key " +
@@ -219,7 +286,7 @@ public class DerbyDatabase {
 									")"
 							);
 					stmt7.executeUpdate();
-					
+
 					stmt8 = conn.prepareStatement(
 							"create table players (" +
 									"	player_id integer primary key " +

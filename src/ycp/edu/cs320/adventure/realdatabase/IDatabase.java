@@ -8,5 +8,5 @@ public interface IDatabase {
 	public boolean newGame(String username, GameEngine engine);
 	public int accountExists(String username);
 	public boolean login(String username, String password);
-	public void addAccount(String username, String password, int id);
+	public void createAccount(String username, String password);
 }
