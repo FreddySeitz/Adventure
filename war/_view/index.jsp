@@ -22,6 +22,12 @@
 		.success{
 			color:green;
 			}
+		.create{
+			position: fixed;
+			top: 30%;
+			left: 30%;
+			transform: translate(-30%, -30%);
+		}
 		</style>
 	</head>
 
@@ -55,5 +61,10 @@
 			
 			</div>
 			</form>
+			<div class = "create">
+			<form action="${pageContext.servletContext.contextPath}/createAccount" method="get">
+						<input type="Submit" name="create" value="Create Account">
+			</form>
+			</div>
 	</body>
 </html>
