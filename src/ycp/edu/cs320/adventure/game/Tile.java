@@ -10,6 +10,8 @@ public class Tile {
 	private int y;
 	private String description;
 	private int damage;
+	
+	private int gameId;
 	//0 = unpassable space.  1 = empty room.  2 = trap
 	
 	public Tile(){	
@@ -18,6 +20,14 @@ public class Tile {
 		y = 0;
 		items = new ArrayList<Item>();
 		damage = 0;
+	}
+	
+	public void setGameId(int g){
+		gameId = g;
+	}
+	
+	public int getGameId(){
+		return gameId;
 	}
 	
 	public int getType(){
