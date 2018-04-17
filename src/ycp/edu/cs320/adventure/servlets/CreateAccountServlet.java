@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ycp.edu.cs320.adventure.database.FakeDatabase;
 import ycp.edu.cs320.adventure.game.Account;
+import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
 public class CreateAccountServlet extends HttpServlet{
 private static final long serialVersionUID = 1L;
@@ -44,11 +45,19 @@ private static final long serialVersionUID = 1L;
         System.out.println("Password1: " + password);
         System.out.println("Password2: " + password2);
         
-        FakeDatabase database = new FakeDatabase();
-        int accountId = database.accountExists(username);
+        DerbyDatabase database = new DerbyDatabase();
+        //int accountId = database.accountExists(username);
+        
+        // set to true if the account exists
+        boolean exists = false; 
+        
+        exists = database.accountExists(username);
+        
+        
         
         // if passwords match & if database does not contains username  
-        if(password.equals(password2) && accountId >= 0) {
+        if(password.equals(password2) && !exists) {
+        	database.createAccount(username, password2);
         	successMessage = "Account creation successful";
         	req.setAttribute("successMessage", successMessage);
         	req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
