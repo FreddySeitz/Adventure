@@ -45,7 +45,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, username);
 					stmt.setString(2, password);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -74,7 +74,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(2, password);
 					stmt.setInt(3, account_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -102,7 +102,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, username);
 					stmt.setInt(2, account_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -130,7 +130,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, password);
 					stmt.setInt(2, account_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -156,7 +156,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt.setString(1, username);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -248,7 +248,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt.setInt(1, account_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -308,7 +308,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt.setInt(1, game_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -341,7 +341,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(7, quest_id);
 					stmt.setInt(8, value);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -376,7 +376,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(8, value);
 					stmt.setInt(8, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -404,7 +404,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, name);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -432,7 +432,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, description);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -460,7 +460,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, weight);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -488,7 +488,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, damage);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -516,7 +516,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, health);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -544,7 +544,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, quest_id);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -572,7 +572,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setString(1, value);
 					stmt.setInt(2, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -598,7 +598,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt.setInt(1, item_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -705,7 +705,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(2, height);
 					stmt.setInt(3, width);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -734,7 +734,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(2, width);
 					stmt.setInt(3, game_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -762,7 +762,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(1, height);
 					stmt.setInt(2, game_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -791,7 +791,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(1, width);
 					stmt.setInt(2, game_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -817,7 +817,7 @@ public class DerbyDatabase implements IDatabase{
 							);
 					stmt.setInt(1, game_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -886,7 +886,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(4, x);
 					stmt.setInt(5, y);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -917,7 +917,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(4, y);
 					stmt.setInt(5, tile_id);
 
-					stmt.executeQuery();
+					stmt.executeUpdate();
 
 					return true;
 
@@ -945,7 +945,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt.setInt(1, type);
 						stmt.setInt(2, tile_id);
 
-						stmt.executeQuery();
+						stmt.executeUpdate();
 
 						return true;
 
@@ -973,7 +973,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt.setString(1, description);
 						stmt.setInt(2, tile_id);
 
-						stmt.executeQuery();
+						stmt.executeUpdate();
 
 						return true;
 
@@ -1002,7 +1002,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt.setInt(1, x);
 						stmt.setInt(2, tile_id);
 
-						stmt.executeQuery();
+						stmt.executeUpdate();
 
 						return true;
 
@@ -1031,7 +1031,7 @@ public class DerbyDatabase implements IDatabase{
 						stmt.setInt(1, y);
 						stmt.setInt(2, tile_id);
 
-						stmt.executeQuery();
+						stmt.executeUpdate();
 
 						return true;
 
