@@ -57,7 +57,7 @@ public class InitialData {
 				
 				Iterator<String> i = tuple.iterator();
 				Map map = new Map();
-				map.setAccountId(accountId);		//account id
+				map.setGameId(accountId);		//account id
 				accountId++;
 				String temp = i.next();
 				temp = temp.substring(1, temp.length());
@@ -85,7 +85,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				Player player = new Player();
 				
-				player.setAccountId(accountId);
+				player.setGameId(accountId);
 				accountId++;
 				String inv = i.next();
 				StringBuilder item = new StringBuilder();	//reads a single item ID
@@ -134,7 +134,7 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				Creature creature = new Creature();
-				creature.setAccountId(accountId);
+				creature.setGameId(accountId);
 				accountId++;
 				
 				String inv = i.next();
@@ -185,11 +185,11 @@ public class InitialData {
 				
 				Iterator<String> i = tuple.iterator();
 				Item item = new Item("","",0,0,0,0,0,0,0);
-				item.setId(itemId);
+				item.setItemId(itemId);
 				itemId++;
 				item.setName(i.next());
 				item.setDescription(i.next());
-				item.setAccountId(Integer.parseInt(i.next()));
+				item.setGameId(Integer.parseInt(i.next()));
 				item.setWeight(Integer.parseInt(i.next()));
 				item.setDamage(Integer.parseInt(i.next()));
 				item.setHealth(Integer.parseInt(i.next()));

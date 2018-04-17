@@ -38,7 +38,7 @@ public class InitialDataTest {
 		try {
 			List<Map> a = init.getMap();
 			System.out.println(a.size());
-			System.out.println(a.get(0).getAccountId());
+			System.out.println(a.get(0).getGameId());
 			System.out.println(a.get(0).getWidth());
 			System.out.println(a.get(0).getTile(0, 0).getType());
 			

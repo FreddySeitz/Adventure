@@ -33,9 +33,9 @@ public class MapTest {
 	}
 
 	@Test
-	public void testAccountId() {
-		map.setAccountId(1);
-		assertTrue(map.getAccountId() == 1);
+	public void testGameId() {
+		map.setGameId(1);
+		assertTrue(map.getGameId() == 1);
 	}
 
 	@Test
