@@ -1,4 +1,4 @@
-package database;
+package fakeDatabase;
 
 import static org.junit.Assert.assertTrue;
 

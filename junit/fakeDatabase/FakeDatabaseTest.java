@@ -1,4 +1,4 @@
-package database;
+package fakeDatabase;
 
 import org.junit.Before;
 import org.junit.Test;
