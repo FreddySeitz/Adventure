@@ -38,6 +38,9 @@ public interface IDatabase {
 	public List<Item> getAllItems(int game_id);
 	
 	//inventories
+	public boolean addToPlayerInventory(int player_id, int item_id);
+	public boolean addToCreatureInventory(int creature_id, int item_id);
+	public boolean addToTileInventory(int tile_id, int item_id);
 	
 	public boolean createMap(int game_id, int height, int width);
 	public boolean updateMapAll(int game_id, int height, int width);

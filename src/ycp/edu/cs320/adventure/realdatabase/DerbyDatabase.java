@@ -190,6 +190,7 @@ public class DerbyDatabase implements IDatabase{
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);	
 				}
 			}
 		});
@@ -327,6 +328,7 @@ public class DerbyDatabase implements IDatabase{
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);	
 				}
 			}
 		});
@@ -675,6 +677,7 @@ public class DerbyDatabase implements IDatabase{
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);	
 				}
 			}
 		});
@@ -710,6 +713,7 @@ public class DerbyDatabase implements IDatabase{
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);					
 				}
 			}
 		});
@@ -725,6 +729,87 @@ public class DerbyDatabase implements IDatabase{
 		item.setHealth(index++);
 		item.setQuestId(index++);
 		item.setValue(index++);
+	}
+
+	//@Override
+	public boolean addToPlayerInventory(final int player_id, final int item_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO inventories (creature_id, player_id, tile_id, item_id) " + 
+									"	VALUES (0, ?, 0, ?)	"
+							);
+					stmt.setInt(1, player_id);
+					stmt.setInt(2, item_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean addToCreatureInventory(final int creature_id, final int item_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO inventories (creature_id, player_id, tile_id, item_id) " + 
+									"	VALUES (?, 0, 0, ?)	"
+							);
+					stmt.setInt(1, creature_id);
+					stmt.setInt(2, item_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean addToTileInventory(final int tile_id, final int item_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO inventories (creature_id, player_id, tile_id, item_id) " + 
+									"	VALUES (0, 0, ?, ?)	"
+							);
+					stmt.setInt(1, tile_id);
+					stmt.setInt(2, item_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	//@Override
@@ -894,6 +979,7 @@ public class DerbyDatabase implements IDatabase{
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);
 				}
 			}
 		});
@@ -1262,6 +1348,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
 				PreparedStatement stmt8 = null;
+				PreparedStatement stmt9 = null;
 
 				try {
 					stmt1 = conn.prepareStatement(
@@ -1301,7 +1388,6 @@ public class DerbyDatabase implements IDatabase{
 
 					stmt4 = conn.prepareStatement(
 							"create table inventories (" +
-									"	game_id integer, " +
 									"	creature_id integer, " +
 									"	player_id integer, " +
 									"	tile_id integer, " +
@@ -1364,6 +1450,14 @@ public class DerbyDatabase implements IDatabase{
 									")"
 							);
 					stmt8.executeUpdate();
+					
+					stmt9 = conn.prepareStatement(
+							"create table gameLogs (" +
+									"	game_id integer, " +
+									"   text integer " +
+									")"
+							);
+					stmt9.executeUpdate();
 
 					return true;
 				} finally {
@@ -1375,6 +1469,7 @@ public class DerbyDatabase implements IDatabase{
 					DBUtil.closeQuietly(stmt6);
 					DBUtil.closeQuietly(stmt7);
 					DBUtil.closeQuietly(stmt8);
+					DBUtil.closeQuietly(stmt9);
 				}
 			}
 		});
