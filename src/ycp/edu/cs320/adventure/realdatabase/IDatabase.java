@@ -14,10 +14,11 @@ public interface IDatabase {
 	public boolean updateAccountPassword(String password, int account_id);
 	public boolean removeAccount(String username);
 	public int getAccount(String username);
+	public boolean accountExists(String username);
 	
 	//games
 	public boolean createGame(int account_id);
-	public List<Integer> getGame(int account_id);
+	public List<Integer> getGames(int account_id);
 	public boolean removeGame(int game_id);
 	
 	//items
