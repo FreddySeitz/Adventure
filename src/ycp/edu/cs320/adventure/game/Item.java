@@ -38,10 +38,10 @@ public class Item{
 		gameId = i;
 	}
 	
-	public int getId(){
+	public int getItemId(){
 		return itemId;
 	}
-	public void setId(int i){
+	public void setItemId(int i){
 		itemId = i;
 	}
 	
