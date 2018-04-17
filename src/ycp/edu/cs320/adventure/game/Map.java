@@ -9,7 +9,7 @@ public class Map {
 	private int width;
 	private int[][] mapData;	//the tile type for every space in the map.
 	
-	private int accountId;		//what account the map is connected to
+	private int gameId;		//what account the map is connected to
 	
 	public Map(){
 		
@@ -46,12 +46,12 @@ public class Map {
 		}
 	}
 
-	public int getAccountId(){
-		return accountId;
+	public int getGameId(){
+		return gameId;
 	}
 	
-	public void setAccountId(int i){
-		accountId = i;
+	public void setGameId(int i){
+		gameId = i;
 	}
 	
 	public Tile[][] getMap(){

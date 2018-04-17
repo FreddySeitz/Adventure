@@ -59,7 +59,7 @@ public class GameEngine {
 		Item item = new Item("", "", 0,0,0,0,0,0,0);
 		for(Item i : currentGame.getItems()){
 			if(i.getId() == id){
-				item.setAccountId(i.getAccountId());
+				item.setGameId(i.getGameId());
 				item.setDamage(i.getDamage());
 				item.setDescription(i.getDescription());
 				item.setHealth(i.getHealth());
