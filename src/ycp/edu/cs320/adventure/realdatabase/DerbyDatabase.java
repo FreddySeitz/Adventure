@@ -232,6 +232,45 @@ public class DerbyDatabase implements IDatabase{
 				}
 			});
 		}
+		
+		//@Override
+				public boolean accountVerify(final String username, final String password) {
+					return executeTransaction(new Transaction<Boolean>() {
+						@Override
+						public Boolean execute(Connection conn) throws SQLException {
+							PreparedStatement stmt = null;
+							ResultSet resultSet = null;
+
+							try {
+								// retreive all attributes from both Books and Authors tables
+								stmt = conn.prepareStatement(
+										" SELECT accounts.account_id " + 
+												"FROM accounts " + 
+												"WHERE accounts.username = ? AND accounts.password = ? "
+										);
+								stmt.setString(1, username);
+								stmt.setString(2, password);
+
+								resultSet = stmt.executeQuery();
+								
+								int count = 0;
+								while (resultSet.next()) {
+									count++;
+								}
+								
+								if(count > 0){
+									return true;
+								}
+								else{
+									return false;
+								}
+
+							} finally {
+								DBUtil.closeQuietly(stmt);
+							}
+						}
+					});
+				}
 
 	//@Override
 	public boolean createGame(final int account_id) {
@@ -1047,30 +1086,38 @@ public class DerbyDatabase implements IDatabase{
 			return executeTransaction(new Transaction<Tile>() {
 				@Override
 				public Tile execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-					ResultSet resultSet = null;
+					
+					conn.setAutoCommit(false);
+					
+					PreparedStatement getmap = null;
+					PreparedStatement tile = null;
+					ResultSet resultMap = null;
+					ResultSet resultTile = null;
 
 					try {
 						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
+						getmap = conn.prepareStatement(
 								" SELECT games.game_id " +
 										"FROM games " + 
 										"WHERE games.account_id = ?"
 								);
-						stmt.setInt(1, game_id);
+						getmap.setInt(1, game_id);
 
-						resultSet = stmt.executeQuery();
+						resultMap = getmap.executeQuery();
 
 						List<Integer> result = new ArrayList<Integer>();
 
-						while (resultSet.next()) {
-							result.add(resultSet.getInt(1));
+						while (resultMap.next()) {
+							result.add(resultMap.getInt(1));
 						}
 
 						return null;
 
 					} finally {
-						DBUtil.closeQuietly(stmt);
+						DBUtil.closeQuietly(getmap);
+						DBUtil.closeQuietly(tile);
+						DBUtil.closeQuietly(resultMap);
+						DBUtil.closeQuietly(resultTile);
 					}
 				}
 			});
