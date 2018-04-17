@@ -54,7 +54,7 @@
 				
 				
 			</table>
-			<input type="Submit" name="signin" value="Sign In">
+			<input type="Submit" name="signin" value="Create Account">
 		
 			
 			</div>
