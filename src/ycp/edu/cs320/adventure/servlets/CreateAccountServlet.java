@@ -44,13 +44,16 @@ private static final long serialVersionUID = 1L;
         System.out.println("Password1: " + password);
         System.out.println("Password2: " + password2);
         
-        //else{
-        if(password.equals(password2)) {
+        FakeDatabase database = new FakeDatabase();
+        int accountId = database.accountExists(username);
+        
+        // if passwords match & if database does not contains username  
+        if(password.equals(password2) && accountId >= 0) {
         	successMessage = "Account creation successful";
         	req.setAttribute("successMessage", successMessage);
         	req.getRequestDispatcher("/_view/createAccount.jsp").forward(req, resp);
         	// Add new account & password to database
-        	// Also redirect to game.jsp
+        	// Redirect to game.jsp
         }
         else {
         	errorMessage = "Error: Account already exists or passwords do not match.";

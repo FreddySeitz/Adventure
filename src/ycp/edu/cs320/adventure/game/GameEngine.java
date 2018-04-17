@@ -58,12 +58,12 @@ public class GameEngine {
 	public Item createItem(int id){
 		Item item = new Item("", "", 0,0,0,0,0,0,0);
 		for(Item i : currentGame.getItems()){
-			if(i.getId() == id){
-				item.setAccountId(i.getAccountId());
+			if(i.getItemId() == id){
+				item.setGameId(i.getGameId());
 				item.setDamage(i.getDamage());
 				item.setDescription(i.getDescription());
 				item.setHealth(i.getHealth());
-				item.setId(i.getId());
+				item.setItemId(i.getItemId());
 				item.setName(i.getName());
 				item.setQuestId(i.getQuestId());
 				item.setValue(i.getValue());

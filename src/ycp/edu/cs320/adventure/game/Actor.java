@@ -2,7 +2,7 @@ package ycp.edu.cs320.adventure.game;
 
 // Actors are any object that moves around the Map
 public class Actor {
-	private int accountId;
+	private int gameId;
 	private Inventory inventory;
 	private Item equippedItem;
 	private int health;
@@ -18,7 +18,7 @@ public class Actor {
 	
 	// Constructor
 	public Actor(int accountId, Inventory inventory, Item equippedItem, int health, Tile location, int baseDamage){
-		this.accountId = accountId;
+		this.gameId = accountId;
 		this.inventory = inventory;
 		this.equippedItem = equippedItem;
 		this.health = health;
@@ -27,13 +27,13 @@ public class Actor {
 	}
 	
 	// Sets the Account ID
-	public void setAccountId(int id){
-		accountId = id;
+	public void setGameId(int id){
+		gameId = id;
 	}
 	
 	// Gets the Account ID
-	public int getAccountId(){
-		return accountId;
+	public int getGameId(){
+		return gameId;
 	}
 	
 	// Sets inventory

@@ -2,7 +2,7 @@ package ycp.edu.cs320.adventure.game;
 // Item class file
 public class Item{
 	// Variables
-	private int accountId;
+	private int gameId;
 	private int itemId;
 	private String description;
 	private String name;
@@ -18,10 +18,10 @@ public class Item{
 	}
 	
 	// Constructor
-	public Item(String n, String d, int a, int i, int w, int dmg, int h, int q, int v) {
+	public Item(String n, String d, int g, int i, int w, int dmg, int h, int q, int v) {
 		name = n;
 		description = d;
-		accountId = a;
+		gameId = g;
 		itemId = i;
 		weight = w;
 		damage = dmg;
@@ -31,17 +31,17 @@ public class Item{
 	}
 	
 
-	public int getAccountId(){
-		return accountId;
+	public int getGameId(){
+		return gameId;
 	}
-	public void setAccountId(int i){
-		accountId = i;
+	public void setGameId(int i){
+		gameId = i;
 	}
 	
-	public int getId(){
+	public int getItemId(){
 		return itemId;
 	}
-	public void setId(int i){
+	public void setItemId(int i){
 		itemId = i;
 	}
 	
