@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tile {
 //An arbitrary space on the map that can contain anything.
-	private int type;
+	private int type; //0 = unpassable space.  1 = empty room.  2 = trap
 	private ArrayList<Item> items;
 	private int x;	//tiles knows where it is in the map
 	private int y;
@@ -12,7 +12,8 @@ public class Tile {
 	private int damage;
 	
 	private int gameId;
-	//0 = unpassable space.  1 = empty room.  2 = trap
+	private int tileId;
+	
 	
 	public Tile(){	
 		type = 0;
@@ -28,6 +29,14 @@ public class Tile {
 	
 	public int getGameId(){
 		return gameId;
+	}
+	
+	public void setTileId(int t){
+		tileId = t;
+	}
+	
+	public int getTileId(){
+		return tileId;
 	}
 	
 	public int getType(){

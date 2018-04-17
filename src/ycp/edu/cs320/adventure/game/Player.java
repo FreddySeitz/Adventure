@@ -5,6 +5,7 @@ import java.util.ArrayList;
 // Players are the Actors that Users will control
 public class Player extends Actor {
 	private int score;
+	private int playerId;
 	
 	// Parameterless Constructor
 	public Player(){
@@ -14,6 +15,14 @@ public class Player extends Actor {
 	// Constructor
 	public Player(int score) {
 		this.score = score;
+	}
+	
+	public void setPlayerId(int p){
+		playerId = p;
+	}
+	
+	public int getPlayerId(){
+		return playerId;
 	}
 	
 	// Sets a new score
