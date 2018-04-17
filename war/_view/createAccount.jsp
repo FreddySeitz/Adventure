@@ -55,9 +55,14 @@
 				
 			</table>
 			<input type="Submit" name="signin" value="Create Account">
-		
+			
 			
 			</div>
 			</form>
+			
+			<form action="${pageContext.servletContext.contextPath}/index" method="get">
+				<input type="Submit" name="index" value="Return to Sign In.">
+			</form>
+			
 	</body>
 </html>
