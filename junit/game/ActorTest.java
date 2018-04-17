@@ -24,12 +24,12 @@ public class ActorTest {
 	@Before
 	public void setUp() {
 		actor = new Actor();
-		actor.setAccountId(0);
+		actor.setGameId(0);
 		actor.setBaseDamage(1);
 		actor.setHealth(100);
 		
-		item1 = new Item("Stick", "Small Branch", actor.getAccountId(), 1, 0, 5, 10, 0, 0);
-		item2 = new Item("Big Stick", "Bigger Branch", actor.getAccountId(), 2, 2, 10, 20, 0, 0);
+		item1 = new Item("Stick", "Small Branch", actor.getGameId(), 1, 0, 5, 10, 0, 0);
+		item2 = new Item("Big Stick", "Bigger Branch", actor.getGameId(), 2, 2, 10, 20, 0, 0);
 		
 		List<Item> items = new ArrayList<Item>();
 		items.add(item1);
@@ -54,13 +54,13 @@ public class ActorTest {
 	
 	@Test
 	public void testGetAccountId() {
-		assertEquals(0, actor.getAccountId());
+		assertEquals(0, actor.getGameId());
 	}
 	
 	@Test
 	public void testSetAccountId() {
-		actor.setAccountId(1);
-		assertEquals(1, actor.getAccountId());
+		actor.setGameId(1);
+		assertEquals(1, actor.getGameId());
 	}
 	
 	@Test

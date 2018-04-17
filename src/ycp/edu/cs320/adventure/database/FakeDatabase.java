@@ -70,7 +70,7 @@ public class FakeDatabase implements IDatabase {
 
 		else{
 			for(Map map : maps){
-				if(map.getAccountId() == accountId){
+				if(map.getGameId() == accountId){
 					engine.getGame().setMap(map);
 					break;	//stop looking through list
 				}
@@ -78,7 +78,7 @@ public class FakeDatabase implements IDatabase {
 
 			List<Item> itemlist = new ArrayList<Item>();
 			for(Item item : items){
-				if(item.getAccountId() == accountId){
+				if(item.getGameId() == accountId){
 					itemlist.add(item);
 				}
 			}
@@ -86,7 +86,7 @@ public class FakeDatabase implements IDatabase {
 			//finding all creatures and setting tile location
 			List<Creature> list = new ArrayList<Creature>();
 			for(Creature creature : creatures){
-				if(creature.getAccountId() == accountId){
+				if(creature.getGameId() == accountId){
 					creature.setLocation(engine.getGame().getMap().getTile(creature.getLocation().getX(), creature.getLocation().getY()));
 					list.add(creature);
 				}
@@ -94,7 +94,7 @@ public class FakeDatabase implements IDatabase {
 			engine.getGame().setCreatures(list);
 			//finding player and setting tile location
 			for(Player player : players){
-				if(player.getAccountId() == accountId){
+				if(player.getGameId() == accountId){
 					player.setLocation(engine.getGame().getMap().getTile(player.getLocation().getX(), player.getLocation().getY()));
 					engine.getGame().setPlayer(player);
 				}
@@ -105,27 +105,27 @@ public class FakeDatabase implements IDatabase {
 				itemlist = new ArrayList<Item>();
 				for(Item creatureitem : creature.getInventory().getInventory()){	//inventory
 					for(Item item : engine.getGame().getItems()){	//item list
-						if(creatureitem.getId() == item.getId()){	//if inventory item == item list
-							itemlist.add(engine.createItem(creatureitem.getId()));
+						if(creatureitem.getItemId() == item.getItemId()){	//if inventory item == item list
+							itemlist.add(engine.createItem(creatureitem.getItemId()));
 							break;	//item found, search for next item
 						}
 					}
 				}
 				creature.getInventory().setInventory(itemlist);
-				creature.setEquippedItem(engine.createItem(creature.getEquippedItem().getId()));	//placing correct item equipped
+				creature.setEquippedItem(engine.createItem(creature.getEquippedItem().getItemId()));	//placing correct item equipped
 			}
 
 			//setting inventory for player
 			itemlist = new ArrayList<Item>();
 			for(Item playeritem : engine.getGame().getPlayer().getInventory().getInventory()){	//inventory
 				for(Item item : engine.getGame().getItems()){	//item list
-					if(playeritem.getId() == item.getId()){	//if inventory item == item list
-						itemlist.add(engine.createItem(playeritem.getId()));
+					if(playeritem.getItemId() == item.getItemId()){	//if inventory item == item list
+						itemlist.add(engine.createItem(playeritem.getItemId()));
 						break;	//item found, search for next item
 					}
 				}
 			}
-			engine.getGame().getPlayer().setEquippedItem(engine.createItem(engine.getGame().getPlayer().getEquippedItem().getId()));
+			engine.getGame().getPlayer().setEquippedItem(engine.createItem(engine.getGame().getPlayer().getEquippedItem().getItemId()));
 			return true;	//sucessful
 		}
 	}
@@ -225,13 +225,13 @@ public class FakeDatabase implements IDatabase {
 			StringBuilder itembuilder = new StringBuilder();
 
 			Player p = game.getPlayer();	//putting current game data on top of database
-			playerbuilder.append(p.getAccountId());
+			playerbuilder.append(p.getGameId());
 			playerbuilder.append("|");
 			for(Item item : p.getInventory().getInventory()){
-				playerbuilder.append(item.getId());
+				playerbuilder.append(item.getItemId());
 				playerbuilder.append(',');
 			}
-			playerbuilder.append(p.getEquippedItem().getId());
+			playerbuilder.append(p.getEquippedItem().getItemId());
 			playerbuilder.append("|");
 			playerbuilder.append(p.getHealth());
 			playerbuilder.append("|");
@@ -244,17 +244,17 @@ public class FakeDatabase implements IDatabase {
 			playerbuilder.append(p.getScore());
 			playerbuilder.append("\n");
 			for(Player player : players){
-				if(id == player.getAccountId()){
+				if(id == player.getGameId()){
 					//if accountId == accounts ID, skip the data in actors List.  Already added to be on top of written file
 				}
 				else{
-					playerbuilder.append(player.getAccountId());
+					playerbuilder.append(player.getGameId());
 					playerbuilder.append("|");
 					for(Item item : player.getInventory().getInventory()){
-						playerbuilder.append(item.getId());
+						playerbuilder.append(item.getItemId());
 						playerbuilder.append(',');
 					}
-					playerbuilder.append(player.getEquippedItem().getId());
+					playerbuilder.append(player.getEquippedItem().getItemId());
 					playerbuilder.append("|");
 					playerbuilder.append(player.getHealth());
 					playerbuilder.append("|");
@@ -273,13 +273,13 @@ public class FakeDatabase implements IDatabase {
 			playerswriter.close();
 
 			for(Creature c : game.getCreatures()){	//putting current game data on top of database
-				creaturebuilder.append(c.getAccountId());
+				creaturebuilder.append(c.getGameId());
 				creaturebuilder.append("|");
 				for(Item item : c.getInventory().getInventory()){
-					creaturebuilder.append(item.getId());
+					creaturebuilder.append(item.getItemId());
 					creaturebuilder.append(',');
 				}
-				creaturebuilder.append(c.getEquippedItem().getId());
+				creaturebuilder.append(c.getEquippedItem().getItemId());
 				creaturebuilder.append("|");
 				creaturebuilder.append(c.getHealth());
 				creaturebuilder.append("|");
@@ -293,17 +293,17 @@ public class FakeDatabase implements IDatabase {
 				creaturebuilder.append("\n");
 			}
 			for(Creature creature : creatures){
-				if(id == creature.getAccountId()){
+				if(id == creature.getGameId()){
 					//if accountId == accounts ID, skip the data in actors List.  Already added to be on top of written file
 				}
 				else{
-					creaturebuilder.append(creature.getAccountId());
+					creaturebuilder.append(creature.getGameId());
 					creaturebuilder.append("|");
 					for(Item item : creature.getInventory().getInventory()){
-						creaturebuilder.append(item.getId());
+						creaturebuilder.append(item.getItemId());
 						creaturebuilder.append(',');
 					}
-					creaturebuilder.append(creature.getEquippedItem().getId());
+					creaturebuilder.append(creature.getEquippedItem().getItemId());
 					creaturebuilder.append("|");
 					creaturebuilder.append(creature.getHealth());
 					creaturebuilder.append("|");
@@ -323,15 +323,15 @@ public class FakeDatabase implements IDatabase {
 
 			//putting current game data on top of database
 			for(Item i : game.getItems()){
-				itembuilder.append(i.getId());
+				itembuilder.append(i.getItemId());
 				itembuilder.append("|");
 				itembuilder.append(i.getName());
 				itembuilder.append("|");
 				itembuilder.append(i.getDescription());
 				itembuilder.append("|");
-				itembuilder.append(i.getAccountId());
+				itembuilder.append(i.getGameId());
 				itembuilder.append("|");
-				itembuilder.append(i.getId());
+				itembuilder.append(i.getItemId());
 				itembuilder.append("|");
 				itembuilder.append(i.getWeight());
 				itembuilder.append("|");
@@ -345,19 +345,19 @@ public class FakeDatabase implements IDatabase {
 				itembuilder.append("/n");
 			}
 			for(Item i : items){
-				if(id == i.getAccountId()){
+				if(id == i.getGameId()){
 					//if accountId == accounts ID, skip the data in actors List.  Already added to be on top of written file
 				}
 				else{
-					itembuilder.append(i.getId());
+					itembuilder.append(i.getItemId());
 					itembuilder.append("|");
 					itembuilder.append(i.getName());
 					itembuilder.append("|");
 					itembuilder.append(i.getDescription());
 					itembuilder.append("|");
-					itembuilder.append(i.getAccountId());
+					itembuilder.append(i.getGameId());
 					itembuilder.append("|");
-					itembuilder.append(i.getId());
+					itembuilder.append(i.getItemId());
 					itembuilder.append("|");
 					itembuilder.append(i.getWeight());
 					itembuilder.append("|");
@@ -377,7 +377,7 @@ public class FakeDatabase implements IDatabase {
 
 			//putting current game data on top of database
 			Map map = game.getMap();
-			mapbuilder.append(map.getAccountId());
+			mapbuilder.append(map.getGameId());
 			mapbuilder.append("|");
 			mapbuilder.append(map.getHeight());
 			mapbuilder.append("|");
@@ -387,11 +387,11 @@ public class FakeDatabase implements IDatabase {
 			mapbuilder.append("\n");
 
 			for(Map m : maps){
-				if(id == m.getAccountId()){
+				if(id == m.getGameId()){
 					//if accountId == accounts ID, skip the data in maps List.  Already added to be on top of written file
 				}
 				else{
-					mapbuilder.append(map.getAccountId());
+					mapbuilder.append(map.getGameId());
 					mapbuilder.append("|");
 					mapbuilder.append(map.getHeight());
 					mapbuilder.append("|");

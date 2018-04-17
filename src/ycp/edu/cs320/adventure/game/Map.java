@@ -101,7 +101,7 @@ public class Map {
 				builder.append(map[i][j].getType());
 				builder.append(",");	// , after every variable in Tile
 				for(int k = 0; k < map[i][j].getItemList().size(); k++){	//stores all items separated by '/'
-					builder.append(map[i][j].getItemList().get(k).getId());
+					builder.append(map[i][j].getItemList().get(k).getItemId());
 					if(k != map[i][j].getItemList().size()-1){
 						builder.append('/');
 					}
