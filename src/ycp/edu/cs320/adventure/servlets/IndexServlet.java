@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ycp.edu.cs320.adventure.database.FakeDatabase;
 import ycp.edu.cs320.adventure.game.Account;
+import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
 public class IndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -40,11 +41,11 @@ public class IndexServlet extends HttpServlet {
         //Account account = new Account(username, password);
         
         //database query
-        FakeDatabase database = new FakeDatabase();
-        int accountId = database.accountExists(username);        
+        DerbyDatabase database = new DerbyDatabase();
+        boolean accountId = database.accountExists(username);        
         
         // username and password match
-        if(accountId >= 0 && database.login(username, password)) {
+        if(accountId && database.accountVerify(username, password)) {
         	errorMessage = "Successful login";
         	System.out.println("Successful log in :)");
     		// redirect to /titleScreen page
@@ -53,7 +54,7 @@ public class IndexServlet extends HttpServlet {
         }
         
         //username matches but password does not
-        else if(accountId == -2/*(account.getUsername().equals(testUserName)) && (!account.getPassword().equals(testPassword))*/) {
+        else if(accountId && !database.accountVerify(username, password)) {
         	errorMessage = "Error: Username or password is incorrect.";
         	req.setAttribute("errorMessage", errorMessage);
         	req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);

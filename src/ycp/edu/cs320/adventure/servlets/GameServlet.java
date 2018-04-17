@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ycp.edu.cs320.adventure.game.*;
+import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
 public class GameServlet extends HttpServlet{
 
@@ -26,7 +27,8 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		// Necessary objects & game setup
-
+		
+		DerbyDatabase database = new DerbyDatabase();
 
 		Game game = new Game();
 		GameEngine engine = new GameEngine();

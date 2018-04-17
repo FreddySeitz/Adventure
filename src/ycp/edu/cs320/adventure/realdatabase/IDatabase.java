@@ -15,6 +15,7 @@ public interface IDatabase {
 	public boolean removeAccount(String username);
 	public int getAccount(String username);
 	public boolean accountExists(String username);
+	public boolean accountVerify(String username, String password);
 	
 	//games
 	public boolean createGame(int account_id);
