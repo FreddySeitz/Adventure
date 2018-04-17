@@ -146,4 +146,15 @@ public class GameTest {
 		game.setCommands(commands2);
 		assertEquals(commands2, game.getCommands());
 	}
+	
+	@Test
+	public void testGetGameLog() {
+		assertEquals("You decided to set out on an Adventure!", game.getGameLog());
+	}
+	
+	@Test
+	public void testSetGameLog() {
+		game.setGameLog("You're dumb.");
+		assertEquals("You're dumb.", game.getGameLog());
+	}
 }

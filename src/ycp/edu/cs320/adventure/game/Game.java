@@ -10,6 +10,7 @@ public class Game {
 	private List<Creature> creatures;
 	private List<Item> items;
 	private List<Command> commands;
+	private String gameLog;
 
 	// Parameterless Constructor
 	public Game() {
@@ -18,6 +19,7 @@ public class Game {
 		creatures = new ArrayList<Creature>();
 		items = new ArrayList<Item>();
 		commands = new ArrayList<Command>();
+		gameLog = "You decided to set out on an Adventure!";
 	}
 	
 	// Constructor
@@ -27,6 +29,7 @@ public class Game {
 		this.creatures = creatures;
 		this.items = items;
 		this.commands = commands;
+		gameLog = "You decided to set out on an Adventure!";
 	}
 
 	// Sets the game map
@@ -77,5 +80,15 @@ public class Game {
 	// Gets the game items
 	public List<Command> getCommands(){
 		return commands;
+	}
+	
+	// Sets gameLog object
+	public void setGameLog(String gameLog){
+		this.gameLog = gameLog;
+	}
+	
+	// Gets gameLog object
+	public String getGameLog(){
+		return gameLog;
 	}
 }
