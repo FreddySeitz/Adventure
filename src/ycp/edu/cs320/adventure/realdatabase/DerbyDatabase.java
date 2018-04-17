@@ -40,7 +40,7 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" INSERT INTO accounts (USERNAME, PASSWORD) " + 
-									"	VALUES (?, ?);	"
+									"	VALUES (?, ?)"
 							);
 					stmt.setString(1, username);
 					stmt.setString(2, password);
@@ -244,7 +244,7 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" INSERT INTO games (account_id) " + 
-									"	VALUES (?);	"
+									"	VALUES (?)	"
 							);
 					stmt.setInt(1, account_id);
 
@@ -330,7 +330,7 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" INSERT INTO items (game_id, name, description, weight, damage, health, quest_id, value) " + 
-									"	VALUES (?, ?, ?, ?, ?, ?, ?, ?);	"
+									"	VALUES (?, ?, ?, ?, ?, ?, ?, ?)	"
 							);
 					stmt.setInt(1, game_id);
 					stmt.setString(2, name);
@@ -699,7 +699,7 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" INSERT INTO maps (game_id, height, width) " + 
-									"	VALUES (?, ?, ?);	"
+									"	VALUES (?, ?, ?)	"
 							);
 					stmt.setInt(1, game_id);
 					stmt.setInt(2, height);
@@ -878,7 +878,7 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" INSERT INTO tiles (map_id, type, description, x, y) " + 
-									"	VALUES (?, ?, ?, ?, ?);	"
+									"	VALUES (?, ?, ?, ?, ?)	"
 							);
 					stmt.setInt(1, map_id);
 					stmt.setInt(2, type);
@@ -1043,38 +1043,38 @@ public class DerbyDatabase implements IDatabase{
 		}
 		
 		//@Override
-//		public Tile getTile(final int game_id, final int x, final int y) {
-//			return executeTransaction(new Transaction<Tile>() {
-//				@Override
-//				public Tile execute(Connection conn) throws SQLException {
-//					PreparedStatement stmt = null;
-//					ResultSet resultSet = null;
-//
-//					try {
-//						// retreive all attributes from both Books and Authors tables
-//						stmt = conn.prepareStatement(
-//								" SELECT games.game_id " +
-//										"FROM games " + 
-//										"WHERE games.account_id = ?"
-//								);
-//						stmt.setInt(1, game_id);
-//
-//						resultSet = stmt.executeQuery();
-//
-//						List<Integer> result = new ArrayList<Integer>();
-//
-//						while (resultSet.next()) {
-//							result.add(resultSet.getInt(1));
-//						}
-//
-//						return result;
-//
-//					} finally {
-//						DBUtil.closeQuietly(stmt);
-//					}
-//				}
-//			});
-//		}
+		public Tile getTile(final int game_id, final int x, final int y) {
+			return executeTransaction(new Transaction<Tile>() {
+				@Override
+				public Tile execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" SELECT games.game_id " +
+										"FROM games " + 
+										"WHERE games.account_id = ?"
+								);
+						stmt.setInt(1, game_id);
+
+						resultSet = stmt.executeQuery();
+
+						List<Integer> result = new ArrayList<Integer>();
+
+						while (resultSet.next()) {
+							result.add(resultSet.getInt(1));
+						}
+
+						return null;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 		
 
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
