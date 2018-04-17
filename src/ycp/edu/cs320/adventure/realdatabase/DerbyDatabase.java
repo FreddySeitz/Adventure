@@ -11,6 +11,7 @@ import java.util.List;
 
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
+import ycp.edu.cs320.adventure.game.Tile;
 import ycp.edu.cs320.adventure.realdatabase.DBUtil;
 
 public class DerbyDatabase implements IDatabase{
@@ -193,6 +194,44 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public boolean accountExists(final String username) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+					ResultSet resultSet = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" SELECT accounts.account_id " + 
+										"FROM accounts " + 
+										"WHERE accounts.username = ? "
+								);
+						stmt.setString(1, username);
+
+						resultSet = stmt.executeQuery();
+						
+						int count = 0;
+						while (resultSet.next()) {
+							count++;
+						}
+						
+						if(count > 0){
+							return true;
+						}
+						else{
+							return false;
+						}
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public boolean createGame(final int account_id) {
@@ -221,7 +260,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public List<Integer> getGame(final int account_id) {
+	public List<Integer> getGames(final int account_id) {
 		return executeTransaction(new Transaction<List<Integer>>() {
 			@Override
 			public List<Integer> execute(Connection conn) throws SQLException {
@@ -1003,6 +1042,39 @@ public class DerbyDatabase implements IDatabase{
 			});
 		}
 		
+		//@Override
+//		public Tile getTile(final int game_id, final int x, final int y) {
+//			return executeTransaction(new Transaction<Tile>() {
+//				@Override
+//				public Tile execute(Connection conn) throws SQLException {
+//					PreparedStatement stmt = null;
+//					ResultSet resultSet = null;
+//
+//					try {
+//						// retreive all attributes from both Books and Authors tables
+//						stmt = conn.prepareStatement(
+//								" SELECT games.game_id " +
+//										"FROM games " + 
+//										"WHERE games.account_id = ?"
+//								);
+//						stmt.setInt(1, game_id);
+//
+//						resultSet = stmt.executeQuery();
+//
+//						List<Integer> result = new ArrayList<Integer>();
+//
+//						while (resultSet.next()) {
+//							result.add(resultSet.getInt(1));
+//						}
+//
+//						return result;
+//
+//					} finally {
+//						DBUtil.closeQuietly(stmt);
+//					}
+//				}
+//			});
+//		}
 		
 
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
