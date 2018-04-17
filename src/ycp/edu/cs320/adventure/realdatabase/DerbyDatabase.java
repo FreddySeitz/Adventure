@@ -139,6 +139,32 @@ public class DerbyDatabase {
 				}
 			});
 		}
+		
+		//@Override
+		public void createItem(final int account_id) {
+			executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" INSERT INTO items (account_id) " + 
+										"	VALUES (?);	"
+								);
+						stmt.setInt(1, account_id);
+
+						stmt.executeQuery();
+
+						return true;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
@@ -282,7 +308,8 @@ public class DerbyDatabase {
 									"   health integer," +
 									"   x_location integer," +
 									"   y_location integer," +
-									"   baseDamage integer " +
+									"   baseDamage integer, " +
+									"	moveSpeed integer " +
 									")"
 							);
 					stmt7.executeUpdate();
@@ -296,8 +323,78 @@ public class DerbyDatabase {
 									"   health integer," +
 									"   x_location integer," +
 									"   y_location integer," +
-									"   baseDamage integer " +
+									"   baseDamage integer, " +
+									"	score integer " +
 									")"
+							);
+					stmt8.executeUpdate();
+
+					return true;
+				} finally {
+					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);
+					DBUtil.closeQuietly(stmt4);
+					DBUtil.closeQuietly(stmt5);
+					DBUtil.closeQuietly(stmt6);
+					DBUtil.closeQuietly(stmt7);
+					DBUtil.closeQuietly(stmt8);
+				}
+			}
+		});
+	}
+	
+	public void removeTables() {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt1 = null;
+				PreparedStatement stmt2 = null;
+				PreparedStatement stmt3 = null;
+				PreparedStatement stmt4 = null;
+				PreparedStatement stmt5 = null;
+				PreparedStatement stmt6 = null;
+				PreparedStatement stmt7 = null;
+				PreparedStatement stmt8 = null;
+
+				try {
+					stmt1 = conn.prepareStatement(
+							"drop table accounts"
+							);
+					stmt1.executeUpdate();
+
+					stmt2 = conn.prepareStatement(
+							"drop table games"
+							);
+					stmt2.executeUpdate();
+
+					stmt3 = conn.prepareStatement(
+							"drop table items"
+							);
+					stmt3.executeUpdate();
+
+					stmt4 = conn.prepareStatement(
+							"drop table inventories"
+							);
+					stmt4.executeUpdate();
+
+					stmt5 = conn.prepareStatement(
+							"drop table maps"
+							);
+					stmt5.executeUpdate();
+
+					stmt6 = conn.prepareStatement(
+							"drop table tiles"
+							);
+					stmt6.executeUpdate();
+
+					stmt7 = conn.prepareStatement(
+							"drop table creatures"
+							);
+					stmt7.executeUpdate();
+
+					stmt8 = conn.prepareStatement(
+							"drop table players"
 							);
 					stmt8.executeUpdate();
 
@@ -320,7 +417,9 @@ public class DerbyDatabase {
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
+		
 		db.createTables();
+		//db.removeTables();
 
 		System.out.println("Success!");
 	}
