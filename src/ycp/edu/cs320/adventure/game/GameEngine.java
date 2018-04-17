@@ -10,13 +10,11 @@ import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 // Operates on the current Game object
 public class GameEngine {
 	private Game currentGame;
-	private String gameLog;
 	private DerbyDatabase database;
 	
 	// Parameterless Constructor
 	public GameEngine() {
 		currentGame = new Game();
-		gameLog = "You decided to set out on an Adventure!";
 		database = new DerbyDatabase();
 	}
 	
@@ -34,16 +32,6 @@ public class GameEngine {
 	// Gets currentGame object
 	public Game getGame(){
 		return currentGame;
-	}
-	
-	// Sets gameLog object
-	public void setGameLog(String gameLog){
-		this.gameLog = gameLog;
-	}
-	
-	// Gets gameLog object
-	public String getGameLog(){
-		return gameLog;
 	}
 	
 	// Sets Database object
@@ -76,7 +64,35 @@ public class GameEngine {
 	// Moves the player based on command
 	public void movePlayer(Tile newLocation) {
 		currentGame.getPlayer().setLocation(newLocation);
-		//database.updatePlayerLocation(currentGame.getPlayer().getGameId(), newLocation);
+//		database.updatePlayerLocation(currentGame.getPlayer().getGameId(), newLocation.getX(), newLocation.getY());
+		update();
+	}
+	
+	// Randomly moves creatures when the user enters a command
+	public void moveCreatures() {
+		Map currentMap = currentGame.getMap();
+		Tile newLocation = new Tile();
+		int newX = 0;
+		int newY = 0;
+		for(Creature c : currentGame.getCreatures()){
+			newX = c.getLocation().getX() + (int)((Math.random() * 2) - 1);
+			newY = c.getLocation().getY() + (int)((Math.random() * 2) - 1);
+			
+			// Checks for boundaries of the map and does not
+			// allow a move that would go outside
+			if(newX >= 0 && newX < currentMap.getWidth() &&
+			   newY >= 0 && newY < currentMap.getHeight()) {
+				newLocation = currentMap.getTile(newX, newY);
+			}
+			else if(newX >= 0 && newX < currentMap.getWidth()) {
+				newLocation = currentMap.getTile(newX, c.getLocation().getY());
+			}
+			else if(newY >= 0 && newY < currentMap.getHeight()) {
+				newLocation = currentMap.getTile(c.getLocation().getX(), newY);
+			}
+			
+			c.setLocation(newLocation);
+		}
 	}
 	
 	// Stores the current Game object in the database
@@ -86,7 +102,7 @@ public class GameEngine {
 	
 	// Updates the current Game object
 	public void update() {
-		
+		moveCreatures();
 	}
 	
 	// Creates a new item given an item ID
