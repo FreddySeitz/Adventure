@@ -3,7 +3,6 @@ package ycp.edu.cs320.adventure.realdatabase;
 import java.util.List;
 
 import ycp.edu.cs320.adventure.game.Creature;
-import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
@@ -99,11 +98,7 @@ public interface IDatabase {
 	public Player getPlayer(int player_id);
 	
 	//dataLogs
-	
-	
-//	public boolean loadGame(String username, String password, GameEngine engine);
-//	public boolean newAccount(String username, String password, GameEngine engine);
-//	public boolean newGame(String username, GameEngine engine);
-//	public int accountExists(String username);
-//	public boolean login(String username, String password);
+	public boolean addGameLog(int game_id, String text);
+	public String getGameLog(int game_id);
+	public boolean removeGameLog(int game_id);
 }

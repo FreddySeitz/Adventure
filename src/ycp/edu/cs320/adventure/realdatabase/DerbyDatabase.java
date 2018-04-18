@@ -1665,285 +1665,285 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-		public boolean createCreature(final int game_id, final int equippedItem, final int health, final int x, final int y, final int baseDamage, final int moveSpeed) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
+	public boolean createCreature(final int game_id, final int equippedItem, final int health, final int x, final int y, final int baseDamage, final int moveSpeed) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
 
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" INSERT INTO players (game_id, equippedItem, health, x_location, y_location, baseDamage, moveSpeed) " + 
-										"	VALUES (?, ?, ?, ?, ?, ?, ?)	"
-								);
-						stmt.setInt(1, game_id);
-						stmt.setInt(2, equippedItem);
-						stmt.setInt(3, health);
-						stmt.setInt(4, x);
-						stmt.setInt(5, y);
-						stmt.setInt(6, baseDamage);
-						stmt.setInt(7, moveSpeed);
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO players (game_id, equippedItem, health, x_location, y_location, baseDamage, moveSpeed) " + 
+									"	VALUES (?, ?, ?, ?, ?, ?, ?)	"
+							);
+					stmt.setInt(1, game_id);
+					stmt.setInt(2, equippedItem);
+					stmt.setInt(3, health);
+					stmt.setInt(4, x);
+					stmt.setInt(5, y);
+					stmt.setInt(6, baseDamage);
+					stmt.setInt(7, moveSpeed);
 
-						stmt.executeUpdate();
+					stmt.executeUpdate();
 
-						return true;
+					return true;
 
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
+				} finally {
+					DBUtil.closeQuietly(stmt);
 				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureEquippedItem(final int creature_id, final int equippedItem) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET equippedItem = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, equippedItem);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureHealth(final int creature_id, final int health) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET health = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, health);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureX(final int creature_id, final int x) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET x_location = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, x);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureY(final int creature_id, final int y) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET y_location = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, y);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureBaseDamage(final int creature_id, final int baseDamage) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET baseDamage = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, baseDamage);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean updateCreatureMoveSpeed(final int creature_id, final int moveSpeed) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE creatures " + 
-										"SET moveSpeed = ? " +
-										"WHERE creatures.creature_id = ?"
-								);
-
-						stmt.setInt(1, moveSpeed);
-						stmt.setInt(2, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public boolean removeCreature(final int creature_id) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" DELETE FROM creatures " +
-										"WHERE creatures.creature_id = ?"
-								);
-						stmt.setInt(1, creature_id);
-
-						stmt.executeUpdate();
-
-						return true;
-
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
-				}
-			});
-		}
-
-		//@Override
-		public Creature getCreature(final int creature_id) {
-			return executeTransaction(new Transaction<Creature>() {
-				@Override
-				public Creature execute(Connection conn) throws SQLException {
-
-					PreparedStatement gettile = null;
-					ResultSet resultTile = null;
-
-					try {
-						// retreive all attributes from both Books and Authors tables
-						gettile = conn.prepareStatement(
-								" SELECT * " +
-										"FROM creatures " + 
-										"WHERE creatures.creature_id = ?"
-								);
-
-						gettile.setInt(1, creature_id);
-
-						resultTile = gettile.executeQuery();
-						resultTile.next();
-
-						Creature creature = new Creature();
-						loadcreature(creature, resultTile, 1);
-
-						return creature;
-
-					} finally {
-						DBUtil.closeQuietly(gettile);
-						DBUtil.closeQuietly(resultTile);
-					}
-				}
-			});
-		}
-		
-		private void loadcreature(Creature creature, ResultSet resultSet, int index) throws SQLException {
-			creature.setCreatureId((resultSet.getInt(index++)));
-			creature.setGameId(resultSet.getInt(index++));
-			int item_id = resultSet.getInt(index++);
-			if(item_id > 0){	//if item exists
-				creature.setEquippedItem(getItem(item_id));
 			}
-			creature.setHealth(resultSet.getInt(index++));
-			creature.setLocation(getTile(creature.getGameId(), resultSet.getInt(index++), resultSet.getInt(index++)));
-			creature.setBaseDamage(resultSet.getInt(index++));
-			creature.setMovementSpeed((resultSet.getInt(index++)));
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureEquippedItem(final int creature_id, final int equippedItem) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET equippedItem = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, equippedItem);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureHealth(final int creature_id, final int health) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET health = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, health);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureX(final int creature_id, final int x) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET x_location = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, x);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureY(final int creature_id, final int y) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET y_location = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, y);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureBaseDamage(final int creature_id, final int baseDamage) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET baseDamage = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, baseDamage);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean updateCreatureMoveSpeed(final int creature_id, final int moveSpeed) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE creatures " + 
+									"SET moveSpeed = ? " +
+									"WHERE creatures.creature_id = ?"
+							);
+
+					stmt.setInt(1, moveSpeed);
+					stmt.setInt(2, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean removeCreature(final int creature_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" DELETE FROM creatures " +
+									"WHERE creatures.creature_id = ?"
+							);
+					stmt.setInt(1, creature_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public Creature getCreature(final int creature_id) {
+		return executeTransaction(new Transaction<Creature>() {
+			@Override
+			public Creature execute(Connection conn) throws SQLException {
+
+				PreparedStatement gettile = null;
+				ResultSet resultTile = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					gettile = conn.prepareStatement(
+							" SELECT * " +
+									"FROM creatures " + 
+									"WHERE creatures.creature_id = ?"
+							);
+
+					gettile.setInt(1, creature_id);
+
+					resultTile = gettile.executeQuery();
+					resultTile.next();
+
+					Creature creature = new Creature();
+					loadcreature(creature, resultTile, 1);
+
+					return creature;
+
+				} finally {
+					DBUtil.closeQuietly(gettile);
+					DBUtil.closeQuietly(resultTile);
+				}
+			}
+		});
+	}
+
+	private void loadcreature(Creature creature, ResultSet resultSet, int index) throws SQLException {
+		creature.setCreatureId((resultSet.getInt(index++)));
+		creature.setGameId(resultSet.getInt(index++));
+		int item_id = resultSet.getInt(index++);
+		if(item_id > 0){	//if item exists
+			creature.setEquippedItem(getItem(item_id));
 		}
-	
+		creature.setHealth(resultSet.getInt(index++));
+		creature.setLocation(getTile(creature.getGameId(), resultSet.getInt(index++), resultSet.getInt(index++)));
+		creature.setBaseDamage(resultSet.getInt(index++));
+		creature.setMovementSpeed((resultSet.getInt(index++)));
+	}
+
 	//@Override
 	public boolean createPlayer(final int game_id, final int equippedItem, final int health, final int x, final int y, final int baseDamage, final int score) {
 		return executeTransaction(new Transaction<Boolean>() {
@@ -2206,6 +2206,96 @@ public class DerbyDatabase implements IDatabase{
 				} finally {
 					DBUtil.closeQuietly(gettile);
 					DBUtil.closeQuietly(resultTile);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean addGameLog(final int game_id, final String text) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" INSERT INTO gameLogs (game_id, text) " + 
+									"	VALUES (?, ?)	"
+							);
+					stmt.setInt(1, game_id);
+					stmt.setString(2, text);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public String getGameLog(final int game_id) {
+		return executeTransaction(new Transaction<String>() {
+			@Override
+			public String execute(Connection conn) throws SQLException {
+
+				PreparedStatement gettile = null;
+				ResultSet resultTile = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					gettile = conn.prepareStatement(
+							" SELECT gameLogs.text " +
+									"FROM gameLogs " + 
+									"WHERE gameLogs.game_id = ?"
+							);
+
+					gettile.setInt(1, game_id);
+
+					resultTile = gettile.executeQuery();
+					resultTile.next();
+
+					StringBuilder builder = new StringBuilder();
+					while(resultTile.next()){
+						builder.append(resultTile.getString(1) + '\n');
+					}
+
+					return builder.toString();
+
+				} finally {
+					DBUtil.closeQuietly(gettile);
+					DBUtil.closeQuietly(resultTile);
+				}
+			}
+		});
+	}
+
+	//@Override
+	public boolean removeGameLog(final int game_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" DELETE FROM gameLogs " +
+									"WHERE gameLogs.game_id = ?"
+							);
+					stmt.setInt(1, game_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
 				}
 			}
 		});
