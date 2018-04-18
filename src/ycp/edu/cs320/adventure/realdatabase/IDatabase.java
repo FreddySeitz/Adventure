@@ -2,6 +2,7 @@ package ycp.edu.cs320.adventure.realdatabase;
 
 import java.util.List;
 
+import ycp.edu.cs320.adventure.game.Creature;
 import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
@@ -40,17 +41,17 @@ public interface IDatabase {
 	
 	//inventories
 	public boolean addToPlayerInventory(int player_id, int item_id);
-	public boolean playerInventoryItemExists(int player_id, int item_id);
+	public boolean existsPlayerInventoryItem(int player_id, int item_id);
 	public boolean removeFromPlayerInventory(int player_id, int item_id);
 	public List<Item> getPlayerInventory(int player_id);
 	
 	public boolean addToCreatureInventory(int creature_id, int item_id);
-	public boolean creatureInventoryItemExists(int creature_id, int item_id);
+	public boolean existsCreatureInventoryItem(int creature_id, int item_id);
 	public boolean removeFromCreatureInventory(int creature_id, int item_id);
 	public List<Item> getCreatureInventory(int creature_id);
 	
 	public boolean addToTileInventory(int tile_id, int item_id);
-	public boolean tileInventoryItemExists(int tile_id, int item_id);
+	public boolean existsTileInventoryItem(int tile_id, int item_id);
 	public boolean removeFromTileInventory(int tile_id, int item_id);
 	public List<Item> getTileInventory(int tile_id);
 	
@@ -76,9 +77,24 @@ public interface IDatabase {
 	public List<Tile> getAllTiles(int game_id);
 	
 	//creatures
+	public boolean createCreature(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int moveSpeed);
+	public boolean updateCreatureEquippedItem(int creature_id, int equippedItem);
+	public boolean updateCreatureHealth(int creature_id, int health);
+	public boolean updateCreatureX(int creature_id, int x);
+	public boolean updateCreatureY(int creature_id, int y);
+	public boolean updateCreatureBaseDamage(int creature_id, int baseDamage);
+	public boolean updateCreatureMoveSpeed(int creature_id, int moveSpeed);
+	public boolean removeCreature(int creature_id);
+	public Creature getCreature(int creature_id);
 	
 	//players
 	public boolean createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
+	public boolean updatePlayerEquippedItem(int player_id, int equippedItem);
+	public boolean updatePlayerHealth(int player_id, int health);
+	public boolean updatePlayerX(int player_id, int x);
+	public boolean updatePlayerY(int player_id, int y);
+	public boolean updatePlayerBaseDamage(int player_id, int baseDamage);
+	public boolean updatePlayerScore(int player_id, int score);
 	public boolean removePlayer(int player_id);
 	public Player getPlayer(int player_id);
 	
