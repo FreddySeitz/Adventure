@@ -5,6 +5,7 @@ import java.util.List;
 import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Item;
 import ycp.edu.cs320.adventure.game.Map;
+import ycp.edu.cs320.adventure.game.Player;
 import ycp.edu.cs320.adventure.game.Tile;
 
 public interface IDatabase {
@@ -39,9 +40,21 @@ public interface IDatabase {
 	
 	//inventories
 	public boolean addToPlayerInventory(int player_id, int item_id);
-	public boolean addToCreatureInventory(int creature_id, int item_id);
-	public boolean addToTileInventory(int tile_id, int item_id);
+	public boolean playerInventoryItemExists(int player_id, int item_id);
+	public boolean removeFromPlayerInventory(int player_id, int item_id);
+	public List<Item> getPlayerInventory(int player_id);
 	
+	public boolean addToCreatureInventory(int creature_id, int item_id);
+	public boolean creatureInventoryItemExists(int creature_id, int item_id);
+	public boolean removeFromCreatureInventory(int creature_id, int item_id);
+	public List<Item> getCreatureInventory(int creature_id);
+	
+	public boolean addToTileInventory(int tile_id, int item_id);
+	public boolean tileInventoryItemExists(int tile_id, int item_id);
+	public boolean removeFromTileInventory(int tile_id, int item_id);
+	public List<Item> getTileInventory(int tile_id);
+	
+	//maps
 	public boolean createMap(int game_id, int height, int width);
 	public boolean updateMapAll(int game_id, int height, int width);
 	public boolean updateMapHeight(int game_id, int height);
@@ -57,12 +70,19 @@ public interface IDatabase {
 	public boolean updateTileDamage(int damage, int tile_id);
 	public boolean updateTileX(int x, int tile_id);
 	public boolean updateTileY(int y, int tile_id);
+	public boolean tileExists(int game_id, int x, int y);
+	public boolean removeTile(int game_id, int tile_id);
 	public Tile getTile(int game_id, int x, int y);
 	public List<Tile> getAllTiles(int game_id);
 	
 	//creatures
 	
 	//players
+	public boolean createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
+	public boolean removePlayer(int player_id);
+	public Player getPlayer(int player_id);
+	
+	//dataLogs
 	
 	
 //	public boolean loadGame(String username, String password, GameEngine engine);
