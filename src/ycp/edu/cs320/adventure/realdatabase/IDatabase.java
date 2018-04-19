@@ -94,6 +94,8 @@ public interface IDatabase {
 	public Creature getCreature(int creature_id);
 	public List<Creature> getAllCreatures(int game_id);
 	
+	public List<Creature> getAllCreaturesAtLocation(int game_id, int x, int y);
+	
 	//players
 	public boolean createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
 	public boolean updatePlayerEquippedItem(int player_id, int equippedItem);
@@ -108,5 +110,6 @@ public interface IDatabase {
 	//dataLogs
 	public boolean addGameLog(int game_id, String text);
 	public String getGameLog(int game_id);
+	public List<String> getGameLogList(int game_id);
 	public boolean removeGameLog(int game_id);
 }
