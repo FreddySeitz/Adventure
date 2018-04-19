@@ -3100,9 +3100,9 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
 
-		db.createTables();
+		//db.createTables();
 		//db.removeTables();	//to delete all tables
-		//db.clearTables();		//to clear all tables of all data
+		db.clearTables();		//to clear all tables of all data
 
 		System.out.println("Success!");
 	}
