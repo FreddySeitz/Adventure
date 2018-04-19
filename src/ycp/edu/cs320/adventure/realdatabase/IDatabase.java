@@ -22,9 +22,11 @@ public interface IDatabase {
 	public boolean accountVerify(String username, String password);
 	
 	//games
-	public boolean createGame(int account_id);
+	public int createGame(int account_id);
 	public List<Integer> getGames(int account_id);
 	public boolean removeGame(int game_id);
+	
+	public int countAllGames();
 	
 	//items
 	public boolean createItem(int game_id, String name, String description, int weight, int damage, int health, int quest_id, int value);
