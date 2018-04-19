@@ -56,53 +56,5 @@ public class MapTest {
 		assertTrue(map.getHeight() == 20);
 		assertTrue(map.getWidth() == 20);
 		assertEquals(1, map.getMap()[2][1].getX());	//testing tile type for one of the tiles
-
-		//treasure test
-		int count = 0;
-		int countTreasure = 0;
-		for(int i = 0; i < 20; i++){	//counts the number of treasure on the whole map
-			for(int j = 0; j < 20; j++){
-				for(int k = 0; k < map.getTile(i, j).getItemList().size(); k++){
-					count++;
-					if(map.getTile(i, j).getItemList().get(k).getValue() >= 100){
-						countTreasure++;
-					}
-				}
-			}
-		}
-		assertTrue(count == 20);	//counts 20 items
-		assertTrue(countTreasure == 20);	//counts 20 treasure
-		assertTrue(count == countTreasure);	//all items should be treasure
-	}
-	
-	@Test
-	public void testDecompileAndCompile() {
-		map.buildDefault(engine);
-		String compiled = map.compileTiles();
-		//System.out.println(compiled);
-		
-		Map map2 = new Map();
-		map2.decompileTiles(compiled);
-		
-		System.out.println(map2.getMap().length);
-		
-		boolean test = true;
-		for(int i = 0; i < map.getHeight(); i++){
-			for(int j = 0; j < map.getWidth(); j++){
-				System.out.println(i);
-				System.out.println(j + "\n");
-				if(map.getTile(i, j).getType() != map2.getTile(i, j).getType()){
-					System.out.println("Broken");
-					System.out.println(map.getTile(i, j).getType());
-					System.out.println(map2.getTile(i, j).getType() + "/n");
-					test = false;
-				}
-				else{
-					System.out.println(map.getTile(i, j).getType());
-					System.out.println(map2.getTile(i, j).getType() + "/n");
-				}
-			}
-		}
-		assertEquals(true, test);
 	}
 }
