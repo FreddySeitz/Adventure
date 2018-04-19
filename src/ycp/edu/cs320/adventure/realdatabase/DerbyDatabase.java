@@ -2922,7 +2922,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt9 = conn.prepareStatement(
 							"create table gameLogs (" +
 									"	game_id integer, " +
-									"   text integer " +
+									"   text varchar(5000) " +
 									")"
 							);
 					stmt9.executeUpdate();
