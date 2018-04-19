@@ -167,6 +167,9 @@ public class GameEngine {
 		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), newLocation.getX());
 		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), newLocation.getY());
 		
+		// Need to get player from database after Tile location is updated
+		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
+		
 		// Update the game when the player moves
 		update();
 	}
