@@ -1,6 +1,8 @@
 package ycp.edu.cs320.adventure.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.script.ScriptException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,6 +57,9 @@ public class GameServlet extends HttpServlet{
 		String response = null;
 
 		System.out.println("Game Servlet: doPost");
+		
+		List<Integer> game_ids = database.getGames((int)account_id);
+		int game_id = game_ids.get(0);
 
 		//********** Play Game Below **********
 
@@ -71,16 +76,16 @@ public class GameServlet extends HttpServlet{
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 				
-				database.addGameLog()
+				database.addGameLog(game_id, " You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
-				engine.setGameLog(engine.getGame().getGameLog() + "\n You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				response = engine.getGameLog();
+				
+				response = database.getGameLog(game_id);
 				
 			}
 			else {
 				
-				engine.setGameLog(engine.getGameLog() + " \n You can't move there!");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You can't move there!");
+				response = database.getGameLog(game_id);
 			}
 		}
 
@@ -93,11 +98,13 @@ public class GameServlet extends HttpServlet{
 
 				player.setLocation(map.getTile(newX, player.getLocation().getY()));
 
-				engine.setGameLog(engine.getGameLog() + "\n You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				response = engine.getGameLog();
+				database.addGameLog(game_id, " You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				
+				response = database.getGameLog(game_id);
 			}
 			else {
-				engine.setGameLog(engine.getGameLog() + " \n You can't move there!");
+				database.addGameLog(game_id, "You can't move there!");
+				response = database.getGameLog(game_id);
 			}		
 		}
 
@@ -111,12 +118,13 @@ public class GameServlet extends HttpServlet{
 
 				player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 
-				engine.setGameLog(engine.getGameLog() + "\n You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				
+				response = database.getGameLog(game_id);
 			}
 			else if(player.getLocation().getX() == map.getWidth()){
-				engine.setGameLog(engine.getGameLog() + " \n You can't move there!");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You can't move there!");
+				response = database.getGameLog(game_id);
 			}		
 		}
 
@@ -129,19 +137,19 @@ public class GameServlet extends HttpServlet{
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 
-				engine.setGameLog(engine.getGameLog() + "\n You Moved Up." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You Moved Up." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				response = database.getGameLog(game_id);
 			}
 			else {
-				engine.setGameLog(engine.getGameLog() + " \n You can't move there!");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You can't move there!");
+				response = database.getGameLog(game_id);
 			}
 		}
 
 		// Player views how much damage they can deal
 		else if(input.equalsIgnoreCase("view damage")) {
-			engine.setGameLog(engine.getGameLog() + " \n " + String.valueOf(player.getBaseDamage()));
-			response = engine.getGameLog();
+			database.addGameLog(game_id, String.valueOf(player.getBaseDamage()));
+			response = database.getGameLog(game_id);
 
 		}
 
@@ -150,23 +158,23 @@ public class GameServlet extends HttpServlet{
 
 			// If player has a location 
 			if(player.getLocation() != null) {
-				engine.setGameLog(engine.getGameLog() + " \n " + String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
-				response = engine.getGameLog();
+				database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
+				response = database.getGameLog(game_id);
 
 			}
 
 			// If player does not have a location 
 			else {
-				engine.setGameLog(engine.getGameLog() + " \n Somehow you have no location?");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "Somehow you have no location?");
+				response = database.getGameLog(game_id);
 			}
 
 		}
 
 		// Player views their health
 		else if(input.equalsIgnoreCase("health")) {
-			engine.setGameLog(engine.getGameLog() + " \n" + String.valueOf(player.getHealth()));
-			response = engine.getGameLog();
+			database.addGameLog(game_id, String.valueOf(player.getHealth()));
+			response = database.getGameLog(game_id);
 		}
 
 		// Player views current equipped item 
@@ -175,14 +183,14 @@ public class GameServlet extends HttpServlet{
 			// If player actually has an item 
 			try {
 				if(player.getEquippedItem().getName().equalsIgnoreCase("")) {
-					engine.setGameLog(engine.getGameLog() + " \n" + player.getEquippedItem().getName());
-					response = engine.getGameLog();
+					database.addGameLog(game_id, player.getEquippedItem().getName());
+					response = database.getGameLog(game_id);
 				}
 			}
 			// If player has no item equipped
 			catch(NullPointerException e) {
-				engine.setGameLog(engine.getGameLog() + " \n No item equipped.");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "No item equipped.");
+				response = database.getGameLog(game_id);
 			}
 		}
 
@@ -191,21 +199,21 @@ public class GameServlet extends HttpServlet{
 
 			// If inventory is NOT empty
 			if(!player.getInventory().getInventory().isEmpty()) {
-				engine.setGameLog(engine.getGameLog() + " \n" + String.valueOf(player.getInventory().getInventory()));
-				response = engine.getGameLog();
+				database.addGameLog(game_id, String.valueOf(player.getInventory().getInventory()));
+				response = database.getGameLog(game_id);
 			}
 
 			// Inventory is empty
 			else {
-				engine.setGameLog(engine.getGameLog() + " \n Inventory is empty!");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "Inventory is empty!");
+				response = database.getGameLog(game_id);
 			}
 		}
 
 		// Player views their score 
 		else if(input.equalsIgnoreCase("score")) {
-			engine.setGameLog(engine.getGameLog() + " \n Score: " + String.valueOf(player.getScore()));
-			response = engine.getGameLog();
+			database.addGameLog(game_id, String.valueOf(player.getScore()));
+			response = database.getGameLog(game_id);
 		}
 
 		// Player picks up item from tile 
@@ -217,13 +225,13 @@ public class GameServlet extends HttpServlet{
 				newInv.addMultipleToInventory(player.getInventory().getInventory());
 				newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
 				player.setInventory(newInv);
-				engine.setGameLog(engine.getGameLog() + " \n You found an item! View inventory to see it.");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "You found an item! View inventory to see it.");
+				response = database.getGameLog(game_id);
 			}
 
 			else {
-				engine.setGameLog(engine.getGameLog() + "\n Theres nothing here but dirt!");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "Theres nothing here but dirt!");
+				response = database.getGameLog(game_id);
 			}
 		}
 
@@ -235,19 +243,20 @@ public class GameServlet extends HttpServlet{
 			if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription().contains("exit")) {
 				String exitMessage = "Congrats You Escaped! Final Score: ";
 				String finalScore = String.valueOf(player.getScore());
-				engine.setGameLog(engine.getGameLog() + "\n" + exitMessage.concat(finalScore));
+				database.addGameLog(game_id, exitMessage.concat(finalScore));
 				engine.endGame();
 			}
 			else {
-				engine.setGameLog(engine.getGameLog() + " \n This is not an exit tile !");
-				response = engine.getGameLog();
+				database.addGameLog(game_id, "This is not an exit tile !");
+				response = database.getGameLog(game_id);
 			}
 		}
 
 		// Player enters unknown command
 		else {
-			engine.setGameLog(engine.getGameLog() + "\n I'm not quite sure what that means, please try again.");
-			response = engine.getGameLog();
+			database.addGameLog(game_id, "I'm not quite sure what that means, please try again.");
+			
+			response = database.getGameLog(game_id);
 		}
 
 		/* Checking for environment conditions */
