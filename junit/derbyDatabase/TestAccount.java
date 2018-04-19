@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
-public class testAccount {
+public class TestAccount {
 	DerbyDatabase database;
 	int account_id;
 
