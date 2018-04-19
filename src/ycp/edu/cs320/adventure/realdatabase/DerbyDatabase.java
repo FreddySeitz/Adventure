@@ -1336,7 +1336,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET height = ?, width = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1365,7 +1365,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET height = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1394,7 +1394,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET width = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1449,9 +1449,9 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT items.item_id " +
-									"FROM items " + 
-									"WHERE items.item_id = ?"
+							" SELECT *" +
+									"FROM maps " + 
+									"WHERE maps.game_id = ?"
 							);
 					stmt.setInt(1, game_id);
 
@@ -2145,6 +2145,46 @@ public class DerbyDatabase implements IDatabase{
 		});
 	}
 
+	//@Override
+	public List<Creature> getAllCreaturesAtLocation(final int game_id, final int x, final int y) {
+		return executeTransaction(new Transaction<List<Creature>>() {
+			@Override
+			public List<Creature> execute(Connection conn) throws SQLException {
+
+				PreparedStatement gettile = null;
+				ResultSet resultTile = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					gettile = conn.prepareStatement(
+							" SELECT * " +
+									"FROM creatures " + 
+									"WHERE creatures.game_id = ? AND creatures.x_location = ? AND creatures.y_location = ?"
+							);
+
+					gettile.setInt(1, game_id);
+					gettile.setInt(2, x);
+					gettile.setInt(3, y);
+
+					resultTile = gettile.executeQuery();
+
+					List<Creature> result = new ArrayList<Creature>();
+					while(resultTile.next()){
+						Creature creature = new Creature();
+						loadcreature(creature, resultTile, 1);
+						result.add(creature);
+					}
+
+					return result;
+
+				} finally {
+					DBUtil.closeQuietly(gettile);
+					DBUtil.closeQuietly(resultTile);
+				}
+			}
+		});
+	}
+
 	private void loadcreature(Creature creature, ResultSet resultSet, int index) throws SQLException {
 		creature.setCreatureId((resultSet.getInt(index++)));
 		creature.setGameId(resultSet.getInt(index++));
@@ -2488,6 +2528,43 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public List<String> getGameLogList(final int game_id) {
+			return executeTransaction(new Transaction<List<String>>() {
+				@Override
+				public List<String> execute(Connection conn) throws SQLException {
+
+					PreparedStatement gettile = null;
+					ResultSet resultTile = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						gettile = conn.prepareStatement(
+								" SELECT gameLogs.text " +
+										"FROM gameLogs " + 
+										"WHERE gameLogs.game_id = ?"
+								);
+
+						gettile.setInt(1, game_id);
+
+						resultTile = gettile.executeQuery();
+						resultTile.next();
+
+						List<String> result = new ArrayList<String>();
+						while(resultTile.next()){
+							result.add(resultTile.getString(1));
+						}
+
+						return result;
+
+					} finally {
+						DBUtil.closeQuietly(gettile);
+						DBUtil.closeQuietly(resultTile);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public boolean removeGameLog(final int game_id) {

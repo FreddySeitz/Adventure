@@ -7,6 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.eclipse.jetty.server.session.Session;
 
 import ycp.edu.cs320.adventure.database.FakeDatabase;
 import ycp.edu.cs320.adventure.game.Account;
@@ -34,6 +37,9 @@ public class IndexServlet extends HttpServlet {
         // TODO: test if username/password are contained in the database
         // TODO: if successful login, go to next page
         
+        HttpSession ses = req.getSession(true);
+        
+        int id;
         
         String username = req.getParameter("username");
         String password = req.getParameter("password");
@@ -49,6 +55,12 @@ public class IndexServlet extends HttpServlet {
         	errorMessage = "Successful login";
         	System.out.println("Successful log in :)");
     		// redirect to /titleScreen page
+        	
+        	// sends account id to the session to be retrieved by title screen 
+
+        	id = database.getAccount(username);        	
+        	ses = req.getSession(true);
+        	ses.setAttribute("id",id);
         	resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
         	return;
         }
