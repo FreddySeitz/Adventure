@@ -548,7 +548,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateItemWeight(final int item_id, final String weight) {
+	public boolean updateItemWeight(final int item_id, final int weight) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -561,7 +561,7 @@ public class DerbyDatabase implements IDatabase{
 									"SET weight = ? " + 
 									"WHERE items.item_id = ?"
 							);
-					stmt.setString(1, weight);
+					stmt.setInt(1, weight);
 					stmt.setInt(2, item_id);
 
 					stmt.executeUpdate();
@@ -576,7 +576,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateItemDamage(final int item_id, final String damage) {
+	public boolean updateItemDamage(final int item_id, final int damage) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -589,7 +589,7 @@ public class DerbyDatabase implements IDatabase{
 									"SET damage = ? " + 
 									"WHERE items.item_id = ?"
 							);
-					stmt.setString(1, damage);
+					stmt.setInt(1, damage);
 					stmt.setInt(2, item_id);
 
 					stmt.executeUpdate();
@@ -604,7 +604,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateItemHealth(final int item_id, final String health) {
+	public boolean updateItemHealth(final int item_id, final int health) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -617,7 +617,7 @@ public class DerbyDatabase implements IDatabase{
 									"SET health = ? " + 
 									"WHERE items.item_id = ?"
 							);
-					stmt.setString(1, health);
+					stmt.setInt(1, health);
 					stmt.setInt(2, item_id);
 
 					stmt.executeUpdate();
@@ -632,7 +632,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateItemQuestId(final int item_id, final String quest_id) {
+	public boolean updateItemQuestId(final int item_id, final int quest_id) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -645,7 +645,7 @@ public class DerbyDatabase implements IDatabase{
 									"SET quest_id = ? " + 
 									"WHERE items.item_id = ?"
 							);
-					stmt.setString(1, quest_id);
+					stmt.setInt(1, quest_id);
 					stmt.setInt(2, item_id);
 
 					stmt.executeUpdate();
@@ -660,7 +660,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateItemValue(final int item_id, final String value) {
+	public boolean updateItemValue(final int item_id, final int value) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -673,7 +673,7 @@ public class DerbyDatabase implements IDatabase{
 									"SET value = ? " + 
 									"WHERE items.item_id = ?"
 							);
-					stmt.setString(1, value);
+					stmt.setInt(1, value);
 					stmt.setInt(2, item_id);
 
 					stmt.executeUpdate();
@@ -724,7 +724,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT items.item_id " +
+							" SELECT * " +
 									"FROM items " + 
 									"WHERE items.item_id = ?"
 							);
@@ -757,7 +757,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT items.item_id " +
+							" SELECT * " +
 									"FROM items " + 
 									"WHERE items.game_id = ?"
 							);
@@ -788,10 +788,10 @@ public class DerbyDatabase implements IDatabase{
 		item.setName(resultSet.getString(index++));
 		item.setDescription(resultSet.getString(index++));
 		item.setWeight(resultSet.getInt(index++));
-		item.setDamage(index++);
-		item.setHealth(index++);
-		item.setQuestId(index++);
-		item.setValue(index++);
+		item.setDamage(resultSet.getInt(index++));
+		item.setHealth(resultSet.getInt(index++));
+		item.setQuestId(resultSet.getInt(index++));
+		item.setValue(resultSet.getInt(index++));
 	}
 
 	//@Override

@@ -31,11 +31,11 @@ public interface IDatabase {
 	public boolean updateItemAll(int item_id, int game_id, String name, String description, int weight, int damage, int health, int quest_id, int value);
 	public boolean updateItemName(int item_id, String name);
 	public boolean updateItemDescription(int item_id, String description);
-	public boolean updateItemWeight(int item_id, String weight);
-	public boolean updateItemDamage(int item_id, String damage);
-	public boolean updateItemHealth(int item_id, String health);
-	public boolean updateItemQuestId(int item_id, String quest_id);
-	public boolean updateItemValue(int item_id, String value);
+	public boolean updateItemWeight(int item_id, int weight);
+	public boolean updateItemDamage(int item_id, int damage);
+	public boolean updateItemHealth(int item_id, int health);
+	public boolean updateItemQuestId(int item_id, int quest_id);
+	public boolean updateItemValue(int item_id, int value);
 	public boolean removeItem(int item_id);
 	public Item getItem(int item_id);
 	public List<Item> getAllItems(int game_id);
