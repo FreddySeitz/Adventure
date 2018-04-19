@@ -26,7 +26,7 @@ public class MapTest {
 	@Before
 	public void setUp() {
 		map = new Map();
-		game = new Game(map, new Player(), new ArrayList<Creature>(), new ArrayList<Item>(), new ArrayList<Command>());
+		game = new Game(1, map, new Player(), new ArrayList<Creature>(), new ArrayList<Item>(), new ArrayList<Command>());
 		engine = new GameEngine();
 		game.setItems(engine.defaultItemList(10));
 		engine.setGame(game);
@@ -34,8 +34,8 @@ public class MapTest {
 
 	@Test
 	public void testGameId() {
-		map.setGameId(1);
-		assertTrue(map.getGameId() == 1);
+		map.setGameId(2);
+		assertTrue(map.getGameId() == 2);
 	}
 
 	@Test
@@ -52,7 +52,7 @@ public class MapTest {
 
 	@Test
 	public void testBuildDefault() {
-		map.buildDefault(engine);
+		map.buildDefault();
 		assertTrue(map.getHeight() == 20);
 		assertTrue(map.getWidth() == 20);
 		assertEquals(1, map.getMap()[2][1].getX());	//testing tile type for one of the tiles

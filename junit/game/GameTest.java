@@ -85,11 +85,11 @@ public class GameTest {
 		gameEngine = new GameEngine();
 		
 		map1 = new Map();
-		map1.buildDefault(gameEngine);
+		map1.buildDefault();
 		
 		map2 = new Map();
 				
-		game = new Game(map1, player1, creatures1, items1, commands1);
+		game = new Game(1, map1, player1, creatures1, items1, commands1);
 	}
 	
 	@Test
