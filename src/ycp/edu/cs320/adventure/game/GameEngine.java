@@ -63,7 +63,7 @@ public class GameEngine {
 		for(int i=0; i<20; i++) {
 			for(int j=0; j<20; j++) {
 				tile = map.getTile(i, j);
-				database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+				map.getTile(i, j).setTileId(database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY()));
 			}
 		}
 		
@@ -166,6 +166,9 @@ public class GameEngine {
 		// Updates the player's location in the database
 		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), newLocation.getX());
 		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), newLocation.getY());
+		
+		// Need to get player from database after Tile location is updated
+		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
 		
 		// Update the game when the player moves
 		update();

@@ -2922,7 +2922,7 @@ public class DerbyDatabase implements IDatabase{
 					stmt9 = conn.prepareStatement(
 							"create table gameLogs (" +
 									"	game_id integer, " +
-									"   text integer " +
+									"   text varchar(5000) " +
 									")"
 							);
 					stmt9.executeUpdate();
@@ -3100,9 +3100,9 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
 
-		db.createTables();
+		//db.createTables();
 		//db.removeTables();	//to delete all tables
-		//db.clearTables();		//to clear all tables of all data
+		db.clearTables();		//to clear all tables of all data
 
 		System.out.println("Success!");
 	}
