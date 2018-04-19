@@ -14,30 +14,35 @@
 			td.label {
 				text-align: right;
 			}
-			.centered {
+			.input {
   				position: fixed;
-  				top: 50%;
-  				left: 50%;
-  				transform: translate(-50%, -50%);
+  				top: 5px;
+  				left: 5px;
 			}
 			.success{
 				color:green;
 			}
 			.response{
 				color:black;
+				position: fixed;
+  				top: 50%;
+  				left: 50%;
+  				/* bring your own prefixes */
+  				transform: translate(-50%, -50%);
 			}			
 		</style>
 	</head>
 
 	<body>
-		<div class = "centered">
+		<div class = "response">
 			<c:if test="${! empty errorMessage}">
 				<div class="error">${errorMessage}</div>
 			</c:if>
 			<c:if test="${! empty response}">
 				<div class="response">${response}</div>
 			</c:if>
-		
+		</div>
+		<div class = "input">
 			<form action="${pageContext.servletContext.contextPath}/game" method="post">
 				<table>
 					<td class="label">Enter Command: </td>
