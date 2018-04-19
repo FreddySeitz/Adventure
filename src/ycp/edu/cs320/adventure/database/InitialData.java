@@ -63,7 +63,7 @@ public class InitialData {
 				temp = temp.substring(1, temp.length());
 				map.setHeight(Integer.parseInt(temp));			//map height
 				map.setWidth(Integer.parseInt(i.next()));			//map width
-				map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
+				//map.decompileTiles(i.next()); 						//creates all tiles and retrieves their data
 				mapList.add(map);
 			}
 			return mapList;
