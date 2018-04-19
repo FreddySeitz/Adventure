@@ -25,6 +25,10 @@ public class TitleScreenServlet extends HttpServlet{
         	
 	        String button = req.getParameter("button");
 	        
+	        Object account_id = req.getSession(false).getAttribute("id");
+	        
+	        System.out.println("ID: " + String.valueOf(account_id));
+	        
 	        if (button.equals("New Game")) {
 	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
 	            return; 
