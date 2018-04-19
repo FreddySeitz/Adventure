@@ -115,7 +115,7 @@ public class Map {
 	}
 	
 	//default map before editing
-		public void buildDefault(GameEngine engine){
+		public void buildDefault(){
 			height = 20;
 			width = 20;
 			map = new Tile[height][width];

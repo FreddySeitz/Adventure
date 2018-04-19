@@ -5,6 +5,7 @@ import java.util.List;
 
 // Games are all of the information that makes up each game
 public class Game {
+	private int gameId;
 	private Map map;
 	private Player player;
 	private List<Creature> creatures;
@@ -14,6 +15,7 @@ public class Game {
 
 	// Parameterless Constructor
 	public Game() {
+		gameId = 0;
 		map = new Map();
 		player = new Player();
 		creatures = new ArrayList<Creature>();
@@ -23,13 +25,24 @@ public class Game {
 	}
 	
 	// Constructor
-	public Game(Map map, Player player, List<Creature> creatures, List<Item> items, List<Command> commands) {
+	public Game(int gameId, Map map, Player player, List<Creature> creatures, List<Item> items, List<Command> commands) {
+		this.gameId = gameId;
 		this.map = map;
 		this.player = player;
 		this.creatures = creatures;
 		this.items = items;
 		this.commands = commands;
 		gameLog = "You decided to set out on an Adventure!";
+	}
+	
+	// Sets the gameId
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+
+	// Gets the gameId
+	public int getGameId() {
+		return gameId;
 	}
 
 	// Sets the game map

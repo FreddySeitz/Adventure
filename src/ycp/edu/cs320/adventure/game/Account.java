@@ -5,7 +5,7 @@ import java.util.List;
 
 // Accounts are unique to each user, storing games and characters
 public class Account {
-	private int id;	//necessary to connect account to multiple maps (or game models) in the database
+	private int accountId;	//necessary to connect account to multiple maps (or game models) in the database
 	private String username;
 	private String password;
 	private List<Player> characters;
@@ -25,12 +25,12 @@ public class Account {
 	
 	//sets id
 	public void setId(int id){
-		this.id = id;
+		this.accountId = id;
 	}
 	
 	//gets id
 	public int getId(){
-		return id;
+		return accountId;
 	}
 	
 	// Sets username
@@ -79,9 +79,5 @@ public class Account {
 	
 	public void logout() {
 		throw new UnsupportedOperationException();
-	}
-	
-	public void createNewGame() {
-		GameEngine.createNewGame(this.username, this.password);
 	}
 }
