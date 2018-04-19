@@ -46,10 +46,9 @@ public class TestItem {
 	@Test
 	public void testEverything() {
 		//create items based on defaults
-		boolean create = database.createItem(item.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		boolean create2 = database.createItem(item2.getGameId(), item2.getName(), item2.getDescription(), item2.getWeight(), item2.getDamage(), item2.getHealth(), item2.getQuestId(), item2.getValue());
-		assertEquals(true, create);
-		assertEquals(true, create2);
+		int create = database.createItem(item.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
+		int create2 = database.createItem(item2.getGameId(), item2.getName(), item2.getDescription(), item2.getWeight(), item2.getDamage(), item2.getHealth(), item2.getQuestId(), item2.getValue());
+		assertTrue(create == create2 - 1);
 		
 		//get list of all items
 		List<Item> items = database.getAllItems(game_id);
