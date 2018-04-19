@@ -43,18 +43,20 @@ public interface IDatabase {
 	//inventories
 	public boolean addToPlayerInventory(int player_id, int item_id);
 	public boolean existsPlayerInventoryItem(int player_id, int item_id);
-	public boolean removeFromPlayerInventory(int player_id, int item_id);
+	public boolean removeFromPlayerInventory(int player_id, int inventory_id);
 	public List<Item> getPlayerInventory(int player_id);
 	
 	public boolean addToCreatureInventory(int creature_id, int item_id);
 	public boolean existsCreatureInventoryItem(int creature_id, int item_id);
-	public boolean removeFromCreatureInventory(int creature_id, int item_id);
+	public boolean removeFromCreatureInventory(int creature_id, int inventory_id);
 	public List<Item> getCreatureInventory(int creature_id);
 	
 	public boolean addToTileInventory(int tile_id, int item_id);
 	public boolean existsTileInventoryItem(int tile_id, int item_id);
-	public boolean removeFromTileInventory(int tile_id, int item_id);
+	public boolean removeFromTileInventory(int tile_id, int inventory_id);
 	public List<Item> getTileInventory(int tile_id);
+	
+	public Item getInventoryItem(int inventory_id);
 	
 	//maps
 	public boolean createMap(int game_id, int height, int width);
@@ -65,7 +67,7 @@ public interface IDatabase {
 	public Map getMap(int game_id);
 	
 	//tiles
-	public boolean createTile(int map_id, int type, String description, int damage, int x, int y);
+	public boolean createTile(int game_id, int type, String description, int damage, int x, int y);
 	public boolean updateTileAll(int type, String description, int x, int y, int tile_id);
 	public boolean updateTileType(int type, int tile_id);
 	public boolean updateTileDescription(String description, int tile_id);
@@ -73,7 +75,7 @@ public interface IDatabase {
 	public boolean updateTileX(int x, int tile_id);
 	public boolean updateTileY(int y, int tile_id);
 	public boolean tileExists(int game_id, int x, int y);
-	public boolean removeTile(int game_id, int tile_id);
+	public boolean removeTile(int tile_id);
 	public Tile getTile(int game_id, int x, int y);
 	public List<Tile> getAllTiles(int game_id);
 	
