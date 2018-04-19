@@ -77,10 +77,10 @@ public class AccountTest {
 		gameEngine = new GameEngine();
 		
 		map = new Map();
-		map.buildDefault(gameEngine);
+		map.buildDefault();
 				
-		game1 = new Game(map, player1, creatures1, items1, null);
-		game2 = new Game(map, player2, creatures2, items2, null);
+		game1 = new Game(1, map, player1, creatures1, items1, null);
+		game2 = new Game(2, map, player2, creatures2, items2, null);
 		
 		games1 = new ArrayList<Game>();
 		games1.add(game1);
