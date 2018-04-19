@@ -2,3 +2,8 @@
 /log.ctrl
 /log1.dat
 /logmirror.ctrl
+<<<<<<< HEAD
+=======
+/log2.dat
+/log3.dat
+>>>>>>> branch 'master' of git@github.com:dnicho11/Adventure.git
