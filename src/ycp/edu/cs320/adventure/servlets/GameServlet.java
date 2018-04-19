@@ -34,9 +34,11 @@ public class GameServlet extends HttpServlet{
         Object account_id = req.getSession(false).getAttribute("id");
         
         System.out.println("ID: " + String.valueOf(account_id));
-		
-		DerbyDatabase database = new DerbyDatabase();
+		        
+        DerbyDatabase database = new DerbyDatabase();
 
+//		int player_id = database.getPlayerId((int)account_id);
+        
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
 		engine.setGame(game);
@@ -61,6 +63,9 @@ public class GameServlet extends HttpServlet{
 		List<Integer> game_ids = database.getGames((int)account_id);
 		int game_id = game_ids.get(0);
 
+        int player_id = database.getPlayer(game_id).getPlayerId();
+        
+		
 		//********** Play Game Below **********
 
 
@@ -73,8 +78,14 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newY = player.getLocation().getY() + 1;
 
-
-				player.setLocation(map.getTile(player.getLocation().getX(), newY));
+				// These:
+				//database.updatePlayerX(player_id, player.getLocation().getX());
+				//database.updatePlayerY(player_id, newY);
+				
+				// Do This:
+				//player.setLocation(map.getTile(player.getLocation().getX(), newY));
+								
+				
 				
 				database.addGameLog(game_id, " You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -96,7 +107,13 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newX = player.getLocation().getX() - 1;
 
-				player.setLocation(map.getTile(newX, player.getLocation().getY()));
+				// These:
+				//database.updatePlayerX(player_id, newX);
+				//database.updatePlayerY(player_id, player.getLocation().getY());
+				
+				// Do This:
+				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
+				
 
 				database.addGameLog(game_id, " You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -115,8 +132,13 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newX = player.getLocation().getX() + 1;
 
-
-				player.setLocation(map.getTile(newX,  player.getLocation().getY()));
+				// These:
+				//database.updatePlayerX(player_id, newX);
+				//database.updatePlayerY(player_id, player.getLocation().getY());
+				
+				// Do This:
+				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
+				
 
 				database.addGameLog(game_id, "You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -135,8 +157,12 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newY = player.getLocation().getY() - 1;
 
-				player.setLocation(map.getTile(player.getLocation().getX(), newY));
-
+				// These:
+				//database.updatePlayerX(player_id, newX);
+				//database.updatePlayerY(player_id, player.getLocation().getY());
+				
+				// Do This:
+				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
 				database.addGameLog(game_id, "You Moved Up." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				response = database.getGameLog(game_id);
 			}
@@ -221,10 +247,22 @@ public class GameServlet extends HttpServlet{
 
 			// If tile has an item 
 			if(!map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().isEmpty()){
-				Inventory newInv = new Inventory();
-				newInv.addMultipleToInventory(player.getInventory().getInventory());
-				newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
-				player.setInventory(newInv);
+				
+				// Old shit
+				
+				//Inventory newInv = new Inventory();
+				
+				//newInv.addMultipleToInventory(player.getInventory().getInventory());
+				//newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
+				//player.setInventory(newInv);
+				
+				// New shit 
+				
+				//public boolean addToPlayerInventory(int player_id, int item_id);
+				engine.pickupItem(player, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0));
+				
+				database.addToPlayerInventory(player_id, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0).getItemId());
+				
 				database.addGameLog(game_id, "You found an item! View inventory to see it.");
 				response = database.getGameLog(game_id);
 			}

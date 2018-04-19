@@ -22,12 +22,14 @@ public interface IDatabase {
 	public boolean accountVerify(String username, String password);
 	
 	//games
-	public boolean createGame(int account_id);
+	public int createGame(int account_id);
 	public List<Integer> getGames(int account_id);
 	public boolean removeGame(int game_id);
 	
+	public int countAllGames();
+	
 	//items
-	public boolean createItem(int game_id, String name, String description, int weight, int damage, int health, int quest_id, int value);
+	public int createItem(int game_id, String name, String description, int weight, int damage, int health, int quest_id, int value);
 	public boolean updateItemAll(int item_id, int game_id, String name, String description, int weight, int damage, int health, int quest_id, int value);
 	public boolean updateItemName(int item_id, String name);
 	public boolean updateItemDescription(int item_id, String description);
@@ -62,7 +64,7 @@ public interface IDatabase {
 	public Item getInventoryItem(int inventory_id);
 	
 	//maps
-	public boolean createMap(int game_id, int height, int width);
+	public int createMap(int game_id, int height, int width);
 	public boolean updateMapAll(int game_id, int height, int width);
 	public boolean updateMapHeight(int game_id, int height);
 	public boolean updateMapWidth(int game_id, int width);
@@ -70,7 +72,7 @@ public interface IDatabase {
 	public Map getMap(int game_id);
 	
 	//tiles
-	public boolean createTile(int game_id, int type, String description, int damage, int x, int y);
+	public int createTile(int game_id, int type, String description, int damage, int x, int y);
 	public boolean updateTileAll(int type, String description, int x, int y, int tile_id);
 	public boolean updateTileType(int type, int tile_id);
 	public boolean updateTileDescription(String description, int tile_id);
@@ -83,7 +85,7 @@ public interface IDatabase {
 	public List<Tile> getAllTiles(int game_id);
 	
 	//creatures
-	public boolean createCreature(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int moveSpeed);
+	public int createCreature(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int moveSpeed);
 	public boolean updateCreatureEquippedItem(int creature_id, int equippedItem);
 	public boolean updateCreatureHealth(int creature_id, int health);
 	public boolean updateCreatureX(int creature_id, int x);
@@ -97,7 +99,7 @@ public interface IDatabase {
 	public List<Creature> getAllCreaturesAtLocation(int game_id, int x, int y);
 	
 	//players
-	public boolean createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
+	public int createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
 	public boolean updatePlayerEquippedItem(int player_id, int equippedItem);
 	public boolean updatePlayerHealth(int player_id, int health);
 	public boolean updatePlayerX(int player_id, int x);
