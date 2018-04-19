@@ -58,6 +58,9 @@ public class GameEngine {
 		// Build map
 		map.buildDefault();
 		
+		// Add map to database
+		database.createMap(gameId, map.getHeight(), map.getWidth());
+		
 		// Temporary creature object
 		Creature creature;
 		int creatureId;
