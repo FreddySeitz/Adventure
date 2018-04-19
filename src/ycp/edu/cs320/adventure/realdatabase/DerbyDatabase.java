@@ -1336,7 +1336,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET height = ?, width = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1365,7 +1365,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET height = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1394,7 +1394,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" UPDATE (height, width) " + 
+							" UPDATE maps " + 
 									"SET width = ? " +
 									"WHERE maps.game_id = ?"
 							);
@@ -1449,9 +1449,9 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT items.item_id " +
-									"FROM items " + 
-									"WHERE items.item_id = ?"
+							" SELECT *" +
+									"FROM maps " + 
+									"WHERE maps.game_id = ?"
 							);
 					stmt.setInt(1, game_id);
 
