@@ -16,6 +16,8 @@ public interface IDatabase {
 	public boolean updateAccountPassword(String password, int account_id);
 	public boolean removeAccount(String username);
 	public int getAccount(String username);
+	public String getAccountUsername(int account_id);
+	public String getAccountPassword(int account_id);
 	public boolean accountExists(String username);
 	public boolean accountVerify(String username, String password);
 	

@@ -188,7 +188,68 @@ public class DerbyDatabase implements IDatabase{
 
 					resultSet = stmt.executeQuery();
 
+					resultSet.next();
 					return resultSet.getInt(1);
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);	
+				}
+			}
+		});
+	}
+
+	//@Override
+	public String getAccountUsername(final int account_id) {
+		return executeTransaction(new Transaction<String>() {
+			@Override
+			public String execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" SELECT accounts.username " + 
+									"FROM accounts " + 
+									"WHERE accounts.account_id = ? "
+							);
+					stmt.setInt(1, account_id);
+
+					resultSet = stmt.executeQuery();
+					
+					resultSet.next();
+					return resultSet.getString(1);
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet);	
+				}
+			}
+		});
+	}
+
+	//@Override
+	public String getAccountPassword(final int account_id) {
+		return executeTransaction(new Transaction<String>() {
+			@Override
+			public String execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" SELECT accounts.password " + 
+									"FROM accounts " + 
+									"WHERE accounts.account_id = ? "
+							);
+					stmt.setInt(1, account_id);
+
+					resultSet = stmt.executeQuery();
+
+					resultSet.next();
+					return resultSet.getString(1);
 
 				} finally {
 					DBUtil.closeQuietly(stmt);
