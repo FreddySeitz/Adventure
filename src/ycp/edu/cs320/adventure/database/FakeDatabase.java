@@ -150,7 +150,7 @@ public class FakeDatabase implements IDatabase {
 		engine.getGame().setItems(engine.defaultItemList(accountId));
 
 		Map map = new Map();
-		map.buildDefault(engine);
+		map.buildDefault();
 
 		List<Creature> actors = new ArrayList<Creature>();
 		Player player = new Player();
@@ -383,7 +383,7 @@ public class FakeDatabase implements IDatabase {
 			mapbuilder.append("|");
 			mapbuilder.append(map.getWidth());
 			mapbuilder.append("|");
-			mapbuilder.append(map.compileTiles());
+			//mapbuilder.append(map.compileTiles());
 			mapbuilder.append("\n");
 
 			for(Map m : maps){
@@ -397,7 +397,7 @@ public class FakeDatabase implements IDatabase {
 					mapbuilder.append("|");
 					mapbuilder.append(map.getWidth());
 					mapbuilder.append("|");
-					mapbuilder.append(map.compileTiles());
+					//mapbuilder.append(map.compileTiles());
 					mapbuilder.append("\n");
 				}
 			}
