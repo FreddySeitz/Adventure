@@ -12,16 +12,10 @@ public class GameEngine {
 	private Game currentGame;
 	private DerbyDatabase database;
 	
-	// Parameterless Constructor
+	// Constructor
 	public GameEngine() {
 		currentGame = new Game();
 		database = new DerbyDatabase();
-	}
-	
-	// Constructor
-	public GameEngine(Game game, DerbyDatabase database) {
-		currentGame = game;
-		this.database = database;
 	}
 	
 	// Sets currentGame object
@@ -49,17 +43,108 @@ public class GameEngine {
 		
 	}
 	
-	// Loads a game
-	//database calls loadGame (database needs gameEngine)
-//	public void loadGame(Game game) {
-//		currentGame = game;
-//	}
+	// Creates the default game
+	public void createGame(int accountId) {
+		// Create game and record its gameId
+		int gameId = database.createGame(accountId);
+		
+		// Placeholders that will be put in the new game
+		Map map = new Map();
+		String gameLog = "You decided to set out on an Adventure!";
+		List<Creature> creatures = new ArrayList<Creature>();
+		List<Item> items = new ArrayList<Item>();
+		Player player = new Player();
+		
+		// Build map
+		map.buildDefault();
+		
+		// Temporary creature object
+		Creature creature;
+		int creatureId;
+		int newX;
+		int newY;
+				
+		// Add creatures to list of creatures
+		for(int i=1; i<3; i++) {
+			creature = new Creature(i);
+			creature.setBaseDamage(i);
+			creature.setGameId(gameId);
+			creature.setHealth(100);
+			creature.setInventory(new Inventory());
+			creature.setMovementSpeed(i);
+			
+			// Generates random X and Y locations for Creature's starting Tile
+			newX = (int)(Math.random() * map.getWidth());
+			newY = (int)(Math.random() * map.getHeight());
+			creature.setLocation(map.getTile(newX, newY));
+			
+			// Update database to contain creature
+			creatureId = database.createCreature(gameId, 0, creature.getHealth(), newX, newY, i, i);
+			
+			// Set creatureId given by database
+			creature.setCreatureId(creatureId);
+			
+			// Add the Creature to the existing list of creatures
+			creatures.add(creature);
+		}
+		
+		// Temporary item object
+		Item item;
+		int itemId;
+				
+		// Add items to list of items
+		for(int i=1; i<3; i++) {
+			item = new Item();
+			item.setDamage(i);
+			item.setDescription("Item " + Integer.toString(i));
+			item.setGameId(gameId);
+			item.setHealth(i);
+			item.setName("Item " + Integer.toString(i));
+			item.setQuestId(i);
+			item.setValue(i);
+			item.setWeight(i);
+			
+			
+			// Generates random X and Y locations for Item's starting Tile
+			newX = (int)(Math.random() * map.getWidth());
+			newY = (int)(Math.random() * map.getHeight());
+			
+			map.getTile(newX, newY).addItem(item);
+			
+			// Update database to contain item
+			itemId = database.createItem(gameId, item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
+			
+			// Set itemId given by database
+			item.setItemId(itemId);
+			
+			// Add the Item to the existing list of items
+			items.add(item);
+		}
+		
+		player.setBaseDamage(5);
+		player.setEquippedItem(null);
+		player.setGameId(gameId);
+		player.setHealth(100);
+		player.setInventory(null);
+		player.setLocation(map.getTile(0, 0));
+		player.setScore(0);
+		
+		database.createPlayer(gameId, 0, player.getHealth(), player.getLocation().getX(), player.getLocation().getY(), player.getBaseDamage(), player.getScore());
+		
+		currentGame.setMap(map);
+		currentGame.setGameLog(gameLog);
+		currentGame.setCreatures(creatures);
+		currentGame.setItems(items);
+		currentGame.setPlayer(player);
+		currentGame.setGameId(gameId);
+		currentGame.setPlayer(database.getPlayer(gameId));
+	}
 	
-	//gameEngine calls database (gameEngine needs database)
-//	public void loadGame(){
-//		//from where ever the fakedatabase instance is
-//		FakeDatabase.loadGame(username, password, currentGame);
-//	}
+	// Calls database methods to initialize a game
+	public void loadGame(int gameId){
+		// Loads all creatures for game
+		currentGame.setCreatures(database.getAllCreatures(gameId));
+	}
 	
 	// Moves the player based on command
 	public void movePlayer(Tile newLocation) {
@@ -180,11 +265,6 @@ public class GameEngine {
 		}
 	}
 	
-	// Stores the current Game object in the database
-	public void saveGame(){
-		
-	}
-	
 	// Updates the current Game object
 	public void update() {
 		moveCreatures();
@@ -228,9 +308,5 @@ public class GameEngine {
 		itemList.add(pebble);
 		
 		return itemList;
-	}
-
-	public static void createNewGame(String username, String password) {
-			
 	}
 }
