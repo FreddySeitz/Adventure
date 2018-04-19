@@ -63,18 +63,91 @@ public class GameEngine {
 	
 	// Moves the player based on command
 	public void movePlayer(Tile newLocation) {
+		// Changes the player's location
 		currentGame.getPlayer().setLocation(newLocation);
-//		database.updatePlayerLocation(currentGame.getPlayer().getGameId(), newLocation.getX(), newLocation.getY());
+		
+		// Updates the player's location in the database
+		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), newLocation.getX());
+		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), newLocation.getY());
+		
+		// Update the game when the player moves
 		update();
+	}
+	
+	// Called when a player chooses to pickup an item
+	public void pickupItem(Actor actor, Item item) {
+		// Adds the item to the actor's inventory
+		actor.getInventory().addToInventory(item);
+		
+		// Updates the inventory of the actor in the database
+		if(actor instanceof Player) {
+			database.addToPlayerInventory(((Player) actor).getPlayerId(), item.getItemId());
+		}
+		else if(actor instanceof Creature) {
+			database.addToCreatureInventory(((Creature) actor).getCreatureId(), item.getItemId());
+		}
+		
+		// Removes the item from the inventory of the Tile at the actor's location 
+		actor.getLocation().removeItem(item.getItemId());
+		
+		// Updates the Tile's inventory in the database
+		database.removeFromTileInventory(item.getItemId(), item.getInventoryId());
+	}
+	
+	// Called when a player chooses to pickup an item
+	public void dropItem(Actor actor, Item item) {
+		// Adds the item to the inventory of the tile the actor is located on
+		actor.getLocation().addItem(item);
+			
+		// Removes the item from the actor's inventory
+		actor.getInventory().removeFromInventory(item);
+		
+		// Updates the inventory of the actor in the database
+		if(actor instanceof Player) {
+			database.removeFromPlayerInventory(((Player) actor).getPlayerId(), item.getItemId());
+		}
+		else if(actor instanceof Creature) {
+			database.removeFromCreatureInventory(((Creature) actor).getCreatureId(), item.getItemId());
+		}
+		
+		// Updates database to reflect inventory change of Tile
+		database.addToTileInventory(actor.getLocation().getTileId(), item.getItemId());
+	}
+	
+	// Called when a creature attacks a player
+	public void attackPlayer(Creature creature) {
+		// Creature attacks the player, changing player health
+		creature.attack(currentGame.getPlayer());
+		
+		// Updates the database to show change in player health
+		database.updatePlayerHealth(currentGame.getPlayer().getPlayerId(), currentGame.getPlayer().getHealth());
+	}
+	
+	// Called when a player attacks a creature
+	public void attackCreature(Creature creature) {
+		// Player attacks the creature, changing creature health
+		currentGame.getPlayer().attack(creature);
+		
+		// Updates the database to show change in creature health
+		database.updatePlayerHealth(creature.getCreatureId(), creature.getHealth());
 	}
 	
 	// Randomly moves creatures when the user enters a command
 	public void moveCreatures() {
+		// Gets an instance of the current Map for later comparisons
 		Map currentMap = currentGame.getMap();
+		
+		// Initialization for necessary temporary variables
+		Tile oldLocation = new Tile();
 		Tile newLocation = new Tile();
 		int newX = 0;
 		int newY = 0;
+		
+		// Loops through all creatures, randomly changing their locations
 		for(Creature c : currentGame.getCreatures()){
+			oldLocation = c.getLocation();
+			
+			// Adds -1, 0, or 1 to the creature's X and Y locations
 			newX = c.getLocation().getX() + (int)((Math.random() * 2) - 1);
 			newY = c.getLocation().getY() + (int)((Math.random() * 2) - 1);
 			
@@ -91,7 +164,19 @@ public class GameEngine {
 				newLocation = currentMap.getTile(c.getLocation().getX(), newY);
 			}
 			
-			c.setLocation(newLocation);
+			// Checks if the newLocation actually changed
+			// If so, updates the location of the creature and updates the database
+			if(oldLocation != newLocation) {
+				c.setLocation(newLocation);
+				database.updateCreatureX(c.getCreatureId(), c.getLocation().getX());
+				database.updateCreatureY(c.getCreatureId(), c.getLocation().getY());
+			}
+			
+			// If the player is at the same location as the creature
+			// the creature decides to attack the player
+			if(currentGame.getPlayer().getLocation() == c.getLocation()) {
+				attackPlayer(c);
+			}
 		}
 	}
 	

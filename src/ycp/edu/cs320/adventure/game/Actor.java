@@ -87,12 +87,12 @@ public class Actor {
 	}
 	
 	public void attack(Actor target) {
-		/*if(this.equippedItem instanceof Weapon) {
+		if(this.equippedItem != null) {
 			target.hurt(equippedItem.getDamage());
 		}
 		else{
 			target.hurt(baseDamage);
-		}*/
+		}
 	}
 	
 	public void hurt(int damageTaken) {
