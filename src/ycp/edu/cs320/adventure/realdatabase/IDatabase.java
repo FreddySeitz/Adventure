@@ -44,16 +44,19 @@ public interface IDatabase {
 	public boolean addToPlayerInventory(int player_id, int item_id);
 	public boolean existsPlayerInventoryItem(int player_id, int item_id);
 	public boolean removeFromPlayerInventory(int player_id, int inventory_id);
+	public boolean removeAllFromPlayerInventory(int player_id);
 	public List<Item> getPlayerInventory(int player_id);
 	
 	public boolean addToCreatureInventory(int creature_id, int item_id);
 	public boolean existsCreatureInventoryItem(int creature_id, int item_id);
 	public boolean removeFromCreatureInventory(int creature_id, int inventory_id);
+	public boolean removeAllFromCreatureInventory(int creature_id);
 	public List<Item> getCreatureInventory(int creature_id);
 	
 	public boolean addToTileInventory(int tile_id, int item_id);
 	public boolean existsTileInventoryItem(int tile_id, int item_id);
 	public boolean removeFromTileInventory(int tile_id, int inventory_id);
+	public boolean removeAllFromTileInventory(int tile_id);
 	public List<Item> getTileInventory(int tile_id);
 	
 	public Item getInventoryItem(int inventory_id);

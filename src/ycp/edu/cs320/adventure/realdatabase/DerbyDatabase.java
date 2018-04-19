@@ -888,6 +888,32 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public boolean removeAllFromPlayerInventory(final int player_id) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" DELETE FROM inventories " +
+										"WHERE inventories.player_id = ?"
+								);
+						stmt.setInt(1, player_id);
+
+						stmt.executeUpdate();
+
+						return true;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public List<Item> getPlayerInventory(final int player_id) {
@@ -1019,6 +1045,32 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public boolean removeAllFromCreatureInventory(final int creature_id) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" DELETE FROM inventories " +
+										"WHERE inventories.creature_id = ?"
+								);
+						stmt.setInt(1, creature_id);
+
+						stmt.executeUpdate();
+
+						return true;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public List<Item> getCreatureInventory(final int creature_id) {
@@ -1151,6 +1203,32 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public boolean removeAllFromTileInventory(final int tile_id) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" DELETE FROM inventories " +
+										"WHERE inventories.tile_id = ?"
+								);
+						stmt.setInt(1, tile_id);
+
+						stmt.executeUpdate();
+
+						return true;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public List<Item> getTileInventory(final int tile_id) {
@@ -1772,7 +1850,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" INSERT INTO players (game_id, equippedItem, health, x_location, y_location, baseDamage, moveSpeed) " + 
+							" INSERT INTO creatures (game_id, equippedItem, health, x_location, y_location, baseDamage, moveSpeed) " + 
 									"	VALUES (?, ?, ?, ?, ?, ?, ?)	"
 							);
 					stmt.setInt(1, game_id);
@@ -2797,9 +2875,9 @@ public class DerbyDatabase implements IDatabase{
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
 
-		db.createTables();
+		//db.createTables();
 		//db.removeTables();	//to delete all tables
-		//db.clearTables();		//to clear all tables of all data
+		db.clearTables();		//to clear all tables of all data
 
 		System.out.println("Success!");
 	}
