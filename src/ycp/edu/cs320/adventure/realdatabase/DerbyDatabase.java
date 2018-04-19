@@ -900,7 +900,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT inventories.item_id " +
+							" SELECT inventories.item_id, inventories.inventory_id " +
 									"FROM inventories " + 
 									"WHERE inventories.player_id = ?"
 							);
@@ -910,7 +910,9 @@ public class DerbyDatabase implements IDatabase{
 
 					List<Item> result = new ArrayList<Item>();
 					while(resultSet.next()){
-						result.add(getItem(resultSet.getInt(1)));
+						Item item = (getItem(resultSet.getInt(1)));
+						item.setInventoryId(resultSet.getInt(2));
+						result.add(item);
 					}
 
 					return result;
@@ -1029,7 +1031,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT inventories.item_id " +
+							" SELECT inventories.item_id, inventories.inventory_id " +
 									"FROM inventories " + 
 									"WHERE inventories.creature_id = ?"
 							);
@@ -1039,7 +1041,9 @@ public class DerbyDatabase implements IDatabase{
 
 					List<Item> result = new ArrayList<Item>();
 					while(resultSet.next()){
-						result.add(getItem(resultSet.getInt(1)));
+						Item item = (getItem(resultSet.getInt(1)));
+						item.setInventoryId(resultSet.getInt(2));
+						result.add(item);
 					}
 
 					return result;
@@ -1159,7 +1163,7 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retrieve a specific item
 					stmt = conn.prepareStatement(
-							" SELECT inventories.item_id " +
+							" SELECT inventories.item_id, inventories.inventory_id " +
 									"FROM inventories " + 
 									"WHERE inventories.tile_id = ?"
 							);
@@ -1169,7 +1173,9 @@ public class DerbyDatabase implements IDatabase{
 
 					List<Item> result = new ArrayList<Item>();
 					while(resultSet.next()){
-						result.add(getItem(resultSet.getInt(1)));
+						Item item = (getItem(resultSet.getInt(1)));
+						item.setInventoryId(resultSet.getInt(2));
+						result.add(item);
 					}
 
 					return result;
@@ -1991,6 +1997,44 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public List<Creature> getAllCreatures(final int game_id) {
+			return executeTransaction(new Transaction<List<Creature>>() {
+				@Override
+				public List<Creature> execute(Connection conn) throws SQLException {
+
+					PreparedStatement gettile = null;
+					ResultSet resultTile = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						gettile = conn.prepareStatement(
+								" SELECT * " +
+										"FROM creatures " + 
+										"WHERE creatures.game_id = ?"
+								);
+
+						gettile.setInt(1, game_id);
+
+						resultTile = gettile.executeQuery();
+						
+						List<Creature> result = new ArrayList<Creature>();
+						while(resultTile.next()){
+							Creature creature = new Creature();
+							loadcreature(creature, resultTile, 1);
+							result.add(creature);
+						}
+
+						return result;
+
+					} finally {
+						DBUtil.closeQuietly(gettile);
+						DBUtil.closeQuietly(resultTile);
+					}
+				}
+			});
+		}
 
 	private void loadcreature(Creature creature, ResultSet resultSet, int index) throws SQLException {
 		creature.setCreatureId((resultSet.getInt(index++)));
@@ -2238,7 +2282,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public Player getPlayer(final int player_id) {
+	public Player getPlayer(final int game_id) {
 		return executeTransaction(new Transaction<Player>() {
 			@Override
 			public Player execute(Connection conn) throws SQLException {
@@ -2251,10 +2295,10 @@ public class DerbyDatabase implements IDatabase{
 					gettile = conn.prepareStatement(
 							" SELECT * " +
 									"FROM players " + 
-									"WHERE players.player_id = ?"
+									"WHERE players.game_id = ?"
 							);
 
-					gettile.setInt(1, player_id);
+					gettile.setInt(1, game_id);
 
 					resultTile = gettile.executeQuery();
 					resultTile.next();
@@ -2476,6 +2520,8 @@ public class DerbyDatabase implements IDatabase{
 
 					stmt4 = conn.prepareStatement(
 							"create table inventories (" +
+									"	inventory_id integer primary key " +
+									"		generated always as identity (start with 1, increment by 1), " +
 									"	creature_id integer, " +
 									"	player_id integer, " +
 									"	tile_id integer, " +

@@ -87,6 +87,7 @@ public interface IDatabase {
 	public boolean updateCreatureMoveSpeed(int creature_id, int moveSpeed);
 	public boolean removeCreature(int creature_id);
 	public Creature getCreature(int creature_id);
+	public List<Creature> getAllCreatures(int game_id);
 	
 	//players
 	public boolean createPlayer(int game_id, int equippedItem, int health, int x, int y, int baseDamage, int score);
@@ -97,7 +98,7 @@ public interface IDatabase {
 	public boolean updatePlayerBaseDamage(int player_id, int baseDamage);
 	public boolean updatePlayerScore(int player_id, int score);
 	public boolean removePlayer(int player_id);
-	public Player getPlayer(int player_id);
+	public Player getPlayer(int game_id);
 	
 	//dataLogs
 	public boolean addGameLog(int game_id, String text);

@@ -4,6 +4,7 @@ public class Item{
 	// Variables
 	private int gameId;
 	private int itemId;
+	private int inventoryId;
 	private String description;
 	private String name;
 	private int weight;
@@ -43,6 +44,13 @@ public class Item{
 	}
 	public void setItemId(int i){
 		itemId = i;
+	}
+	
+	public int getInventoryId(){
+		return inventoryId;
+	}
+	public void setInventoryId(int i){
+		inventoryId = i;
 	}
 	
 	public String getName() {
