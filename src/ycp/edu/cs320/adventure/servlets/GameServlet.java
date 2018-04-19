@@ -258,7 +258,10 @@ public class GameServlet extends HttpServlet{
 				
 				// New shit 
 				
+				//public boolean addToPlayerInventory(int player_id, int item_id);
 				engine.pickupItem(player, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0));
+				
+				database.addToPlayerInventory(player_id, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0).getItemId());
 				
 				database.addGameLog(game_id, "You found an item! View inventory to see it.");
 				response = database.getGameLog(game_id);
