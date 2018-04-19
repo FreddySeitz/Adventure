@@ -34,9 +34,11 @@ public class GameServlet extends HttpServlet{
         Object account_id = req.getSession(false).getAttribute("id");
         
         System.out.println("ID: " + String.valueOf(account_id));
-		
-		DerbyDatabase database = new DerbyDatabase();
+		        
+        DerbyDatabase database = new DerbyDatabase();
 
+//		int player_id = database.getPlayerId((int)account_id);
+        
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
 		engine.setGame(game);
@@ -61,6 +63,9 @@ public class GameServlet extends HttpServlet{
 		List<Integer> game_ids = database.getGames((int)account_id);
 		int game_id = game_ids.get(0);
 
+        int player_id = database.getPlayer(game_id).getPlayerId();
+        
+		
 		//********** Play Game Below **********
 
 
@@ -73,9 +78,11 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newY = player.getLocation().getY() + 1;
 
+//				public boolean updatePlayerX(int player_id, int x);
+//				public boolean updatePlayerY(int player_id, int y);
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
-				
+								
 				database.addGameLog(game_id, " You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
 				
