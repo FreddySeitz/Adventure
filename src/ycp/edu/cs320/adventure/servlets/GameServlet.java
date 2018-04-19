@@ -28,6 +28,11 @@ public class GameServlet extends HttpServlet{
 
 		// Necessary objects & game setup
 		
+		// gets account_id of the account that was signed in from the index servlet 
+        Object account_id = req.getSession(false).getAttribute("id");
+        
+        System.out.println("ID: " + String.valueOf(account_id));
+		
 		DerbyDatabase database = new DerbyDatabase();
 
 		Game game = new Game();
