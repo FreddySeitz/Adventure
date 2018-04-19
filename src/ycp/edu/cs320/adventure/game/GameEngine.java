@@ -58,6 +58,15 @@ public class GameEngine {
 		// Build map
 		map.buildDefault();
 		
+		// Add all Tiles in Map to database
+		Tile tile = new Tile();
+		for(int i=0; i<20; i++) {
+			for(int j=0; j<20; j++) {
+				tile = map.getTile(i, j);
+				database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+			}
+		}
+		
 		// Add map to database
 		database.createMap(gameId, map.getHeight(), map.getWidth());
 		
