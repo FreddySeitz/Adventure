@@ -66,7 +66,9 @@ public class GameServlet extends HttpServlet{
 
 				player.setLocation(map.getTile(player.getLocation().getX(), newY));
 				
-				engine.setGameLog(engine.getGameLog() + "\n You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog()
+				
+				engine.setGameLog(engine.getGame().getGameLog() + "\n You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				response = engine.getGameLog();
 				
 			}
