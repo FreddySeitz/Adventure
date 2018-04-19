@@ -30,34 +30,25 @@ public class TestAccount {
 		//Every test defaulted to the constructor value
 	@Test
 	public void testCreateAccount() {
+		//create account
 		boolean created = database.createAccount("aweqewgwgiagnppasdng", "gurhgwygu43rebguayrgw");
-
 		assertEquals(true, created);
-	}
-	@Test
-	public void testGetAccountAndUsernamePassword(){
+		
+		//tests get account
 		account_id = database.getAccount("aweqewgwgiagnppasdng");
 		assertTrue(account_id != -1);
 		
-		
-	}
-	@Test
-	public void testAccountExists() {
+		//tests accountExists
 		boolean exists = database.accountExists("aweqewgwgiagnppasdng");
-
 		assertEquals(true, exists);
-	}
-	@Test
-	public void testAccountVerify() {
+		
+		//tests accountVerify
 		boolean verify = database.accountVerify("aweqewgwgiagnppasdng", "gurhgwygu43rebguayrgw");
-
 		assertEquals(true, verify);
+		
+		testUpdateAndRemove();
 	}
 
-
-
-
-	@Test
 	public void testUpdateAndRemove() {
 		//get id
 		account_id = database.getAccount("aweqewgwgiagnppasdng");
