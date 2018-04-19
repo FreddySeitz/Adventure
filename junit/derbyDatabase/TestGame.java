@@ -23,10 +23,9 @@ public class TestGame {
 	//eclipse likes to run these tests in random order, so they have to be grouped into single tests
 	public void testEverything() {
 		//create two games
-		boolean create = database.createGame(account_id);
-		boolean create2 = database.createGame(account_id);
-		assertEquals(true, create);
-		assertEquals(true, create2);
+		int create = database.createGame(account_id);
+		int create2 = database.createGame(account_id);
+		assertTrue(create == create2 - 1);
 
 		//gets games, should be 2
 		List<Integer> games = database.getGames(account_id);

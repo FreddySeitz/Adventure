@@ -42,7 +42,9 @@ public class GameServlet extends HttpServlet{
 		Game game = new Game();
 		GameEngine engine = new GameEngine();
 		engine.setGame(game);
-
+		engine = (GameEngine) req.getSession(false).getAttribute("engine");
+		
+		
 		Map map = new Map();
 		map.buildSmallDefault(engine);
 
@@ -61,10 +63,11 @@ public class GameServlet extends HttpServlet{
 		System.out.println("Game Servlet: doPost");
 		
 		List<Integer> game_ids = database.getGames((int)account_id);
-		int game_id = game_ids.get(0);
+		int game_id = game_ids.get(game_ids.size() - 1);
 
         int player_id = database.getPlayer(game_id).getPlayerId();
         
+        Tile nextMove = new Tile(); 
 		
 		//********** Play Game Below **********
 
@@ -85,7 +88,9 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(player.getLocation().getX(), newY));
 								
+				nextMove = map.getTile(player.getLocation().getX(), newY);
 				
+				engine.movePlayer(nextMove);
 				
 				database.addGameLog(game_id, " You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -114,7 +119,10 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
 				
-
+				nextMove = map.getTile(newX, player.getLocation().getY());
+				
+				engine.movePlayer(nextMove);
+				
 				database.addGameLog(game_id, " You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
 				response = database.getGameLog(game_id);
@@ -139,6 +147,9 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 				
+				nextMove = map.getTile(newX, player.getLocation().getY());
+				
+				engine.movePlayer(nextMove);
 
 				database.addGameLog(game_id, "You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -163,6 +174,11 @@ public class GameServlet extends HttpServlet{
 				
 				// Do This:
 				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
+				
+				nextMove = map.getTile(player.getLocation().getX(), newY);
+				
+				engine.movePlayer(nextMove);
+				
 				database.addGameLog(game_id, "You Moved Up." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				response = database.getGameLog(game_id);
 			}

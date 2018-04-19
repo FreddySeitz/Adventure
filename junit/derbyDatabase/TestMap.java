@@ -27,8 +27,7 @@ public class TestMap {
 	@Test
 	public void testEverything() {
 		//create map
-		boolean create = database.createMap(game_id, height, width);
-		assertEquals(true, create);
+		database.createMap(game_id, height, width);
 		
 		//testing if game was created
 		map = database.getMap(game_id);

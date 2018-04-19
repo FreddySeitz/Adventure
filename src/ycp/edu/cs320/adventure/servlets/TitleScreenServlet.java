@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ycp.edu.cs320.adventure.game.GameEngine;
+
 public class TitleScreenServlet extends HttpServlet{
 	    private static final long serialVersionUID = 1L;
 	    
@@ -29,12 +31,15 @@ public class TitleScreenServlet extends HttpServlet{
 	        
 	        // gets account_id of the account that was signed in from the index servlet 
 	        Object account_id = req.getSession(false).getAttribute("id");
+	        GameEngine engine = new GameEngine();
 	        
 	        System.out.println("ID: " + String.valueOf(account_id));
 	        
 	        if (button.equals("New Game")) {
 	        	ses = req.getSession(true);
 	        	ses.setAttribute("id",(int)account_id);
+	        	engine.createGame((int)account_id);
+	        	ses.setAttribute("engine",engine);
 	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
 	            return; 
 	        } 
