@@ -2663,7 +2663,7 @@ public class DerbyDatabase implements IDatabase{
 
 					StringBuilder builder = new StringBuilder();
 					while(resultTile.next()){
-						builder.append(resultTile.getString(1) + '\n');
+						builder.append(resultTile.getString(1) + '\n' + '\n');
 					}
 
 					return builder.toString();
