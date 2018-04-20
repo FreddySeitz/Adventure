@@ -104,12 +104,14 @@ public class TestCreatures {
 		database.removeCreature(creature.getCreatureId());
 		database.removeCreature(creature2.getCreatureId());
 		
-		for(int i = 0; i<database.getAllItems(game_id).size(); i++){
-			database.removeItem(database.getAllItems(game_id).get(i).getItemId());
+		List<Item> items = database.getAllItems(game_id);
+		for(int i = 0; i<items.size(); i++){
+			database.removeItem(items.get(i).getItemId());
 		}
 		
-		for(int i = 0; i<database.getAllTiles(game_id).size(); i++){
-			database.removeTile(database.getAllTiles(game_id).get(i).getTileId());
+		List<Tile> tiles = database.getAllTiles(game_id);
+		for(int i = 0; i<tiles.size(); i++){
+			database.removeTile(tiles.get(i).getTileId());
 		}
 		
 	}
