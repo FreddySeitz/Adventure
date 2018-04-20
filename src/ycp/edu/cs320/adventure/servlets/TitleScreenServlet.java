@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ycp.edu.cs320.adventure.game.GameEngine;
+import ycp.edu.cs320.adventure.game.Player;
 
 public class TitleScreenServlet extends HttpServlet{
 	    private static final long serialVersionUID = 1L;
@@ -37,9 +38,15 @@ public class TitleScreenServlet extends HttpServlet{
 	        
 	        if (button.equals("New Game")) {
 	        	ses = req.getSession(true);
+	        	
 	        	ses.setAttribute("id",(int)account_id);
 	        	engine.createGame((int)account_id);
 	        	ses.setAttribute("engine",engine);
+	        	ses.setAttribute("playerX", 0);
+	        	ses.setAttribute("playerY", 0);
+	        	Player player = engine.getGame().getPlayer();
+	        	ses.setAttribute("player", player);
+	        	
 	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
 	            return; 
 	        } 

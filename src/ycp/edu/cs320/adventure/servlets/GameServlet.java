@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import ycp.edu.cs320.adventure.game.*;
 import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
@@ -36,24 +38,32 @@ public class GameServlet extends HttpServlet{
         System.out.println("ID: " + String.valueOf(account_id));
 		        
         DerbyDatabase database = new DerbyDatabase();
-
-//		int player_id = database.getPlayerId((int)account_id);
         
-		Game game = new Game();
 		GameEngine engine = new GameEngine();
-		engine.setGame(game);
+		
+		engine.setGame((Game) req.getSession(false).getAttribute("game"));
 		engine = (GameEngine) req.getSession(false).getAttribute("engine");
 		
+		HttpSession ses = req.getSession(true);
 		
 		Map map = new Map();
-		map.buildSmallDefault(engine);
+		//map.buildSmallDefault(engine);
+		map = engine.getGame().getMap();  
 
 		Tile start = new Tile();
 		start = map.getTile(0, 0);
 
-		Player player = new Player();
-		player.setLocation(start);
-
+//		//player.setLocation(start);
+		
+		Player player = (Player) req.getSession(false).getAttribute("player");
+		
+		// gets player x y coordinates
+		ses = req.getSession(true);
+		int playerX = (int)req.getSession(false).getAttribute("playerX");
+		int playerY = (int)req.getSession(false).getAttribute("playerY");
+		System.out.println("X: " + playerX);
+		System.out.println("Y: " + playerY);
+		
 		// User input from jsp
 		String input = req.getParameter("userInput");
 
@@ -67,7 +77,7 @@ public class GameServlet extends HttpServlet{
 
         int player_id = database.getPlayer(game_id).getPlayerId();
         
-        Tile nextMove = new Tile(); 
+        //Tile nextMove = new Tile(); 
 		
 		//********** Play Game Below **********
 
@@ -77,9 +87,9 @@ public class GameServlet extends HttpServlet{
 		// Player moves down
 		if(input.equalsIgnoreCase("move down")) {
 			// If valid move
-			if(player.getLocation().getY() < map.getHeight() - 1) {
+			if(playerY < map.getHeight() - 1) {
 				// Move player
-				int newY = player.getLocation().getY() + 1;
+				int newY = (int)req.getSession(false).getAttribute("playerY") + 1;
 
 				// These:
 				//database.updatePlayerX(player_id, player.getLocation().getX());
@@ -88,11 +98,17 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(player.getLocation().getX(), newY));
 								
-				nextMove = map.getTile(player.getLocation().getX(), newY);
+				//nextMove = map.getTile(player.getLocation().getX(), newY);
+	        	//ses.setAttribute("playerX",player.getLocation().getX());
+	        	ses.setAttribute("playerY",newY);
+	        	
+	        	System.out.println("Move down");
+	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+	        	
+				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
-				engine.movePlayer(nextMove);
-				
-				database.addGameLog(game_id, " You Moved Down." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, " You Moved Down.");
 				
 				
 				response = database.getGameLog(game_id);
@@ -110,18 +126,26 @@ public class GameServlet extends HttpServlet{
 			// If valid move
 			if(player.getLocation().getY() > 0) {
 				// Move player
-				int newX = player.getLocation().getX() - 1;
+				// Move player
+				int newX = (int)req.getSession(false).getAttribute("playerX") - 1;
 
 				// These:
 				//database.updatePlayerX(player_id, newX);
 				//database.updatePlayerY(player_id, player.getLocation().getY());
 				
 				// Do This:
-				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
+				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 				
-				nextMove = map.getTile(newX, player.getLocation().getY());
+				//nextMove = map.getTile(newX, player.getLocation().getY());
 				
-				engine.movePlayer(nextMove);
+				ses.setAttribute("playerX",newX);
+	        	//ses.setAttribute("playerY",player.getLocation().getY());
+	        	
+	        	System.out.println("Move left");
+	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+	        	
+				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
 				database.addGameLog(game_id, " You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -138,7 +162,7 @@ public class GameServlet extends HttpServlet{
 			// If valid move
 			if(player.getLocation().getX() < map.getWidth()) {
 				// Move player
-				int newX = player.getLocation().getX() + 1;
+				int newX = (int)req.getSession(false).getAttribute("playerX") + 1;
 
 				// These:
 				//database.updatePlayerX(player_id, newX);
@@ -147,9 +171,16 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
 				
-				nextMove = map.getTile(newX, player.getLocation().getY());
+				//nextMove = map.getTile(newX, player.getLocation().getY());
 				
-				engine.movePlayer(nextMove);
+				ses.setAttribute("playerX",newX);
+	        	//ses.setAttribute("playerY",player.getLocation().getY());
+	        	
+	        	System.out.println("Move right");
+	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+	        	
+				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
 				database.addGameLog(game_id, "You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
@@ -164,9 +195,9 @@ public class GameServlet extends HttpServlet{
 		// Player moves up
 		else if(input.equalsIgnoreCase("move up")) {
 			// If valid move
-			if(player.getLocation().getY() < 0) {
+			if(playerY > 1) {
 				// Move player
-				int newY = player.getLocation().getY() - 1;
+				int newY = (int)req.getSession(false).getAttribute("playerY") - 1;
 
 				// These:
 				//database.updatePlayerX(player_id, newX);
@@ -175,11 +206,17 @@ public class GameServlet extends HttpServlet{
 				// Do This:
 				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
 				
-				nextMove = map.getTile(player.getLocation().getX(), newY);
+				//nextMove = map.getTile(player.getLocation().getX(), newY);
+				//ses.setAttribute("playerX",player.getLocation().getX());
+	        	ses.setAttribute("playerY",newY);
+	        	
+	        	System.out.println("Move up");
+	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+	        	
+				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
-				engine.movePlayer(nextMove);
-				
-				database.addGameLog(game_id, "You Moved Up." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, "You Moved Up." /*+ map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription()*/);
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -200,9 +237,10 @@ public class GameServlet extends HttpServlet{
 
 			// If player has a location 
 			if(player.getLocation() != null) {
-				database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
-				response = database.getGameLog(game_id);
-
+				//database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
+				//response = database.getGameLog(game_id);
+				String location = (req.getSession(false).getAttribute("playerX")).toString() + " , " + ((String)req.getSession(false).getAttribute("playerY").toString());
+				response = location;
 			}
 
 			// If player does not have a location 
