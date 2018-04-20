@@ -40,7 +40,7 @@ public class InitialDataTest {
 			System.out.println(a.size());
 			System.out.println(a.get(0).getGameId());
 			System.out.println(a.get(0).getWidth());
-			System.out.println(a.get(0).getTile(0, 0).getType());
+			//System.out.println(a.get(0).getTile(0, 0).getType());
 			
 		} catch (IOException e) {
 			e.printStackTrace();
