@@ -2660,7 +2660,6 @@ public class DerbyDatabase implements IDatabase{
 					gettile.setInt(1, game_id);
 
 					resultTile = gettile.executeQuery();
-					resultTile.next();
 
 					StringBuilder builder = new StringBuilder();
 					while(resultTile.next()){
@@ -2697,7 +2696,6 @@ public class DerbyDatabase implements IDatabase{
 					gettile.setInt(1, game_id);
 
 					resultTile = gettile.executeQuery();
-					resultTile.next();
 
 					List<String> result = new ArrayList<String>();
 					while(resultTile.next()){
