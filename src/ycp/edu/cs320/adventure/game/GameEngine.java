@@ -159,13 +159,16 @@ public class GameEngine {
 	}
 	
 	// Moves the player based on command
-	public void movePlayer(Tile newLocation) {
+	public void movePlayer(int X, int Y) {
 		// Changes the player's location
-		currentGame.getPlayer().setLocation(newLocation);
+		currentGame.getPlayer().setLocation(currentGame.getMap().getTile(X, Y));
 		
 		// Updates the player's location in the database
-		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), newLocation.getX());
-		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), newLocation.getY());
+		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), X);
+		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), Y);
+		
+		// Need to get player from database after Tile location is updated
+		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
 		
 		// Update the game when the player moves
 		update();

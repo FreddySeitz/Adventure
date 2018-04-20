@@ -1,6 +1,2 @@
-/README_DO_NOT_TOUCH_FILES.txt
-/log.ctrl
-/log1.dat
-/logmirror.ctrl
-/log2.dat
-/log3.dat
+/build/
+/derby.log
