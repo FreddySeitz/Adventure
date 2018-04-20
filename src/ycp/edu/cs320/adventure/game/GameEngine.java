@@ -141,7 +141,7 @@ public class GameEngine {
 		player.setLocation(map.getTile(0, 0));
 		player.setScore(0);
 		
-		database.createPlayer(gameId, 0, player.getHealth(), player.getLocation().getX(), player.getLocation().getY(), player.getBaseDamage(), player.getScore());
+		player.setPlayerId(database.createPlayer(gameId, 0, player.getHealth(), player.getLocation().getX(), player.getLocation().getY(), player.getBaseDamage(), player.getScore()));
 		
 		currentGame.setMap(map);
 		currentGame.setGameLog(gameLog);
@@ -149,13 +149,17 @@ public class GameEngine {
 		currentGame.setItems(items);
 		currentGame.setPlayer(player);
 		currentGame.setGameId(gameId);
-		currentGame.setPlayer(database.getPlayer(gameId));
 	}
 	
 	// Calls database methods to initialize a game
 	public void loadGame(int gameId){
 		// Loads all creatures for game
+		currentGame.setMap(database.getMap(gameId));
+		currentGame.setGameLog(database.getGameLog(gameId));
 		currentGame.setCreatures(database.getAllCreatures(gameId));
+		currentGame.setItems(database.getAllItems(gameId));
+		currentGame.setPlayer(database.getPlayer(gameId));
+		currentGame.setGameId(gameId);
 	}
 	
 	// Moves the player based on command
