@@ -109,7 +109,7 @@ public interface IDatabase {
 	public boolean removePlayer(int player_id);
 	public Player getPlayer(int game_id);
 	
-	//dataLogs
+	//gameLogs
 	public boolean addGameLog(int game_id, String text);
 	public String getGameLog(int game_id);
 	public List<String> getGameLogList(int game_id);
