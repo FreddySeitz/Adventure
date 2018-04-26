@@ -284,6 +284,26 @@ public class GameEngine {
 		}
 	}
 	
+	public String viewMap(){	//may also be written as a list of text, per row
+		StringBuilder builder = new StringBuilder();
+		for(int i = 0; i < currentGame.getMap().getHeight(); i++){
+			for(int k = 0; k < currentGame.getMap().getWidth(); k++){
+				switch(currentGame.getMap().getTile(i, k).getType()) {
+				case 0:		//unpassable space
+					builder.append('-');
+				case 1:		//room
+					builder.append('o');
+				case 2:		//trap
+					builder.append('x');
+				case 3:		//exit
+					builder.append('E');
+				}
+			}
+			builder.append(' ');	//new line
+		}
+		return builder.toString();
+	}
+	
 	// Updates the current Game object
 	public void update() {
 		moveCreatures();
