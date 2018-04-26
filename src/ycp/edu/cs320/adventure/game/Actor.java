@@ -99,6 +99,10 @@ public class Actor {
 		this.health = this.health - damageTaken;
 	}
 	
+	public void heal(int healthAdded) {
+		health = health + healthAdded;
+	}
+	
 	public void move(Tile newLocation) {
 		this.setLocation(newLocation);
 	}

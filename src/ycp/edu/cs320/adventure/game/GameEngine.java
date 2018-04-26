@@ -38,7 +38,24 @@ public class GameEngine {
 		return database;
 	}
 	
-	// Ends the game, incorporating checks for winning
+	// Checks end game conditions
+	public boolean checkEndGame() {
+		// Checks if player's health hits zero
+		if(currentGame.getPlayer().getHealth() <= 0) {
+			return true;
+		}
+		
+		// Checks if the player's score is high enough and that they are on
+		// the exit tile
+		if(currentGame.getPlayer().getScore() == 500 &&
+				currentGame.getPlayer().getLocation().getType() == 3) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// Ends the game
 	public void endGame() {
 		
 	}
@@ -100,38 +117,8 @@ public class GameEngine {
 			creatures.add(creature);
 		}
 		
-		// Temporary item object
-		Item item;
-		int itemId;
-				
-		// Add items to list of items
-		for(int i=1; i<3; i++) {
-			item = new Item();
-			item.setDamage(i);
-			item.setDescription("Item " + Integer.toString(i));
-			item.setGameId(gameId);
-			item.setHealth(i);
-			item.setName("Item " + Integer.toString(i));
-			item.setQuestId(i);
-			item.setValue(i);
-			item.setWeight(i);
-			
-			
-			// Generates random X and Y locations for Item's starting Tile
-			newX = (int)(Math.random() * map.getWidth());
-			newY = (int)(Math.random() * map.getHeight());
-			
-			map.getTile(newX, newY).addItem(item);
-			
-			// Update database to contain item
-			itemId = database.createItem(gameId, item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-			
-			// Set itemId given by database
-			item.setItemId(itemId);
-			
-			// Add the Item to the existing list of items
-			items.add(item);
-		}
+		// Set initial items for game
+		items = createRandomItems(3);
 		
 		player.setBaseDamage(5);
 		player.setEquippedItem(null);
@@ -216,6 +203,15 @@ public class GameEngine {
 		
 		// Updates database to reflect inventory change of Tile
 		database.addToTileInventory(actor.getLocation().getTileId(), item.getItemId());
+	}
+	
+	// Called when the player uses a healing item
+	public void healPlayer() {
+		// Uses equipped item damage which will be negative for healing items
+		currentGame.getPlayer().heal(-currentGame.getPlayer().getEquippedItem().getDamage());
+		
+		// Updates database to reflect change in Player health
+		database.updatePlayerHealth(currentGame.getPlayer().getPlayerId(), currentGame.getPlayer().getHealth());
 	}
 	
 	// Called when a creature attacks a player
@@ -306,7 +302,14 @@ public class GameEngine {
 	
 	// Updates the current Game object
 	public void update() {
+		// Update creature location
 		moveCreatures();
+		
+		// Check for end game conditions
+		if(checkEndGame()) {
+			// Ask user if they would like to end game
+			// Call endGame if yes
+		}
 	}
 	
 	// Creates a new item given an item ID
@@ -327,6 +330,46 @@ public class GameEngine {
 			}
 		}
 		return item;
+	}
+	
+	public List<Item> createRandomItems(int numItems){
+		List<Item> items = new ArrayList<Item>();
+		Item item;
+		int newX;
+		int newY;
+		Map map = currentGame.getMap();
+		int itemId;
+		
+		// Add items to list of items
+		for(int i=1; i<numItems; i++) {
+			item = new Item();
+			item.setDamage(i);
+			item.setDescription("Item " + Integer.toString(i));
+			item.setGameId(currentGame.getGameId());
+			item.setHealth(i);
+			item.setName("Item " + Integer.toString(i));
+			item.setQuestId(i);
+			item.setValue(i);
+			item.setWeight(i);
+			
+			
+			// Generates random X and Y locations for Item's starting Tile
+			newX = (int)(Math.random() * map.getWidth());
+			newY = (int)(Math.random() * map.getHeight());
+			
+			map.getTile(newX, newY).addItem(item);
+			
+			// Update database to contain item
+			itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
+			
+			// Set itemId given by database
+			item.setItemId(itemId);
+			
+			// Add the Item to the existing list of items
+			items.add(item);
+		}
+		
+		return items;
 	}
 	
 	//the list of items that can exist in an unedited new game
