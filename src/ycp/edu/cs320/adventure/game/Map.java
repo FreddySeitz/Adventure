@@ -43,8 +43,12 @@ public class Map {
 	public Tile[][] getMap(){
 		return map;
 	}
+	
+	public void setMap(Tile[][] map){
+		this.map = map;
+	}
 
-	public void setMap(int i, int j, Tile t){	//i=column(height)		j = row(width)
+	public void setTile(int i, int j, Tile t){	//i=column(height)		j = row(width)
 		map[i][j] = t;
 	}
 	
