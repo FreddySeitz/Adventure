@@ -61,10 +61,10 @@ public class GameEngine {
 	}
 	
 	// Creates the default game
-	public void createGame(int accountId) {
+	public int createGame(int accountId) {
 		// Create game and record its gameId
 		int gameId = database.createGame(accountId);
-		
+		currentGame.setGameId(gameId);
 		// Placeholders that will be put in the new game
 		Map map = new Map();
 		String gameLog = "You decided to set out on an Adventure!";
@@ -77,10 +77,12 @@ public class GameEngine {
 		
 		// Add all Tiles in Map to database
 		Tile tile = new Tile();
+		int id;
 		for(int i=0; i<20; i++) {
 			for(int j=0; j<20; j++) {
 				tile = map.getTile(i, j);
-				map.getTile(i, j).setTileId(database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY()));
+				id = database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+				map.getTile(i, j).setTileId(id);
 			}
 		}
 		
@@ -103,8 +105,8 @@ public class GameEngine {
 			creature.setMovementSpeed(i);
 			
 			// Generates random X and Y locations for Creature's starting Tile
-			newX = (int)(Math.random() * map.getWidth());
-			newY = (int)(Math.random() * map.getHeight());
+			newX = (int)(Math.random() * map.getWidth()-1);
+			newY = (int)(Math.random() * map.getHeight()-1);
 			creature.setLocation(map.getTile(newX, newY));
 			
 			// Update database to contain creature
@@ -135,7 +137,8 @@ public class GameEngine {
 		currentGame.setCreatures(creatures);
 		currentGame.setItems(items);
 		currentGame.setPlayer(player);
-		currentGame.setGameId(gameId);
+		
+		return gameId;
 	}
 	
 	// Calls database methods to initialize a game
@@ -337,7 +340,7 @@ public class GameEngine {
 		Item item;
 		int newX;
 		int newY;
-		Map map = currentGame.getMap();
+		Map map = database.getMap(currentGame.getGameId());
 		int itemId;
 		
 		// Add items to list of items
@@ -357,7 +360,7 @@ public class GameEngine {
 			newX = (int)(Math.random() * map.getWidth());
 			newY = (int)(Math.random() * map.getHeight());
 			
-			map.getTile(newX, newY).addItem(item);
+			database.getTile(currentGame.getGameId(), newX, newY).addItem(item);
 			
 			// Update database to contain item
 			itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());

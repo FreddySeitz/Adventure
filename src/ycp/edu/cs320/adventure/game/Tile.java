@@ -21,6 +21,7 @@ public class Tile {
 		y = 0;
 		items = new ArrayList<Item>();
 		damage = 0;
+		description = "tile description";
 	}
 	
 	public void setGameId(int g){
