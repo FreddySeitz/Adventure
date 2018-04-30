@@ -19,16 +19,16 @@ public class Item{
 	}
 	
 	// Constructor
-	public Item(String n, String d, int g, int i, int w, int dmg, int h, int q, int v) {
-		name = n;
-		description = d;
-		gameId = g;
-		itemId = i;
-		weight = w;
-		damage = dmg;
-		health = h;
-		quest_id = q;
-		value = v;
+	public Item(String name, String description, int gameId, int itemId, int weight, int damage, int health, int quest_id, int value) {
+		this.name = name;
+		this.description = description;
+		this.gameId = gameId;
+		this.itemId = itemId;
+		this.weight = weight;
+		this.damage = damage;
+		this.health = health;
+		this.quest_id = quest_id;
+		this.value = value;
 	}
 	
 
