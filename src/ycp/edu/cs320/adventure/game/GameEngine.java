@@ -335,6 +335,46 @@ public class GameEngine {
 		return item;
 	}
 	
+	public List<Item> createDefaultItems(){
+		List<Item> items = new ArrayList<Item>();
+		Item item = new Item();
+		Map map = database.getMap(currentGame.getGameId());
+		Tile tile = new Tile();
+		int itemId;
+		Random rand = new Random();
+		
+		// Treasure item
+		int value = rand.nextInt(200) + 400;
+		item.setName("Treasure");
+		item.setDescription("ohhhh shiny!");
+		item.setGameId(currentGame.getGameId());
+		item.setWeight(0);
+		item.setDamage(1);
+		item.setHealth(0);
+		item.setQuestId(0);
+		item.setValue(value);
+		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
+		item.setItemId(itemId);
+		items.add(item);
+		
+		tile = database.getTile(currentGame.getGameId(), 2, 3);
+		tile.addItem(item);
+		map.setTile(tile.getX(), tile.getY(), tile);
+		
+		// Updates Tile inventory in the database
+		database.addToTileInventory(tile.getTileId(), item.getItemId());
+		
+		// Sword item
+		itemId = database.createItem(currentGame.getGameId(), "Sword", "Sharpened on lost souls", 1, 10, 5, 0, 1);
+		items.add(new Item("Sword", "Sharpened on lost souls", currentGame.getGameId(), itemId, 1, 10, 5, 0, 1));
+		
+		// Pebble item
+		itemId = database.createItem(currentGame.getGameId(), "Pebble", "Hard and small", 1, 5, 0, 0, 0);
+		items.add(new Item("Pebble", "Hard and small", currentGame.getGameId(), itemId, 1, 5, 0, 0, 0));
+		
+		return items;
+	}
+	
 	public List<Item> createRandomItems(int numItems){
 		List<Item> items = new ArrayList<Item>();
 		Item item;
@@ -342,6 +382,7 @@ public class GameEngine {
 		int newY;
 		Map map = database.getMap(currentGame.getGameId());
 		int itemId;
+		Tile tile;
 		
 		// Add items to list of items
 		for(int i=1; i<numItems; i++) {
@@ -360,7 +401,11 @@ public class GameEngine {
 			newX = (int)(Math.random() * map.getWidth());
 			newY = (int)(Math.random() * map.getHeight());
 			
-			database.getTile(currentGame.getGameId(), newX, newY).addItem(item);
+			// Adds the item to the randomly selected Tile inventory
+			tile = database.getTile(currentGame.getGameId(), newX, newY);
+			tile.addItem(item);
+			map.setTile(tile.getX(), tile.getY(), tile);
+			
 			
 			// Update database to contain item
 			itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
@@ -370,6 +415,9 @@ public class GameEngine {
 			
 			// Add the Item to the existing list of items
 			items.add(item);
+			
+			// Updates Tile inventory in the database
+			database.addToTileInventory(tile.getTileId(), item.getItemId());
 		}
 		
 		return items;
