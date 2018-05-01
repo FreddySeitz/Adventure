@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ycp.edu.cs320.adventure.game.Creature;
@@ -2663,8 +2664,14 @@ public class DerbyDatabase implements IDatabase{
 					resultTile = gettile.executeQuery();
 
 					StringBuilder builder = new StringBuilder();
+					String[] strings = new String[0];
 					while(resultTile.next()){
-						builder.append(resultTile.getString(1) + '\n' + '\n');
+						strings = Arrays.copyOf(strings, strings.length+1);
+						strings[strings.length-1] = (resultTile.getString(1) + '\n' + '\n');
+					}
+					
+					for(int i = strings.length-1; i >= 0; i--){
+						builder.append(strings[i]);
 					}
 
 					return builder.toString();
