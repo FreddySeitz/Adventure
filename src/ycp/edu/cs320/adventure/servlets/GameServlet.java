@@ -52,12 +52,21 @@ public class GameServlet extends HttpServlet{
 		Player player = (Player) req.getSession(false).getAttribute("player");
 		
 		// gets player x y coordinates
-		ses = req.getSession(true);
-		int playerX = (int)req.getSession(false).getAttribute("playerX");
-		int playerY = (int)req.getSession(false).getAttribute("playerY");
-		System.out.println("X: " + playerX);
-		System.out.println("Y: " + playerY);
-		
+		//ses = req.getSession(true);
+		int playerX = 0;
+		int playerY = 0;
+		try {
+			playerX = (int)req.getSession(false).getAttribute("playerX");
+			playerY = (int)req.getSession(false).getAttribute("playerY");
+			System.out.println("X: " + playerX);
+			System.out.println("Y: " + playerY);
+		}
+		catch(NullPointerException e){
+			System.out.println(e);
+			System.out.println((int)req.getSession(false).getAttribute("playerX"));
+			System.out.println((int)req.getSession(false).getAttribute("playerY"));
+			
+		}
 		// User input from jsp
 		String input = req.getParameter("userInput");
 
