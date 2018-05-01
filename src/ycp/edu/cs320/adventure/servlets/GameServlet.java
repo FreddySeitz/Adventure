@@ -46,14 +46,12 @@ public class GameServlet extends HttpServlet{
 		
 		HttpSession ses = req.getSession(true);
 		
-		Map map = new Map();
-		//map.buildSmallDefault(engine);
-		map = engine.getGame().getMap();  
+		Map map = (Map) req.getSession(false).getAttribute("map");
 
 		Tile start = new Tile();
 		start = map.getTile(0, 0);
 
-//		//player.setLocation(start);
+		//player.setLocation(start);
 		
 		Player player = (Player) req.getSession(false).getAttribute("player");
 		
