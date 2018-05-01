@@ -1573,7 +1573,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public int createTile(final int game_id, final int type, final String description, final int damage, final int x, final int y) {
+	public int createTile(final int game_id, final int type, final boolean visible, final String description, final int damage, final int x, final int y) {
 		return executeTransaction(new Transaction<Integer>() {
 			@Override
 			public Integer execute(Connection conn) throws SQLException {
@@ -1584,15 +1584,16 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" INSERT INTO tiles (game_id, type, description, damage, x, y) " + 
-									"	VALUES (?, ?, ?, ?, ?, ?)	"
+							" INSERT INTO tiles (game_id, type, visible, description, damage, x, y) " + 
+									"	VALUES (?, ?, ?, ?, ?, ?, ?)	"
 							);
 					stmt.setInt(1, game_id);
 					stmt.setInt(2, type);
-					stmt.setString(3, description);
-					stmt.setInt(4, damage);
-					stmt.setInt(5, x);
-					stmt.setInt(6, y);
+					stmt.setBoolean(3, visible);
+					stmt.setString(4, description);
+					stmt.setInt(5, damage);
+					stmt.setInt(6, x);
+					stmt.setInt(7, y);
 
 					stmt.executeUpdate();
 
@@ -1610,8 +1611,6 @@ public class DerbyDatabase implements IDatabase{
 						result = resultSet.getInt(1);
 					}
 
-					
-
 					return result;
 
 				} finally {
@@ -1624,7 +1623,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateTileAll(final int type, final String description, final int x, final int y, final int tile_id) {
+	public boolean updateTileAll(final int type, final boolean visible, final String description, final int x, final int y, final int tile_id) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -1634,14 +1633,15 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" UPDATE tiles " + 
-									"SET type = ?, description = ?, x = ?, y = ? " +
+									"SET type = ?, visible = ?, description = ?, x = ?, y = ? " +
 									"WHERE tiles.tile_id = ?"
 							);
 					stmt.setInt(1, type);
-					stmt.setString(2, description);
-					stmt.setInt(3, x);
-					stmt.setInt(4, y);
-					stmt.setInt(5, tile_id);
+					stmt.setBoolean(2, visible);
+					stmt.setString(3, description);
+					stmt.setInt(4, x);
+					stmt.setInt(5, y);
+					stmt.setInt(6, tile_id);
 
 					stmt.executeUpdate();
 
@@ -1681,6 +1681,34 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+	
+	//@Override
+		public boolean updateTileVisible(final boolean visible, final int tile_id) {
+			return executeTransaction(new Transaction<Boolean>() {
+				@Override
+				public Boolean execute(Connection conn) throws SQLException {
+					PreparedStatement stmt = null;
+
+					try {
+						// retreive all attributes from both Books and Authors tables
+						stmt = conn.prepareStatement(
+								" UPDATE tiles " + 
+										"SET visible = ? " +
+										"WHERE tiles.tile_id = ?"
+								);
+						stmt.setBoolean(1, visible);
+						stmt.setInt(2, tile_id);
+
+						stmt.executeUpdate();
+
+						return true;
+
+					} finally {
+						DBUtil.closeQuietly(stmt);
+					}
+				}
+			});
+		}
 
 	//@Override
 	public boolean updateTileDescription(final String description, final int tile_id) {
@@ -2887,6 +2915,7 @@ public class DerbyDatabase implements IDatabase{
 									"		generated always as identity (start with 1, increment by 1), " +
 									"	game_id integer, " +
 									"	type integer," +
+									"	visible boolean," +
 									"	description varchar(500), " +
 									"	damage integer," +
 									"   x integer," +

@@ -81,7 +81,7 @@ public class GameEngine {
 		for(int i=0; i<20; i++) {
 			for(int j=0; j<20; j++) {
 				tile = map.getTile(i, j);
-				id = database.createTile(gameId, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+				id = database.createTile(gameId, tile.getType(), tile.getVisible(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
 				map.getTile(i, j).setTileId(id);
 			}
 		}
