@@ -1568,6 +1568,7 @@ public class DerbyDatabase implements IDatabase{
 		map.setGameId(resultSet.getInt(index++));
 		map.setHeight(resultSet.getInt(index++));
 		map.setWidth(resultSet.getInt(index++));
+		map.setMap(new Tile[map.getWidth()][map.getHeight()]);
 	}
 
 	//@Override

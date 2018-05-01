@@ -106,7 +106,7 @@ public class GameServlet extends HttpServlet{
 	        	
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
-				database.addGameLog(game_id, " You Moved Down.");
+				database.addGameLog(game_id, " You Moved Down.<br /><br />");
 				
 				
 				response = database.getGameLog(game_id);
@@ -114,7 +114,7 @@ public class GameServlet extends HttpServlet{
 			}
 			else {
 				
-				database.addGameLog(game_id, "You can't move there!");
+				database.addGameLog(game_id, "You can't move there!<br /><br />");
 				response = database.getGameLog(game_id);
 			}
 		}
@@ -145,12 +145,12 @@ public class GameServlet extends HttpServlet{
 	        	
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
-				database.addGameLog(game_id, " You Moved Left." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, " You Moved Left.<br /><br />" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
 				response = database.getGameLog(game_id);
 			}
 			else {
-				database.addGameLog(game_id, "You can't move there!");
+				database.addGameLog(game_id, "You can't move there!<br /><br />");
 				response = database.getGameLog(game_id);
 			}		
 		}
@@ -180,12 +180,12 @@ public class GameServlet extends HttpServlet{
 	        	
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, "You Moved Right." + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, "You Moved Right.<br /><br />" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
 				
 				response = database.getGameLog(game_id);
 			}
 			else if(player.getLocation().getX() == map.getWidth()){
-				database.addGameLog(game_id, "You can't move there!");
+				database.addGameLog(game_id, "You can't move there!<br /><br />");
 				response = database.getGameLog(game_id);
 			}		
 		}
@@ -214,11 +214,11 @@ public class GameServlet extends HttpServlet{
 	        	
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 				
-				database.addGameLog(game_id, "You Moved Up." /*+ map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription()*/);
+				database.addGameLog(game_id, "You Moved Up.<br /><br />" /*+ map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription()*/);
 				response = database.getGameLog(game_id);
 			}
 			else {
-				database.addGameLog(game_id, "You can't move there!");
+				database.addGameLog(game_id, "You can't move there!<br /><br />");
 				response = database.getGameLog(game_id);
 			}
 		}
