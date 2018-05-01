@@ -39,7 +39,7 @@
 		<form action="${pageContext.servletContext.contextPath}/loadGame" method="get">
     		<input type="submit" name="button" value="Load Game" />
 		</form>
-		<form action="${pageContext.servletContext.contextPath}/newGame" method="get">
+		<form action="${pageContext.servletContext.contextPath}/game" method="get">
     		<input type="submit" name="button" value="New Game" />
 		</form>
 		<form action="${pageContext.servletContext.contextPath}/editGame" method="get">
