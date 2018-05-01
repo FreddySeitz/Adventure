@@ -37,6 +37,7 @@ public class LoadGameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doPost");
 		String response = null;
+		String errorMessage = null;
 
 		//********** Testing **********
 
@@ -50,6 +51,11 @@ public class LoadGameServlet extends HttpServlet{
 		// User input from jsp
 		String input = req.getParameter("userInput");
 
+		String button = req.getParameter("viewGames");
+
+		System.out.println("games: " + database.getGames(account_id));
+		response = database.getGames(account_id).toString();
+
 		int choice = -1;
 
 		try {
@@ -57,9 +63,12 @@ public class LoadGameServlet extends HttpServlet{
 		}
 		catch(NumberFormatException e) {
 			System.out.println(e);
+			//errorMessage = "Please Make a Valid Selection";
+
+			//req.setAttribute("errorMessage", errorMessage);
+			//req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
 		}
-		System.out.println("games: " + database.getGames(account_id));
-		response = database.getGames(account_id).toString();
+
 
 		List<Integer> games = database.getGames(account_id);
 
@@ -81,7 +90,8 @@ public class LoadGameServlet extends HttpServlet{
 					map.setTile(j, i, tiles.get(i+j));
 				}
 			}
-
+			
+			
 
 			ses.setAttribute("game", game);
 			ses.setAttribute("engine", engine);
@@ -103,10 +113,11 @@ public class LoadGameServlet extends HttpServlet{
 		else {
 
 		}
-
-
+		
 		req.setAttribute("response",  response);
+
 		req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
+
 
 	}
 
