@@ -1,6 +1,7 @@
 package ycp.edu.cs320.adventure.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import ycp.edu.cs320.adventure.game.GameEngine;
 import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
+import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
 
 public class TitleScreenServlet extends HttpServlet{
 	    private static final long serialVersionUID = 1L;
@@ -35,6 +37,8 @@ public class TitleScreenServlet extends HttpServlet{
 	        Object account_id = req.getSession(false).getAttribute("id");
 	        GameEngine engine = new GameEngine();
 	        
+	        DerbyDatabase database = new DerbyDatabase();
+	        
 	        System.out.println("ID: " + String.valueOf(account_id));
 	        
 	        Map map = new Map();
@@ -44,12 +48,16 @@ public class TitleScreenServlet extends HttpServlet{
 	        if (button.equals("New Game")) {
 	        	ses = req.getSession(true);
 	        	
+	        	List<Integer> game_ids = database.getGames((int)account_id);
+				int game_id = game_ids.size() - 1;
+	        	
 	        	ses.setAttribute("map", map);
 	        	ses.setAttribute("id",(int)account_id);
 	        	engine.createGame((int)account_id);
 	        	ses.setAttribute("engine",engine);
 	        	ses.setAttribute("playerX", 0);
 	        	ses.setAttribute("playerY", 0);
+	        	ses.setAttribute("game_id", game_id);
 	        	Player player = engine.getGame().getPlayer();
 	        	ses.setAttribute("player", player);
 	        	
