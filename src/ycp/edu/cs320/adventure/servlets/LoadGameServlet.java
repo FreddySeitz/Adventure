@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ycp.edu.cs320.adventure.realdatabase.DerbyDatabase;
+
 
 //********** Same as game Servlet except loads a game state from database **********//
 
@@ -30,13 +32,19 @@ public class LoadGameServlet extends HttpServlet{
         String response = null;
         
         //********** Testing **********
-        response = "test response from game successful.";
-        req.setAttribute("response",  response);
-    	req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
-    	//********** Testing **********
+
     	
     	//********** Actual Game Code Below **********
     	
+    	DerbyDatabase database = new DerbyDatabase();
+		int account_id = (int)req.getSession(false).getAttribute("id");
+		
+		System.out.println("games: " + database.getGames(account_id));
+        response = database.getGames(account_id).toString();
+
+        req.setAttribute("response",  response);
+    	req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
+
 	}
 	        
 }

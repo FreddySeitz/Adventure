@@ -39,15 +39,15 @@
 			</c:if>
 		
 			<form action="${pageContext.servletContext.contextPath}/loadGame" method="post">
+				<input type="Submit" name="viewGames" value="View Games">
+			
 				<table>
-					<td class="label">Enter Command: </td>
+					<td class="label">Select Game: </td>
 					<td><input type="text" name="userInput" size="12" value="${userInput}" /></td>
 				</table>
-	
-				<input type="Submit" name="Submit" value="Submit">
-		
-			
-		
+				
+				<input type="Submit" name="gameSelection" value="Load Game">
+
 			</form>
 		</div>
 	</body>

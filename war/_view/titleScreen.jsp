@@ -35,16 +35,17 @@
 	
 	<div class = "centered">
 	<h3>make a selection</h3><h1> PLEASE</h1>
-	<form action="${pageContext.servletContext.contextPath}/titleScreen" method="post">
-		
+	<!--<form action="${pageContext.servletContext.contextPath}/titleScreen" method="post">-->
+		<form action="${pageContext.servletContext.contextPath}/loadGame" method="get">
     		<input type="submit" name="button" value="Load Game" />
-
-
+		</form>
+		<form action="${pageContext.servletContext.contextPath}/newGame" method="get">
     		<input type="submit" name="button" value="New Game" />
-		
-
+		</form>
+		<form action="${pageContext.servletContext.contextPath}/editGame" method="get">
     		<input type="submit" name="button" value="Edit Game" />
-	</form>
+    	</form>
+	<!-- </form> -->
 	</div>
 	</body>
 </html>
