@@ -398,8 +398,8 @@ public class GameEngine {
 			
 			
 			// Generates random X and Y locations for Item's starting Tile
-			newX = (int)(Math.random() * map.getWidth());
-			newY = (int)(Math.random() * map.getHeight());
+			newX = (int)(Math.random() * map.getWidth()-1);
+			newY = (int)(Math.random() * map.getHeight()-1);
 			
 			// Adds the item to the randomly selected Tile inventory
 			tile = database.getTile(currentGame.getGameId(), newX, newY);
