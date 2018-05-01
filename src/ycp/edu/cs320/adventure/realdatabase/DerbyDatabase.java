@@ -1976,6 +1976,7 @@ public class DerbyDatabase implements IDatabase{
 		tile.setTileId(resultSet.getInt(index++));
 		tile.setGameId(resultSet.getInt(index++));
 		tile.setType(resultSet.getInt(index++));
+		tile.setVisible(resultSet.getBoolean(index++));
 		tile.setDescription(resultSet.getString(index++));
 		tile.setDamage(resultSet.getInt(index++));
 		tile.setX(resultSet.getInt(index++));
