@@ -162,7 +162,7 @@ public class GameServlet extends HttpServlet{
 		// Player moves right
 		else if(input.equalsIgnoreCase("move right") || input.equalsIgnoreCase("right") || input.equalsIgnoreCase("east")) {
 			// If valid move
-			if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()) {
+			if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1) {
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") + 1;
 
@@ -188,16 +188,16 @@ public class GameServlet extends HttpServlet{
 
 				response = database.getGameLog(game_id);
 			}
-			else if(player.getLocation().getX() == map.getWidth()){
+			else {
 				database.addGameLog(game_id, "You can't move there!");
 				response = database.getGameLog(game_id);
-			}		
+			}
 		}
 
 		// Player moves up
 		else if(input.equalsIgnoreCase("move up") || input.equalsIgnoreCase("up") || input.equalsIgnoreCase("north")) {
 			// If valid move
-			if((int)req.getSession(false).getAttribute("playerY") > 1) {
+			if((int)req.getSession(false).getAttribute("playerY") > 0) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") - 1;
 

@@ -304,7 +304,7 @@ public class GameEngine {
 					builder.append(' ');
 				}
 			}
-			builder.append(' ');	//new line
+			builder.append("<br/>");	//new line
 		}
 		return builder.toString();
 	}
