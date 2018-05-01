@@ -73,6 +73,7 @@ public class GameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doPost");
 
+
 		//List<Integer> game_ids = database.getGames((int)account_id);
 		int game_id = (int)req.getSession(false).getAttribute("game_id");
 
