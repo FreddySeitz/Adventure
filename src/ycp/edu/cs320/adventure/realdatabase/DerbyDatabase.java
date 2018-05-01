@@ -2667,7 +2667,7 @@ public class DerbyDatabase implements IDatabase{
 					String[] strings = new String[0];
 					while(resultTile.next()){
 						strings = Arrays.copyOf(strings, strings.length+1);
-						strings[strings.length-1] = (resultTile.getString(1) + '\n' + '\n');
+						strings[strings.length-1] = (resultTile.getString(1) + "<br/><br/>");
 					}
 					
 					for(int i = strings.length-1; i >= 0; i--){
