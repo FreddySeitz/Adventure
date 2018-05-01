@@ -120,7 +120,8 @@ public class GameEngine {
 		}
 		
 		// Set initial items for game
-		items = createRandomItems(3);
+		//items = createRandomItems(3);
+		items = createDefaultItems();
 		
 		player.setBaseDamage(5);
 		player.setEquippedItem(null);
@@ -144,12 +145,12 @@ public class GameEngine {
 	// Calls database methods to initialize a game
 	public void loadGame(int gameId){
 		// Loads all creatures for game
+		currentGame.setGameId(gameId);
 		currentGame.setMap(database.getMap(gameId));
 		currentGame.setGameLog(database.getGameLog(gameId));
 		currentGame.setCreatures(database.getAllCreatures(gameId));
 		currentGame.setItems(database.getAllItems(gameId));
 		currentGame.setPlayer(database.getPlayer(gameId));
-		currentGame.setGameId(gameId);
 	}
 	
 	// Moves the player based on command
@@ -338,17 +339,23 @@ public class GameEngine {
 	public List<Item> createDefaultItems(){
 		List<Item> items = new ArrayList<Item>();
 		Item item = new Item();
-		Map map = currentGame.getMap();
+		Map map = database.getMap(currentGame.getGameId());
 		Tile tile = new Tile();
 		int itemId;
-		Random rand = new Random();
+		
+		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
+		
+		for(int i=0; i<map.getHeight(); i++) {
+			for(int j=0; j<map.getWidth(); j++) {
+				map.setTile(j, i, tiles.get(i+j));
+			}
+		}
 		
 		// *********************************** \\
 		// ****** Begin Treasure Items ******* \\
 		// *********************************** \\
 		
-		// Treasure Item 1
-		int value = rand.nextInt(200) + 400;
+		// Default Treasure Item
 		item.setName("Treasure");
 		item.setDescription("ohhhh shiny!");
 		item.setGameId(currentGame.getGameId());
@@ -356,7 +363,7 @@ public class GameEngine {
 		item.setDamage(1);
 		item.setHealth(0);
 		item.setQuestId(0);
-		item.setValue(value);
+		item.setValue(500);
 		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
 		item.setItemId(itemId);
 		items.add(item);
@@ -366,80 +373,38 @@ public class GameEngine {
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Treasure Item 1
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
-		
-		// Treasure Item 2
-		value = rand.nextInt(200) + 400;
-		item.setName("Treasure");
-		item.setDescription("ohhhh shiny!");
-		item.setGameId(currentGame.getGameId());
-		item.setWeight(0);
-		item.setDamage(1);
-		item.setHealth(0);
-		item.setQuestId(0);
-		item.setValue(value);
-		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		item.setItemId(itemId);
-		items.add(item);
 		
 		// Gets the Tile where the Item will be placed
 		tile = database.getTile(currentGame.getGameId(), 16, 0);
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Treasure Item 2
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
-		
-		// Treasure Item 3
-		value = rand.nextInt(200) + 400;
-		item.setName("Treasure");
-		item.setDescription("ohhhh shiny!");
-		item.setGameId(currentGame.getGameId());
-		item.setWeight(0);
-		item.setDamage(1);
-		item.setHealth(0);
-		item.setQuestId(0);
-		item.setValue(value);
-		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		item.setItemId(itemId);
-		items.add(item);
 		
 		// Gets the Tile where the Item will be placed
 		tile = database.getTile(currentGame.getGameId(), 1, 13);
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Treasure Item 3
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
-		
-		// Treasure Item 4
-		value = rand.nextInt(200) + 400;
-		item.setName("Treasure");
-		item.setDescription("ohhhh shiny!");
-		item.setGameId(currentGame.getGameId());
-		item.setWeight(0);
-		item.setDamage(1);
-		item.setHealth(0);
-		item.setQuestId(0);
-		item.setValue(value);
-		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		item.setItemId(itemId);
-		items.add(item);
 		
 		// Gets the Tile where the Item will be placed
 		tile = database.getTile(currentGame.getGameId(), 19, 17);
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Treasure Item 4
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
 		
 		// ********************************* \\
 		// ****** Start Weapon Items ******* \\
 		// ********************************* \\
 				
-		// Sword Item 1
+		// Default Sword Item
 		item.setName("Sword");
 		item.setDescription("Sharpened on lost souls");
 		item.setGameId(currentGame.getGameId());
@@ -457,10 +422,10 @@ public class GameEngine {
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Sword Item 1
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
 		
-		// Pebble Item 1
+		// Default Pebble Item
 		item.setName("Pebble");
 		item.setDescription("Hard and small");
 		item.setGameId(currentGame.getGameId());
@@ -478,14 +443,14 @@ public class GameEngine {
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Pebble Item 1
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
 		
 		// ********************************* \\
 		// **** Start Consumable Items ***** \\
 		// ********************************* \\
 		
-		// Bandage Item 1
+		// Default Bandage Item
 		item.setName("Bandages");
 		item.setDescription("Help your wounds heal");
 		item.setGameId(currentGame.getGameId());
@@ -503,52 +468,26 @@ public class GameEngine {
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Bandage Item 1
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
-		
-		// Bandage Item 2
-		item.setName("Bandages");
-		item.setDescription("Help your wounds heal");
-		item.setGameId(currentGame.getGameId());
-		item.setWeight(1);
-		item.setDamage(-15);
-		item.setHealth(0);
-		item.setQuestId(0);
-		item.setValue(0);
-		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		item.setItemId(itemId);
-		items.add(item);
 		
 		// Gets the Tile where the Item will be placed
 		tile = database.getTile(currentGame.getGameId(), 6, 2);
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Bandage Item 2
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
-		
-		// Bandage Item 3
-		item.setName("Bandages");
-		item.setDescription("Help your wounds heal");
-		item.setGameId(currentGame.getGameId());
-		item.setWeight(1);
-		item.setDamage(-15);
-		item.setHealth(0);
-		item.setQuestId(0);
-		item.setValue(0);
-		itemId = database.createItem(currentGame.getGameId(), item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
-		item.setItemId(itemId);
-		items.add(item);
 		
 		// Gets the Tile where the Item will be placed
 		tile = database.getTile(currentGame.getGameId(), 5, 8);
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with Bandage Item 3
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
 		
-		// First Aid Kit Item 1
+		// Default First Aid Kit Item
 		item.setName("First Aid Kit");
 		item.setDescription("Restores all health");
 		item.setGameId(currentGame.getGameId());
@@ -566,7 +505,7 @@ public class GameEngine {
 		tile.addItem(item);
 		map.setTile(tile.getX(), tile.getY(), tile);
 		
-		// Updates Tile inventory in the database
+		// Updates Tile inventory with First Aid Kit Item 1
 		database.addToTileInventory(tile.getTileId(), item.getItemId());
 		
 		return items;
