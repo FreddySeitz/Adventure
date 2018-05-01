@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ycp.edu.cs320.adventure.game.GameEngine;
+import ycp.edu.cs320.adventure.game.Map;
 import ycp.edu.cs320.adventure.game.Player;
 
 public class TitleScreenServlet extends HttpServlet{
@@ -36,9 +37,14 @@ public class TitleScreenServlet extends HttpServlet{
 	        
 	        System.out.println("ID: " + String.valueOf(account_id));
 	        
+	        Map map = new Map();
+	        map.buildDefault();
+			//map.buildSmallDefault(engine);
+	        
 	        if (button.equals("New Game")) {
 	        	ses = req.getSession(true);
 	        	
+	        	ses.setAttribute("map", map);
 	        	ses.setAttribute("id",(int)account_id);
 	        	engine.createGame((int)account_id);
 	        	ses.setAttribute("engine",engine);
