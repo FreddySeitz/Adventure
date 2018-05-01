@@ -47,7 +47,7 @@ public class GameServlet extends HttpServlet{
 		HttpSession ses = req.getSession(true);
 		
 		Map map = (Map) req.getSession(false).getAttribute("map");
-
+		System.out.println("map: " + map.toString());
 		
 		Player player = (Player) req.getSession(false).getAttribute("player");
 		
@@ -75,8 +75,8 @@ public class GameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doPost");
 		
-		List<Integer> game_ids = database.getGames((int)account_id);
-		int game_id = game_ids.get(game_ids.size() - 1);
+		//List<Integer> game_ids = database.getGames((int)account_id);
+		int game_id = (int)req.getSession(false).getAttribute("game_id");
 
         int player_id = database.getPlayer(game_id).getPlayerId();
         
@@ -239,18 +239,18 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("location")) {
 
 			// If player has a location 
-			if(player.getLocation() != null) {
+			//if(player.getLocation() != null) {
 				//database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
 				//response = database.getGameLog(game_id);
 				String location = (req.getSession(false).getAttribute("playerX")).toString() + " , " + ((String)req.getSession(false).getAttribute("playerY").toString());
 				response = location;
-			}
+			//}
 
 			// If player does not have a location 
-			else {
-				database.addGameLog(game_id, "Somehow you have no location?");
-				response = database.getGameLog(game_id);
-			}
+			//else {
+			//	database.addGameLog(game_id, "Somehow you have no location?");
+			//	response = database.getGameLog(game_id);
+			//}
 
 		}
 
@@ -357,9 +357,9 @@ public class GameServlet extends HttpServlet{
 		/* Checking for environment conditions */
 
 		// If player steps on trap
-		if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
-			player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
-		}
+		//if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
+		//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
+		//}
 
 
 		req.setAttribute("response",  response);

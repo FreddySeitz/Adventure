@@ -237,7 +237,7 @@ public class GameEngine {
 	}
 	
 	// Randomly moves creatures when the user enters a command
-	public void moveCreatures() {
+	/*public void moveCreatures() {
 		// Gets an instance of the current Map for later comparisons
 		Map currentMap = currentGame.getMap();
 		
@@ -283,7 +283,7 @@ public class GameEngine {
 			}
 		}
 	}
-	
+	*/
 	public String viewMap(){	//may also be written as a list of text, per row
 		StringBuilder builder = new StringBuilder();
 		for(int i = 0; i < currentGame.getMap().getHeight(); i++){
@@ -307,7 +307,7 @@ public class GameEngine {
 	// Updates the current Game object
 	public void update() {
 		// Update creature location
-		moveCreatures();
+		//moveCreatures();
 		
 		// Check for end game conditions
 		if(checkEndGame()) {
