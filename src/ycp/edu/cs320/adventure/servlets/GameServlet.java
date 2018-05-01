@@ -89,7 +89,7 @@ public class GameServlet extends HttpServlet{
 		// Player moves down
 		if(input.equalsIgnoreCase("move down") || input.equalsIgnoreCase("down") || input.equalsIgnoreCase("south")) {
 			// If valid move
-			if(playerY < map.getHeight() - 1) {
+			if((int)req.getSession(false).getAttribute("playerY") < map.getHeight() - 1) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") + 1;
 
@@ -110,7 +110,7 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
 
 				response = database.getGameLog(game_id);
@@ -126,7 +126,7 @@ public class GameServlet extends HttpServlet{
 		// Player moves left
 		else if(input.equalsIgnoreCase("move left") || input.equalsIgnoreCase("left") || input.equalsIgnoreCase("west")) {
 			// If valid move
-			if(player.getLocation().getY() > 0) {
+			if((int)req.getSession(false).getAttribute("playerX") > 0) {
 				// Move player
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") - 1;
@@ -149,7 +149,7 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, " You Moved Left.<br/>" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, " You Moved Left.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
 				response = database.getGameLog(game_id);
 			}
@@ -162,7 +162,7 @@ public class GameServlet extends HttpServlet{
 		// Player moves right
 		else if(input.equalsIgnoreCase("move right") || input.equalsIgnoreCase("right") || input.equalsIgnoreCase("east")) {
 			// If valid move
-			if(player.getLocation().getX() < map.getWidth()) {
+			if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()) {
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") + 1;
 
@@ -184,7 +184,7 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, "You Moved Right.<br/>" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, "You Moved Right.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
 				response = database.getGameLog(game_id);
 			}
@@ -197,7 +197,7 @@ public class GameServlet extends HttpServlet{
 		// Player moves up
 		else if(input.equalsIgnoreCase("move up") || input.equalsIgnoreCase("up") || input.equalsIgnoreCase("north")) {
 			// If valid move
-			if(playerY > 1) {
+			if((int)req.getSession(false).getAttribute("playerY") > 1) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") - 1;
 
@@ -218,7 +218,7 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, "You Moved Up.<br/>" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
+				database.addGameLog(game_id, "You Moved Up.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 				response = database.getGameLog(game_id);
 			}
 			else {
