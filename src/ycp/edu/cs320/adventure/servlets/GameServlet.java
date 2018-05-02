@@ -93,15 +93,6 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") + 1;
 
-				// These:
-				//database.updatePlayerX(player_id, player.getLocation().getX());
-				//database.updatePlayerY(player_id, newY);
-
-				// Do This:
-				//player.setLocation(map.getTile(player.getLocation().getX(), newY));
-
-				//nextMove = map.getTile(player.getLocation().getX(), newY);
-				//ses.setAttribute("playerX",player.getLocation().getX());
 				ses.setAttribute("playerY",newY);
 
 				System.out.println("Move down");
@@ -112,6 +103,15 @@ public class GameServlet extends HttpServlet{
 
 				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				if((int)req.getSession(false).getAttribute("playerY") + 1 < map.getHeight() - 1){
+					if((int)req.getSession(false).getAttribute("playerX") > 0){
+						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")-1, newY+1).getTileId());
+					}
+					database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX"), newY+1).getTileId());
+					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
+					}
+				}
 
 				response = database.getGameLog(game_id);
 
@@ -302,22 +302,10 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up")) {
 
 			// If tile has an item 
-			if(!map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().isEmpty()){
+			if(database.getTileInventory(map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
+				engine.pickupItem(player, database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
 
-				// Old shit
-
-				//Inventory newInv = new Inventory();
-
-				//newInv.addMultipleToInventory(player.getInventory().getInventory());
-				//newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
-				//player.setInventory(newInv);
-
-				// New shit 
-
-				//public boolean addToPlayerInventory(int player_id, int item_id);
-				engine.pickupItem(player, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0));
-
-				database.addToPlayerInventory(player_id, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0).getItemId());
+//				database.addToPlayerInventory(player_id, map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getItemList().get(0).getItemId());
 
 				database.addGameLog(game_id, "You found an item! View inventory to see it.");
 				response = database.getGameLog(game_id);
