@@ -1,9 +1,7 @@
 package ycp.edu.cs320.adventure.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.script.ScriptException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,26 +29,26 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		// Necessary objects & game setup
-		
+
 		// gets account_id of the account that was signed in from the index servlet 
-        Object account_id = req.getSession(false).getAttribute("id");
-        
-        System.out.println("ID: " + String.valueOf(account_id));
-		        
-        DerbyDatabase database = new DerbyDatabase();
-        
+		Object account_id = req.getSession(false).getAttribute("id");
+
+		System.out.println("ID: " + String.valueOf(account_id));
+
+		DerbyDatabase database = new DerbyDatabase();
+
 		GameEngine engine = new GameEngine();
-		
+
 		engine.setGame((Game) req.getSession(false).getAttribute("game"));
 		engine = (GameEngine) req.getSession(false).getAttribute("engine");
-		
-		HttpSession ses = req.getSession(true);
-		
-		Map map = (Map) req.getSession(false).getAttribute("map");
 
-		
+		HttpSession ses = req.getSession(true);
+
+		Map map = (Map) req.getSession(false).getAttribute("map");
+		System.out.println("map: " + map.toString());
+
 		Player player = (Player) req.getSession(false).getAttribute("player");
-		
+
 		// gets player x y coordinates
 		//ses = req.getSession(true);
 		int playerX = 0;
@@ -65,7 +63,7 @@ public class GameServlet extends HttpServlet{
 			System.out.println(e);
 			System.out.println((int)req.getSession(false).getAttribute("playerX"));
 			System.out.println((int)req.getSession(false).getAttribute("playerY"));
-			
+
 		}
 		// User input from jsp
 		String input = req.getParameter("userInput");
@@ -74,60 +72,61 @@ public class GameServlet extends HttpServlet{
 		String response = null;
 
 		System.out.println("Game Servlet: doPost");
-		
-		List<Integer> game_ids = database.getGames((int)account_id);
-		int game_id = game_ids.get(game_ids.size() - 1);
 
-        int player_id = database.getPlayer(game_id).getPlayerId();
-        
-        //Tile nextMove = new Tile(); 
-		
+
+		//List<Integer> game_ids = database.getGames((int)account_id);
+		int game_id = (int)req.getSession(false).getAttribute("game_id");
+
+		int player_id = database.getPlayer(game_id).getPlayerId();
+
+		//Tile nextMove = new Tile(); 
+
 		//********** Play Game Below **********
 
 
 		/* Handling user input */
 
 		// Player moves down
-		if(input.equalsIgnoreCase("move down")) {
+		if(input.equalsIgnoreCase("move down") || input.equalsIgnoreCase("down") || input.equalsIgnoreCase("south")) {
 			// If valid move
-			if(playerY < map.getHeight() - 1) {
+			if((int)req.getSession(false).getAttribute("playerY") < map.getHeight() - 1) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") + 1;
 
-				// These:
-				//database.updatePlayerX(player_id, player.getLocation().getX());
-				//database.updatePlayerY(player_id, newY);
-				
-				// Do This:
-				//player.setLocation(map.getTile(player.getLocation().getX(), newY));
-								
-				//nextMove = map.getTile(player.getLocation().getX(), newY);
-	        	//ses.setAttribute("playerX",player.getLocation().getX());
-	        	ses.setAttribute("playerY",newY);
-	        	
-	        	System.out.println("Move down");
-	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
-	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
-	        	
+				ses.setAttribute("playerY",newY);
+
+				System.out.println("Move down");
+				System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+				System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
-				
-				database.addGameLog(game_id, " You Moved Down.<br /><br />");
-				
-				
+
+				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+
+				if((int)req.getSession(false).getAttribute("playerY") + 1 < map.getHeight() - 1){
+					if((int)req.getSession(false).getAttribute("playerX") > 0){
+						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")-1, newY+1).getTileId());
+					}
+					database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX"), newY+1).getTileId());
+					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
+					}
+				}
+
 				response = database.getGameLog(game_id);
-				
+
 			}
 			else {
-				
-				database.addGameLog(game_id, "You can't move there!<br /><br />");
+
+				database.addGameLog(game_id, "You can't move there!");
 				response = database.getGameLog(game_id);
 			}
 		}
 
 		// Player moves left
-		else if(input.equalsIgnoreCase("move left")) {
+		else if(input.equalsIgnoreCase("move left") || input.equalsIgnoreCase("left") || input.equalsIgnoreCase("west")) {
 			// If valid move
-			if(player.getLocation().getY() > 0) {
+			if((int)req.getSession(false).getAttribute("playerX") > 0) {
 				// Move player
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") - 1;
@@ -135,133 +134,133 @@ public class GameServlet extends HttpServlet{
 				// These:
 				//database.updatePlayerX(player_id, newX);
 				//database.updatePlayerY(player_id, player.getLocation().getY());
-				
+
 				// Do This:
 				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
-				
+
 				//nextMove = map.getTile(newX, player.getLocation().getY());
-				
+
 				ses.setAttribute("playerX",newX);
-	        	//ses.setAttribute("playerY",player.getLocation().getY());
-	        	
-	        	System.out.println("Move left");
-	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
-	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
-	        	
+				//ses.setAttribute("playerY",player.getLocation().getY());
+
+				System.out.println("Move left");
+				System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+				System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
-				
-				database.addGameLog(game_id, " You Moved Left.<br /><br />" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				
+
+				database.addGameLog(game_id, " You Moved Left.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+
 				response = database.getGameLog(game_id);
 			}
 			else {
-				database.addGameLog(game_id, "You can't move there!<br /><br />");
+				database.addGameLog(game_id, "You can't move there!");
 				response = database.getGameLog(game_id);
 			}		
 		}
 
 		// Player moves right
-		else if(input.equalsIgnoreCase("move right")) {
+		else if(input.equalsIgnoreCase("move right") || input.equalsIgnoreCase("right") || input.equalsIgnoreCase("east")) {
 			// If valid move
-			if(player.getLocation().getX() < map.getWidth()) {
+			if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1) {
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") + 1;
 
 				// These:
 				//database.updatePlayerX(player_id, newX);
 				//database.updatePlayerY(player_id, player.getLocation().getY());
-				
+
 				// Do This:
 				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
-				
+
 				//nextMove = map.getTile(newX, player.getLocation().getY());
-				
+
 				ses.setAttribute("playerX",newX);
-	        	//ses.setAttribute("playerY",player.getLocation().getY());
-	        	
-	        	System.out.println("Move right");
-	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
-	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
-	        	
+				//ses.setAttribute("playerY",player.getLocation().getY());
+
+				System.out.println("Move right");
+				System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+				System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, "You Moved Right.<br /><br />" + map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription());
-				
+				database.addGameLog(game_id, "You Moved Right.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+
 				response = database.getGameLog(game_id);
 			}
-			else if(player.getLocation().getX() == map.getWidth()){
-				database.addGameLog(game_id, "You can't move there!<br /><br />");
+			else {
+				database.addGameLog(game_id, "You can't move there!");
 				response = database.getGameLog(game_id);
-			}		
+			}
 		}
 
 		// Player moves up
-		else if(input.equalsIgnoreCase("move up")) {
+		else if(input.equalsIgnoreCase("move up") || input.equalsIgnoreCase("up") || input.equalsIgnoreCase("north")) {
 			// If valid move
-			if(playerY > 1) {
+			if((int)req.getSession(false).getAttribute("playerY") > 0) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") - 1;
 
 				// These:
 				//database.updatePlayerX(player_id, newX);
 				//database.updatePlayerY(player_id, player.getLocation().getY());
-				
+
 				// Do This:
 				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
-				
+
 				//nextMove = map.getTile(player.getLocation().getX(), newY);
 				//ses.setAttribute("playerX",player.getLocation().getX());
-	        	ses.setAttribute("playerY",newY);
-	        	
-	        	System.out.println("Move up");
-	        	System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
-	        	System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
-	        	
+				ses.setAttribute("playerY",newY);
+
+				System.out.println("Move up");
+				System.out.println("X: " + (int)req.getSession(false).getAttribute("playerX"));
+				System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
+
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
-				
-				database.addGameLog(game_id, "You Moved Up.<br /><br />" /*+ map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription()*/);
+
+				database.addGameLog(game_id, "You Moved Up.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 				response = database.getGameLog(game_id);
 			}
 			else {
-				database.addGameLog(game_id, "You can't move there!<br /><br />");
+				database.addGameLog(game_id, "You can't move there!");
 				response = database.getGameLog(game_id);
 			}
 		}
 
 		// Player views how much damage they can deal
-		else if(input.equalsIgnoreCase("view damage")) {
+		else if(input.equalsIgnoreCase("view damage") || input.equalsIgnoreCase("damage")) {
 			database.addGameLog(game_id, String.valueOf(player.getBaseDamage()));
 			response = database.getGameLog(game_id);
 
 		}
 
 		// Player views their location 
-		else if(input.equalsIgnoreCase("location")) {
+		else if(input.equalsIgnoreCase("view location") || input.equalsIgnoreCase("location")) {
 
 			// If player has a location 
-			if(player.getLocation() != null) {
-				//database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
-				//response = database.getGameLog(game_id);
-				String location = (req.getSession(false).getAttribute("playerX")).toString() + " , " + ((String)req.getSession(false).getAttribute("playerY").toString());
-				response = location;
-			}
+			//if(player.getLocation() != null) {
+			//database.addGameLog(game_id,  String.valueOf(player.getLocation().getX()) + "," + String.valueOf(player.getLocation().getY()));
+			//response = database.getGameLog(game_id);
+			String location = (req.getSession(false).getAttribute("playerX")).toString() + " , " + ((String)req.getSession(false).getAttribute("playerY").toString());
+			response = location;
+			//}
 
 			// If player does not have a location 
-			else {
-				database.addGameLog(game_id, "Somehow you have no location?");
-				response = database.getGameLog(game_id);
-			}
+			//else {
+			//	database.addGameLog(game_id, "Somehow you have no location?");
+			//	response = database.getGameLog(game_id);
+			//}
 
 		}
 
 		// Player views their health
-		else if(input.equalsIgnoreCase("health")) {
+		else if(input.equalsIgnoreCase("health") || input.equalsIgnoreCase("health")) {
 			database.addGameLog(game_id, String.valueOf(player.getHealth()));
 			response = database.getGameLog(game_id);
 		}
 
 		// Player views current equipped item 
-		else if(input.equalsIgnoreCase("item")) {
+		else if(input.equalsIgnoreCase("inspect item") || input.equalsIgnoreCase("view item") || input.equalsIgnoreCase("item")) {
 
 			// If player actually has an item 
 			try {
@@ -278,7 +277,7 @@ public class GameServlet extends HttpServlet{
 		}
 
 		// Player views their inventory
-		else if(input.equalsIgnoreCase("view inventory")) {
+		else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory")) {
 
 			// If inventory is NOT empty
 			if(!player.getInventory().getInventory().isEmpty()) {
@@ -294,32 +293,20 @@ public class GameServlet extends HttpServlet{
 		}
 
 		// Player views their score 
-		else if(input.equalsIgnoreCase("score")) {
+		else if(input.equalsIgnoreCase("view score") || input.equalsIgnoreCase("score")) {
 			database.addGameLog(game_id, String.valueOf(player.getScore()));
 			response = database.getGameLog(game_id);
 		}
 
 		// Player picks up item from tile 
-		else if(input.equalsIgnoreCase("pick up item")) {
+		else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up")) {
 
 			// If tile has an item 
-			if(!map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().isEmpty()){
-				
-				// Old shit
-				
-				//Inventory newInv = new Inventory();
-				
-				//newInv.addMultipleToInventory(player.getInventory().getInventory());
-				//newInv.addMultipleToInventory(map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList());
-				//player.setInventory(newInv);
-				
-				// New shit 
-				
-				//public boolean addToPlayerInventory(int player_id, int item_id);
-				engine.pickupItem(player, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0));
-				
-				database.addToPlayerInventory(player_id, map.getTile(player.getLocation().getX(), player.getLocation().getY()).getItemList().get(0).getItemId());
-				
+			if(database.getTileInventory(map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
+				engine.pickupItem(player, database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
+
+//				database.addToPlayerInventory(player_id, map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getItemList().get(0).getItemId());
+
 				database.addGameLog(game_id, "You found an item! View inventory to see it.");
 				response = database.getGameLog(game_id);
 			}
@@ -347,19 +334,24 @@ public class GameServlet extends HttpServlet{
 			}
 		}
 
+		// Player views their map
+		else if(input.equalsIgnoreCase("view map") || input.equalsIgnoreCase("map")) {
+			response = engine.viewMap();
+		}
+
 		// Player enters unknown command
 		else {
 			database.addGameLog(game_id, "I'm not quite sure what that means, please try again.");
-			
+
 			response = database.getGameLog(game_id);
 		}
 
 		/* Checking for environment conditions */
 
 		// If player steps on trap
-		if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
-			player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
-		}
+		//if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
+		//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
+		//}
 
 
 		req.setAttribute("response",  response);

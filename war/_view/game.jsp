@@ -19,14 +19,24 @@
   				top: 5px;
   				left: 5px;
 			}
+			.textbox{
+				width: 500px;
+				height: 300px;
+   				border: 25px solid green;
+    			padding: 25px;
+    			margin: 25px;
+    			overflow-x: visible;
+    			overflow-y: scroll;
+    			overflow-
+			}
 			.success{
 				color:green;
 			}
 			.response{
 				color:black;
 				position: fixed;
-  				top: 50%;
-  				left: 50%;
+  				top: 10%;
+  				left: 0%;
   				
 			}			
 		</style>
@@ -38,14 +48,13 @@
 				<div class="error">${errorMessage}</div>
 			</c:if>
 			<c:if test="${! empty response}">
-				<div class="response">${response}
-				<iframe src="http://localhost:8081/adventure/index" height="200" width="300" scrolling="auto" frameborder=1></iframe>
+				<div class="response"><div class="textbox">${response}
+				</div>
 				</div>
 			</c:if>
 		</div>
 		<div class = "input">
 			<form action="${pageContext.servletContext.contextPath}/game" method="post">
-				<form action="${pageContext.servletContext.contextPath}/gameLog" method="post">
 				<table>
 					<td class="label">Enter Command: </td>
 					<td><input type="text" name="userInput" size="12" value="${userInput}" /></td>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Tile {
 //An arbitrary space on the map that can contain anything.
 	private int type; //0 = unpassable space.  1 = empty room.  2 = trap. 3 = exit room.
+	private boolean visible;
 	private ArrayList<Item> items;
 	private int x;	//tiles knows where it is in the map
 	private int y;
@@ -17,6 +18,7 @@ public class Tile {
 	
 	public Tile(){	
 		type = 0;
+		visible = false;
 		x = 0;
 		y = 0;
 		items = new ArrayList<Item>();
@@ -46,6 +48,14 @@ public class Tile {
 	
 	public void setType(int t){
 		type = t;
+	}
+	
+	public boolean getVisible(){
+		return visible;
+	}
+	
+	public void setVisible(boolean v){
+		visible = v;
 	}
 	
 	public int getX(){
