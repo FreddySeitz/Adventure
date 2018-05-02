@@ -36,7 +36,7 @@ public class TestTiles {
 				tiles[i][j].setType(0);
 				tiles[i][j].setX(j);
 				tiles[i][j].setY(i);
-				database.createTile(game_id, tiles[i][j].getType(), "Tile!", 1, tiles[i][j].getX(), tiles[i][j].getY());
+				database.createTile(game_id, tiles[i][j].getType(), true, "Tile!", 1, tiles[i][j].getX(), tiles[i][j].getY());
 			}
 		}
 		
@@ -61,7 +61,7 @@ public class TestTiles {
 		assertEquals(false, exists2);
 		
 		//update all
-		database.updateTileAll(2, "Trap!", 0, 0, tiles[0][0].getTileId());
+		database.updateTileAll(2, true, "Trap!", 0, 0, tiles[0][0].getTileId());
 		
 		boolean exists3 = database.tileExists(game_id, 0, 0);
 		assertEquals(true, exists3);
