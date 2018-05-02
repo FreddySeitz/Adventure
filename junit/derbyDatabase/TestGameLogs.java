@@ -35,7 +35,7 @@ public class TestGameLogs {
 		
 		//get gamelog
 		String result = database.getGameLog(game_id);
-		assertEquals("one\n\ntwo\n\nthree\n\n", result);
+		assertEquals("three<br/><br/>two<br/><br/>one<br/><br/>", result);
 		
 		//get gamelog list
 		List<String> list = database.getGameLogList(game_id);

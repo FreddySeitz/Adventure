@@ -90,7 +90,7 @@ public class TestInventory {
 		database.createItem(game_id, item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
 		database.createItem(game_id, item2.getName(), item2.getDescription(), item2.getWeight(), item2.getDamage(), item2.getHealth(), item2.getQuestId(), item2.getValue());
 		database.createItem(game_id, item3.getName(), item3.getDescription(), item3.getWeight(), item3.getDamage(), item3.getHealth(), item3.getQuestId(), item3.getValue());
-		database.createTile(game_id, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+		database.createTile(game_id, tile.getType(), true, tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
 		database.createPlayer(game_id, item.getItemId(), 1, 1, 1, 1, 0);
 
 		//retrieve items and player for the game
@@ -158,8 +158,8 @@ public class TestInventory {
 		database.createItem(game_id, item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
 		database.createItem(game_id, item2.getName(), item2.getDescription(), item2.getWeight(), item2.getDamage(), item2.getHealth(), item2.getQuestId(), item2.getValue());
 		database.createItem(game_id, item3.getName(), item3.getDescription(), item3.getWeight(), item3.getDamage(), item3.getHealth(), item3.getQuestId(), item3.getValue());
-		database.createTile(game_id, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
-		database.createTile(game_id, tile2.getType(), tile2.getDescription(), tile2.getDamage(), tile2.getX(), tile2.getY());
+		database.createTile(game_id, tile.getType(), true, tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+		database.createTile(game_id, tile2.getType(), true, tile2.getDescription(), tile2.getDamage(), tile2.getX(), tile2.getY());
 		database.createCreature(game_id, item.getItemId(), 1, 1, 1, 1, 1);
 		database.createCreature(game_id, item.getItemId(), 2, 2, 2, 2, 1);
 
@@ -263,8 +263,8 @@ public class TestInventory {
 		database.createItem(game_id, item.getName(), item.getDescription(), item.getWeight(), item.getDamage(), item.getHealth(), item.getQuestId(), item.getValue());
 		database.createItem(game_id, item2.getName(), item2.getDescription(), item2.getWeight(), item2.getDamage(), item2.getHealth(), item2.getQuestId(), item2.getValue());
 		database.createItem(game_id, item3.getName(), item3.getDescription(), item3.getWeight(), item3.getDamage(), item3.getHealth(), item3.getQuestId(), item3.getValue());
-		database.createTile(game_id, tile.getType(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
-		database.createTile(game_id, tile2.getType(), tile2.getDescription(), tile2.getDamage(), tile2.getX(), tile2.getY());
+		database.createTile(game_id, tile.getType(), true, tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+		database.createTile(game_id, tile2.getType(), true, tile2.getDescription(), tile2.getDamage(), tile2.getX(), tile2.getY());
 
 		//retrieve items and tiles for the game
 		List<Tile> tiles = database.getAllTiles(game_id);
