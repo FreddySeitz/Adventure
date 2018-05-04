@@ -103,11 +103,16 @@ public class GameServlet extends HttpServlet{
 
 				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				//setting tile visibility
+				//if they are not at the bottom of the map
 				if((int)req.getSession(false).getAttribute("playerY") + 1 < map.getHeight() - 1){
+					//if there is space to the left
 					if((int)req.getSession(false).getAttribute("playerX") > 0){
 						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")-1, newY+1).getTileId());
 					}
+					//makes visible the space in front of them
 					database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX"), newY+1).getTileId());
+					//if there is space to the right
 					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
 						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
 					}

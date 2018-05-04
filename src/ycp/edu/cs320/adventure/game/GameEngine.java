@@ -286,25 +286,34 @@ public class GameEngine {
 	 */
 	public String viewMap(){	//may also be written as a list of text, per row
 		StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < currentGame.getMap().getHeight(); i++){
-			for(int k = 0; k < currentGame.getMap().getWidth(); k++){
-				if(currentGame.getMap().getTile(i, k).getVisible() == true){
-					switch(currentGame.getMap().getTile(i, k).getType()) {
-					case 0:		//unpassable space
-						builder.append('-');
-					case 1:		//room
-						builder.append('o');
-					case 2:		//trap
-						builder.append('x');
-					case 3:		//exit
-						builder.append('E');
-					}
+		//getting tiles from database
+		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
+		int width = currentGame.getMap().getWidth();
+
+		for(int i = 0; i < tiles.size(); i++){
+			if(currentGame.getMap().getTile(i%width, i/width).getVisible() == true){
+				int type = currentGame.getMap().getTile(i%width, i/width).getType();
+				if(type == 0){	//unpassable space
+					builder.append('w');
 				}
-				else{
-					builder.append(' ');
+				else if(type == 1){	//open room
+					builder.append('o');
+				}
+				else if(type == 2){	//trap
+					builder.append('x');
+				}
+				else if(type == 3){	//exit
+					builder.append('E');
 				}
 			}
-			builder.append("<br/>");	//new line
+			else{	//invisible
+				builder.append('-');
+			}
+
+			//new line
+			if((i+1)%width == 0 && i > 0){
+				builder.append("<br/>");
+			}
 		}
 		return builder.toString();
 	}

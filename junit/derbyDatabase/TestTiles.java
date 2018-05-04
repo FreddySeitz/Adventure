@@ -39,7 +39,7 @@ public class TestTiles {
 				database.createTile(game_id, tiles[i][j].getType(), true, "Tile!", 1, tiles[i][j].getX(), tiles[i][j].getY());
 			}
 		}
-		
+
 		//update tiles, test get tile
 		tiles[0][0] = database.getTile(game_id, 0, 0);
 		database.updateTileDamage(9000, tiles[0][0].getTileId());
@@ -53,24 +53,30 @@ public class TestTiles {
 		//update x and y, and test exists
 		boolean exists = database.tileExists(game_id, 0, 0);
 		assertEquals(true, exists);
-		
-		database.updateTileY(game_id, tiles[0][0].getTileId());
-		database.updateTileX(game_id, tiles[0][0].getTileId());
-		
+
+		database.updateTileY(1, tiles[0][0].getTileId());
+		database.updateTileX(1, tiles[0][0].getTileId());
+
 		boolean exists2 = database.tileExists(game_id, 0, 0);
 		assertEquals(false, exists2);
-		
+
 		//update all
 		database.updateTileAll(2, true, "Trap!", 0, 0, tiles[0][0].getTileId());
-		
+
 		boolean exists3 = database.tileExists(game_id, 0, 0);
 		assertEquals(true, exists3);
-		
+
+		//testing update all
+		int type = database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getType();
+		boolean visible = database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getVisible();
+		assertTrue(type == 2);
+		assertEquals(true, visible);
+
 		//tests get all tiles
 		List<Tile> list = database.getAllTiles(game_id);
 		int size = list.size();
 		assertEquals(400,size);
-		
+
 		//deletes all tiles
 		for(int i = 0; i < list.size(); i++){
 			database.removeTile(list.get(i).getTileId());

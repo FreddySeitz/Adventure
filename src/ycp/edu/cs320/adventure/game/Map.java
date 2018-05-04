@@ -326,5 +326,8 @@ public class Map {
 					map[i][j].setY(i);
 				}
 			}
+			map[0][0].setVisible(true);
+			map[0][1].setVisible(true);
+			map[1][0].setVisible(true);
 		}
 }

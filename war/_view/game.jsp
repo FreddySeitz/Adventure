@@ -12,7 +12,7 @@
 			}
 		
 			td.label {
-				text-align: right;
+				text-align: center;
 			}
 			.input {
   				position: fixed;
@@ -27,7 +27,6 @@
     			margin: 25px;
     			overflow-x: visible;
     			overflow-y: scroll;
-    			overflow-
 			}
 			.success{
 				color:green;
