@@ -74,6 +74,9 @@ public class GameEngine {
 
 		// Build map
 		map.buildDefault();
+		
+		// Initialize game logs
+		database.addGameLog(gameId, " ");
 
 		// Add all Tiles in Map to database
 		Tile tile = new Tile();

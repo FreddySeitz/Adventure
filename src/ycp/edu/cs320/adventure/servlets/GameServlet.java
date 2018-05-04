@@ -387,6 +387,10 @@ public class GameServlet extends HttpServlet{
 		else if(input.equalsIgnoreCase("view map") || input.equalsIgnoreCase("map")) {
 			response = engine.viewMap();
 		}
+		
+		else if(input.equalsIgnoreCase("view log") || input.equalsIgnoreCase("log")){
+			response = database.getGameLog(game_id);
+		}
 
 		// Player enters unknown command
 		else {
