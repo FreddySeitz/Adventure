@@ -105,16 +105,17 @@ public class GameServlet extends HttpServlet{
 
 				//setting tile visibility
 				//if they are not at the bottom of the map
-				if((int)req.getSession(false).getAttribute("playerY") + 1 < map.getHeight() - 1){
+				if((int)req.getSession(false).getAttribute("playerY") < map.getHeight() - 1){
 					//if there is space to the left
 					if((int)req.getSession(false).getAttribute("playerX") > 0){
-						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")-1, newY+1).getTileId());
+						database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")-1, newY+1).getTileId());
 					}
 					//makes visible the space in front of them
-					database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX"), newY+1).getTileId());
+					database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), newY+1).getTileId());
+					
 					//if there is space to the right
 					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
-						database.updateTileVisible(true, map.getTile((int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
+						database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
 					}
 				}
 
@@ -156,6 +157,20 @@ public class GameServlet extends HttpServlet{
 
 				database.addGameLog(game_id, " You Moved Left.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				if((int)req.getSession(false).getAttribute("playerX") > 0){
+					//if there is space above them
+					if((int)req.getSession(false).getAttribute("playerY") > 0){
+						database.updateTileVisible(true, database.getTile(game_id, newX-1, (int)req.getSession(false).getAttribute("playerY")-1).getTileId());
+					}
+					//makes visible the space to their left
+					database.updateTileVisible(true, database.getTile(game_id, newX-1, (int)req.getSession(false).getAttribute("playerY")).getTileId());
+					
+					//if there is space below them
+					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+						database.updateTileVisible(true, database.getTile(game_id, newX-1, (int)req.getSession(false).getAttribute("playerY")+1).getTileId());
+					}
+				}
+				
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -191,6 +206,20 @@ public class GameServlet extends HttpServlet{
 
 				database.addGameLog(game_id, "You Moved Right.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+					//if there is space above them
+					if((int)req.getSession(false).getAttribute("playerY") > 0){
+						database.updateTileVisible(true, database.getTile(game_id, newX+1, (int)req.getSession(false).getAttribute("playerY")-1).getTileId());
+					}
+					//makes visible the space to their left
+					database.updateTileVisible(true, database.getTile(game_id, newX+1, (int)req.getSession(false).getAttribute("playerY")).getTileId());
+					
+					//if there is space below them
+					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+						database.updateTileVisible(true, database.getTile(game_id, newX+1, (int)req.getSession(false).getAttribute("playerY")+1).getTileId());
+					}
+				}
+				
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -224,6 +253,21 @@ public class GameServlet extends HttpServlet{
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
 				database.addGameLog(game_id, "You Moved Up.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+				
+				if((int)req.getSession(false).getAttribute("playerY") > 0){
+					//if there is space to the left
+					if((int)req.getSession(false).getAttribute("playerX") > 0){
+						database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")-1, newY-1).getTileId());
+					}
+					//makes visible the space in front of them
+					database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), newY-1).getTileId());
+					
+					//if there is space to the right
+					if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
+						database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY-1).getTileId());
+					}
+				}
+				
 				response = database.getGameLog(game_id);
 			}
 			else {

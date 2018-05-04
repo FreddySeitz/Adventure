@@ -289,25 +289,43 @@ public class GameEngine {
 		//getting tiles from database
 		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
 		int width = currentGame.getMap().getWidth();
-
+		Tile playerTile = database.getPlayer(currentGame.getGameId()).getLocation();
+		int playerLoc = (playerTile.getY() * currentGame.getMap().getWidth()) + playerTile.getX();
+		System.out.println(playerTile.getX() + " " + playerTile.getY() + " " + playerLoc);
 		for(int i = 0; i < tiles.size(); i++){
-			if(currentGame.getMap().getTile(i%width, i/width).getVisible() == true){
-				int type = currentGame.getMap().getTile(i%width, i/width).getType();
-				if(type == 0){	//unpassable space
-					builder.append('w');
+			if(tiles.get(i).getVisible() == true){
+				//int type = currentGame.getMap().getTile(i%width, i/width).getType();
+				int type = tiles.get(i).getType();
+				if(i == playerLoc){	//location of the player
+					//builder.append('y');
+					//builder.append('$');
+					builder.append("4 ");
+				}
+				else if(type == 0){	//unpassable space
+					//builder.append('s');
+					//builder.append('=');
+					builder.append("0 ");
 				}
 				else if(type == 1){	//open room
-					builder.append('o');
+					//builder.append('o');
+					//builder.append('+');
+					builder.append("1 ");
 				}
 				else if(type == 2){	//trap
-					builder.append('x');
+					//builder.append('x');
+					//builder.append('*');
+					builder.append("2 ");
 				}
 				else if(type == 3){	//exit
-					builder.append('E');
+					//builder.append('E');
+					//builder.append('#');
+					builder.append("3 ");
 				}
 			}
 			else{	//invisible
-				builder.append('-');
+				//builder.append('n');
+				//builder.append("? ");
+				builder.append("8 ");
 			}
 
 			//new line
