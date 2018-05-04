@@ -77,7 +77,7 @@ public class GameServlet extends HttpServlet{
 		//List<Integer> game_ids = database.getGames((int)account_id);
 		int game_id = (int)req.getSession(false).getAttribute("game_id");
 
-		int player_id = database.getPlayer(game_id).getPlayerId();
+		//int player_id = database.getPlayer(game_id).getPlayerId();
 
 		//Tile nextMove = new Tile(); 
 
