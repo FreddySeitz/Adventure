@@ -36,20 +36,30 @@ public class TestTiles {
 				tiles[i][j].setType(0);
 				tiles[i][j].setX(j);
 				tiles[i][j].setY(i);
-				database.createTile(game_id, tiles[i][j].getType(), true, "Tile!", 1, tiles[i][j].getX(), tiles[i][j].getY());
+				database.createTile(game_id, tiles[i][j].getType(), true, false, false, false, 0, "Tile!", 1, tiles[i][j].getX(), tiles[i][j].getY());
 			}
 		}
 
-		//update tiles, test get tile
+		//update tile, test get tile
 		tiles[0][0] = database.getTile(game_id, 0, 0);
 		database.updateTileDamage(9000, tiles[0][0].getTileId());
 		database.updateTileType(1, tiles[0][0].getTileId());
 		database.updateTileDescription("A different tile!", tiles[0][0].getTileId());
+		database.updateTileVisible(false, tiles[0][0].getTileId());
+		database.updateTileHidden(true, tiles[0][0].getTileId());
+		database.updateTileActive(true, tiles[0][0].getTileId());
+		database.updateTilePrompt(true, tiles[0][0].getTileId());
+		database.updateTileQuestion(1, tiles[0][0].getTileId());
 		tiles[0][0] = database.getTile(game_id, 0, 0);
 		assertEquals(9000, tiles[0][0].getDamage());
 		assertEquals(1, tiles[0][0].getType());
 		assertEquals("A different tile!", tiles[0][0].getDescription());
-
+		assertEquals(false, tiles[0][0].getVisible());
+		assertEquals(true, tiles[0][0].getHidden());
+		assertEquals(true, tiles[0][0].getActive());
+		assertEquals(true, tiles[0][0].getPrompt());
+		assertEquals(1, tiles[0][0].getQuestion());
+		
 		//update x and y, and test exists
 		boolean exists = database.tileExists(game_id, 0, 0);
 		assertEquals(true, exists);
@@ -61,7 +71,7 @@ public class TestTiles {
 		assertEquals(false, exists2);
 
 		//update all
-		database.updateTileAll(2, true, "Trap!", 0, 0, tiles[0][0].getTileId());
+		database.updateTileAll(2, true, false, false, false, 0, "Trap!", 0, 0, tiles[0][0].getTileId());
 
 		boolean exists3 = database.tileExists(game_id, 0, 0);
 		assertEquals(true, exists3);
@@ -71,6 +81,10 @@ public class TestTiles {
 		boolean visible = database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getVisible();
 		assertTrue(type == 2);
 		assertEquals(true, visible);
+		assertEquals(false, database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getHidden());
+		assertEquals(false, database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getActive());
+		assertEquals(false, database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getPrompt());
+		assertEquals(0, database.getTile(game_id, tiles[0][0].getX(), tiles[0][0].getY()).getQuestion());
 
 		//tests get all tiles
 		List<Tile> list = database.getAllTiles(game_id);

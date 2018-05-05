@@ -254,7 +254,7 @@ public class GameEngine {
 		if(actor instanceof Player) {
 			//check answer
 			if(actor.getLocation().checkAnswer(input)){
-				text.append("correct");
+				text.append("correct.  The trap has been disabled.");
 
 				//if answer is right, set tile type to normal room
 				database.updateTileActive(false, tile.getTileId());

@@ -54,8 +54,8 @@ public class TestCreatures {
 		item = database.getAllItems(game_id).get(0);
 		item2 = database.getAllItems(game_id).get(1);
 		
-		database.createTile(game_id, 0, true, "a place", 0, 0, 0);
-		database.createTile(game_id, 1, true, "a different place", 1, 1, 1);
+		database.createTile(game_id, 0, true, false, false, false, 0, "a place", 0, 0, 0);
+		database.createTile(game_id, 1, true, false, false, false, 0, "a different place", 1, 1, 1);
 		tile = database.getTile(game_id, 0, 0);
 		tile2 = database.getTile(game_id, 1, 1);
 		
