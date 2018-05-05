@@ -233,6 +233,80 @@ public class GameEngine {
 		database.updatePlayerHealth(currentGame.getPlayer().getPlayerId(), currentGame.getPlayer().getHealth());
 	}
 
+	public String dropItem(String input, Actor actor){
+		String itemName = "";
+		for(int i = input.length()-1; i > 0; i--){
+			if(input.charAt(i) == ' '){
+				break;
+			}
+			else{
+				itemName = input.charAt(i) + itemName;
+			}
+		}
+		boolean itemExistsAgain = false;
+		boolean itemExists = false;
+		if(actor instanceof Player) {
+			List<Item> items = database.getPlayerInventory(((Player) actor).getPlayerId());
+			for(Item item : items){
+				//if item exists in player's inventory
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase()) && itemExists == false){
+					//remove from player inventory
+					database.removeFromPlayerInventory(((Player)actor).getPlayerId(), item.getInventoryId());
+					//add to tile inventory
+					database.addToTileInventory(database.getPlayer(currentGame.getGameId()).getLocation().getTileId(), item.getItemId());
+					itemExists = true;
+				}
+				else if(itemName.toLowerCase().equals(item.getName().toLowerCase()) && itemExistsAgain == false){
+					itemExistsAgain = true;
+				}
+			}
+			
+			if(itemExistsAgain == false && itemExists == true &&
+					database.getPlayer(currentGame.getGameId()).getEquippedItem().getName().equalsIgnoreCase(itemName.toLowerCase())){
+				database.updatePlayerEquippedItem(((Player)actor).getPlayerId(), 0);
+				return itemName + " was unequipped and placed on the ground.";
+			}
+			else if(itemExists == true){
+				return itemName + " was placed on the ground.";
+			}
+			else{
+				return itemName.toLowerCase() + " is not in the inventory";
+			}
+		}
+
+		//creature equips item
+		else if(actor instanceof Creature) {
+			List<Item> items = database.getPlayerInventory(((Creature) actor).getCreatureId());
+			for(Item item : items){
+				//if item exists in creature's inventory
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase()) && itemExistsAgain == true){
+					//remove from creature inventory
+					database.removeFromCreatureInventory(((Creature)actor).getCreatureId(), item.getInventoryId());
+					//add to tile inventory
+					database.addToTileInventory(database.getPlayer(currentGame.getGameId()).getLocation().getTileId(), item.getItemId());
+					itemExistsAgain = false;
+					itemExists = true;
+				}
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase()) && itemExistsAgain == false){
+					itemExistsAgain = true;
+				}
+			}
+			if(itemExistsAgain == true && itemExists == true){
+				return itemName + " was placed on the ground.";
+			}
+			else if(itemExistsAgain == false && itemExists == true){
+				database.updateCreatureEquippedItem(((Creature)actor).getCreatureId(), 0);
+				return itemName + " was unequipped and placed on the ground.";
+			}
+			else{
+				return itemName.toLowerCase() + " is not in the inventory";
+			}
+		}
+		else{	//should only happen if like, actor is null
+			return "";
+		}
+	}
+	
 	public String equipItem(String input, Actor actor){
 		String itemName = "";
 		for(int i = input.length()-1; i > 0; i--){
@@ -285,7 +359,7 @@ public class GameEngine {
 			}
 		
 		
-		return "No such item in inventory";
+		return itemName + " is not in the inventory";
 	}
 
 	// Called when a creature attacks a player

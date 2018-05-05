@@ -506,6 +506,14 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			//drop item
+			else if(input.toLowerCase().contains("drop ") || input.toLowerCase().contains("release ") || 
+					input.toLowerCase().contains("dispose ")){
+				text.append(engine.dropItem(input, database.getPlayer(game_id)));
+				
+				database.addGameLog(game_id, text.toString());
+
+				response = database.getGameLog(game_id);
+			}
 
 			// Player enters unknown command
 			else {
