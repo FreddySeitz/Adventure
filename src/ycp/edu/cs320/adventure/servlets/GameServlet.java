@@ -1,6 +1,7 @@
 package ycp.edu.cs320.adventure.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -345,9 +346,8 @@ public class GameServlet extends HttpServlet{
 
 			// Player views how much damage they can deal
 			else if(input.equalsIgnoreCase("view damage") || input.equalsIgnoreCase("damage")) {
-				database.addGameLog(game_id, String.valueOf(player.getBaseDamage()));
+				database.addGameLog(game_id, Integer.toString(database.getPlayer(game_id).getBaseDamage() + database.getPlayer(game_id).getEquippedItem().getDamage()));
 				response = database.getGameLog(game_id);
-
 			}
 
 			// Player views their location 
@@ -366,7 +366,6 @@ public class GameServlet extends HttpServlet{
 				//	database.addGameLog(game_id, "Somehow you have no location?");
 				//	response = database.getGameLog(game_id);
 				//}
-
 			}
 
 			// Player views their health
@@ -397,10 +396,17 @@ public class GameServlet extends HttpServlet{
 
 			// Player views their inventory
 			else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory")) {
-
 				// If inventory is NOT empty
-				if(!player.getInventory().getInventory().isEmpty()) {
-					database.addGameLog(game_id, String.valueOf(player.getInventory().getInventory()));
+				List<Item> inventory = database.getPlayerInventory(database.getPlayer(game_id).getPlayerId());
+				if(inventory.size() > 0){
+					//constructing the list of items
+					for(int i = 0; i < inventory.size(); i++){
+						text.append(inventory.get(i).getName());
+						if(i+1 < inventory.size()){
+							text.append("<br/>");
+						}
+					}
+					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
 				}
 
@@ -413,7 +419,7 @@ public class GameServlet extends HttpServlet{
 
 			// Player views their score 
 			else if(input.equalsIgnoreCase("view score") || input.equalsIgnoreCase("score")) {
-				database.addGameLog(game_id, String.valueOf(player.getScore()));
+				database.addGameLog(game_id, Integer.toString(database.getPlayer(game_id).getScore()));
 				response = database.getGameLog(game_id);
 			}
 
@@ -422,9 +428,7 @@ public class GameServlet extends HttpServlet{
 
 				// If tile has an item 
 				if(database.getTileInventory(map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
-					engine.pickupItem(player, database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
-
-					//				database.addToPlayerInventory(player_id, map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getItemList().get(0).getItemId());
+					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
 
 					database.addGameLog(game_id, "You found an item! View inventory to see it.");
 					response = database.getGameLog(game_id);

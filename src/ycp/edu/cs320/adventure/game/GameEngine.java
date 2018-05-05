@@ -175,21 +175,22 @@ public class GameEngine {
 	// Called when a player chooses to pickup an item
 	public void pickupItem(Actor actor, Item item) {
 		// Adds the item to the actor's inventory
-		actor.getInventory().addToInventory(item);
+		//actor.getInventory().addToInventory(item);
 
 		// Updates the inventory of the actor in the database
 		if(actor instanceof Player) {
 			database.addToPlayerInventory(((Player) actor).getPlayerId(), item.getItemId());
+			database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() + item.getValue());
 		}
 		else if(actor instanceof Creature) {
 			database.addToCreatureInventory(((Creature) actor).getCreatureId(), item.getItemId());
 		}
 
 		// Removes the item from the inventory of the Tile at the actor's location 
-		actor.getLocation().removeItem(item.getItemId());
+		//actor.getLocation().removeItem(item.getItemId());
 
 		// Updates the Tile's inventory in the database
-		database.removeFromTileInventory(item.getItemId(), item.getInventoryId());
+		database.removeFromTileInventory(actor.getLocation().getTileId(), item.getInventoryId());
 	}
 
 	// Called when a player chooses to pickup an item
