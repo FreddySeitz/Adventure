@@ -384,21 +384,10 @@ public class GameServlet extends HttpServlet{
 				response = database.getGameLog(game_id);
 			}
 
-			// Player views current equipped item 
-			else if(input.equalsIgnoreCase("inspect item") || input.equalsIgnoreCase("view item") || input.equalsIgnoreCase("item")) {
-
-				// If player actually has an item 
-				try {
-					if(player.getEquippedItem().getName().equalsIgnoreCase("")) {
-						database.addGameLog(game_id, player.getEquippedItem().getName());
-						response = database.getGameLog(game_id);
-					}
-				}
-				// If player has no item equipped
-				catch(NullPointerException e) {
-					database.addGameLog(game_id, "No item equipped.");
+			// Player views an inventory item
+			else if(input.toLowerCase().contains("inspect") || input.toLowerCase().contains("view")) {
+					database.addGameLog(game_id, engine.inspectItem(input, database.getPlayer(game_id)));
 					response = database.getGameLog(game_id);
-				}
 			}
 
 			// Player views their inventory
@@ -486,13 +475,12 @@ public class GameServlet extends HttpServlet{
 			
 			// Player equips item
 			else if(input.toLowerCase().contains("equip ") || input.toLowerCase().contains("hold ")){
-				boolean validation = engine.equipItem(input, database.getPlayer(game_id));
-				System.out.println(validation);
-				if(validation == true){
-					text.append("Item was equipped.");
+				String itemName = engine.equipItem(input, database.getPlayer(game_id));
+				if(!itemName.equals("")){
+					text.append(itemName + " was equipped.");
 				}
-				else if(validation == false){
-					text.append("Item was not found in inventory.");
+				else{
+					text.append(itemName + " was not found in inventory.");
 				}
 				
 				database.addGameLog(game_id, text.toString());

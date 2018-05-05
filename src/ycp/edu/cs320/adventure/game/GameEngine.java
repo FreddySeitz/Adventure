@@ -233,7 +233,7 @@ public class GameEngine {
 		database.updatePlayerHealth(currentGame.getPlayer().getPlayerId(), currentGame.getPlayer().getHealth());
 	}
 
-	public boolean equipItem(String input, Actor actor){
+	public String equipItem(String input, Actor actor){
 		String itemName = "";
 		for(int i = input.length()-1; i > 0; i--){
 			if(input.charAt(i) == ' '){
@@ -243,28 +243,49 @@ public class GameEngine {
 				itemName = input.charAt(i) + itemName;
 			}
 		}
-		System.out.println(itemName);
 		if(actor instanceof Player) {
 			List<Item> items = database.getPlayerInventory(((Player) actor).getPlayerId());
 			for(Item item : items){
 				//if item exists in player's inventory
 				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
 					database.updatePlayerEquippedItem(((Player) actor).getPlayerId(), item.getItemId());
-					return true;
+					return itemName.toLowerCase();
 				}
 			}
 		}
 
-		//creatures immediately take damage
+		//creature equips item
 		else if(actor instanceof Creature) {
 			List<Item> items = database.getCreatureInventory(((Creature)actor).getCreatureId());
 			for(Item item : items){	//adds item if it exists in inventory
 				database.updateCreatureEquippedItem(((Creature) actor).getCreatureId(), item.getItemId());
-				return true;
+				return itemName.toLowerCase();
 			}
 		}
 		
-		return false;
+		return "";
+	}
+	
+	public String inspectItem(String input, Player player){
+		String itemName = "";
+		for(int i = input.length()-1; i > 0; i--){
+			if(input.charAt(i) == ' '){
+				break;
+			}
+			else{
+				itemName = input.charAt(i) + itemName;
+			}
+		}
+			List<Item> items = database.getPlayerInventory(player.getPlayerId());
+			for(Item item : items){
+				//if item exists in player's inventory
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+					return itemName.toLowerCase() + ": " + item.getDescription();
+				}
+			}
+		
+		
+		return "No such item in inventory";
 	}
 
 	// Called when a creature attacks a player
