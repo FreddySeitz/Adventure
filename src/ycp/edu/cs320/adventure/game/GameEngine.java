@@ -84,7 +84,7 @@ public class GameEngine {
 		for(int i=0; i<20; i++) {
 			for(int j=0; j<20; j++) {
 				tile = map.getTile(i, j);
-				id = database.createTile(gameId, tile.getType(), tile.getVisible(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
+				id = database.createTile(gameId, tile.getType(), tile.getVisible(), tile.getHidden(), tile.getActive(), tile.getPrompt(), tile.getQuestion(), tile.getDescription(), tile.getDamage(), tile.getX(), tile.getY());
 				map.getTile(i, j).setTileId(id);
 			}
 		}
@@ -249,6 +249,30 @@ public class GameEngine {
 		}
 		
 	}
+	
+	public void promptTrap(Actor actor, Tile tile, String input, StringBuilder text) {
+		if(actor instanceof Player) {
+			//check answer
+			if(actor.getLocation().checkAnswer(input)){
+				text.append("correct");
+
+				//if answer is right, set tile type to normal room
+				database.updateTileActive(false, tile.getTileId());
+			}
+			//deal damage if necessary
+			else{
+				text.append("incorrect  -10 HP");
+				database.updatePlayerHealth(((Player) actor).getPlayerId(), actor.getHealth() - actor.getLocation().getDamage());
+			}
+			//setting prompt to false, will allow player to move
+			database.updateTilePrompt(false, tile.getTileId());
+		}
+		
+		//creatures immediately take damage
+		else if(actor instanceof Creature) {
+			database.updateCreatureHealth(((Creature) actor).getCreatureId(), actor.getHealth() - actor.getLocation().getDamage());
+		}
+	}
 
 	// Randomly moves creatures when the user enters a command
 	/*public void moveCreatures() {
@@ -328,7 +352,12 @@ public class GameEngine {
 				else if(type == 2){	//trap
 					//builder.append('x');
 					//builder.append('*');
-					builder.append("2 ");
+					if(tiles.get(i).getHidden() == true || tiles.get(i).getActive() == false){
+						builder.append("1 ");
+					}
+					else{
+						builder.append("2 ");
+					}
 				}
 				else if(type == 3){	//exit
 					//builder.append('E');
