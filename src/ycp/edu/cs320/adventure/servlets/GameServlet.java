@@ -87,7 +87,7 @@ public class GameServlet extends HttpServlet{
 
 		//********** Play Game Below **********
 
-
+		System.out.println(game_id);
 		/* Handling user input */
 	
 		//location before movement from this turn, used for traps
@@ -472,15 +472,23 @@ public class GameServlet extends HttpServlet{
 				response = engine.viewMap();
 			}
 
+			// Player view the game log
 			else if(input.equalsIgnoreCase("view log") || input.equalsIgnoreCase("log")){
 				response = database.getGameLog(game_id);
 			}
-
+			
+			// Player views the tiles around them
 			else if(input.equalsIgnoreCase("view area") || input.equalsIgnoreCase("scan") || 
 					input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")){
 				//return long descriptions of bordering tiles
 				database.addGameLog(game_id, "unimplemented.  TODO: FEED THE HAMSTERS!");
 				response = database.getGameLog(game_id);
+			}
+			
+			// Player equips item
+			else if(input.equalsIgnoreCase("equip ") || input.equalsIgnoreCase("hold ")){
+				StringBuilder itemName = new StringBuilder();
+				
 			}
 
 			// Player enters unknown command

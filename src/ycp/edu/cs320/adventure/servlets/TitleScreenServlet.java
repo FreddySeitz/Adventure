@@ -49,11 +49,11 @@ public class TitleScreenServlet extends HttpServlet{
 	        	ses = req.getSession(true);
 	        	
 	        	List<Integer> game_ids = database.getGames((int)account_id);
-				int game_id = game_ids.size() - 1;
+				//int game_id = game_ids.size() - 1;
 	        	
 	        	ses.setAttribute("map", map);
 	        	ses.setAttribute("id",(int)account_id);
-	        	engine.createGame((int)account_id);
+	        	int game_id = engine.createGame((int)account_id);
 	        	ses.setAttribute("engine",engine);
 	        	ses.setAttribute("playerX", 0);
 	        	ses.setAttribute("playerY", 0);
