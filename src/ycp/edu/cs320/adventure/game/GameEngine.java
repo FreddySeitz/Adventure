@@ -238,6 +238,17 @@ public class GameEngine {
 		// Updates the database to show change in creature health
 		database.updatePlayerHealth(creature.getCreatureId(), creature.getHealth());
 	}
+	
+	public void blankSpaceDamage(Actor actor) {
+		actor.setHealth(actor.getHealth() - 5);
+		if(actor instanceof Player) {
+			database.updatePlayerHealth(((Player) actor).getPlayerId(), actor.getHealth()-5);
+		}
+		else if(actor instanceof Creature) {
+			database.updateCreatureHealth(((Creature) actor).getCreatureId(), actor.getHealth()-5);
+		}
+		
+	}
 
 	// Randomly moves creatures when the user enters a command
 	/*public void moveCreatures() {

@@ -68,6 +68,9 @@ public class GameServlet extends HttpServlet{
 		// User input from jsp
 		String input = req.getParameter("userInput");
 
+		// The text that gets added to the database
+		StringBuilder text = new StringBuilder();
+		
 		// Games response to user
 		String response = null;
 
@@ -101,8 +104,15 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, " You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+				//action and tile description
+				text.append("You Moved Down.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				//damage from blank space
+				if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
+					text.append("<br/>You walked through a prickly mass.  -5 HP");
+					engine.blankSpaceDamage(player);
+				}
+				
 				//setting tile visibility
 				//if they are not at the bottom of the map
 				if((int)req.getSession(false).getAttribute("playerY") < map.getHeight() - 1){
@@ -118,7 +128,8 @@ public class GameServlet extends HttpServlet{
 						database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
 					}
 				}
-
+				
+				database.addGameLog(game_id, text.toString());
 				response = database.getGameLog(game_id);
 
 			}
@@ -134,16 +145,12 @@ public class GameServlet extends HttpServlet{
 			// If valid move
 			if((int)req.getSession(false).getAttribute("playerX") > 0) {
 				// Move player
-				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") - 1;
-
 				// These:
 				//database.updatePlayerX(player_id, newX);
 				//database.updatePlayerY(player_id, player.getLocation().getY());
-
 				// Do This:
 				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
-
 				//nextMove = map.getTile(newX, player.getLocation().getY());
 
 				ses.setAttribute("playerX",newX);
@@ -155,8 +162,16 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, " You Moved Left.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+				//action and tile description
+				text.append("You Moved Left.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				//damage from blank space
+				if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
+					text.append("<br/>You walked through a prickly mass.  -5 HP");
+					engine.blankSpaceDamage(player);
+				}
+				
+				//visibility
 				if((int)req.getSession(false).getAttribute("playerX") > 0){
 					//if there is space above them
 					if((int)req.getSession(false).getAttribute("playerY") > 0){
@@ -171,6 +186,7 @@ public class GameServlet extends HttpServlet{
 					}
 				}
 				
+				database.addGameLog(game_id, text.toString());
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -186,15 +202,6 @@ public class GameServlet extends HttpServlet{
 				// Move player
 				int newX = (int)req.getSession(false).getAttribute("playerX") + 1;
 
-				// These:
-				//database.updatePlayerX(player_id, newX);
-				//database.updatePlayerY(player_id, player.getLocation().getY());
-
-				// Do This:
-				//player.setLocation(map.getTile(newX,  player.getLocation().getY()));
-
-				//nextMove = map.getTile(newX, player.getLocation().getY());
-
 				ses.setAttribute("playerX",newX);
 				//ses.setAttribute("playerY",player.getLocation().getY());
 
@@ -204,8 +211,16 @@ public class GameServlet extends HttpServlet{
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
 
-				database.addGameLog(game_id, "You Moved Right.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+				//action and tile description
+				text.append("You Moved Right.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 
+				//damage from blank space
+				if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
+					text.append("<br/>You walked through a prickly mass.  -5 HP");
+					engine.blankSpaceDamage(player);
+				}
+				
+				//visibility
 				if((int)req.getSession(false).getAttribute("playerX") < map.getWidth()-1){
 					//if there is space above them
 					if((int)req.getSession(false).getAttribute("playerY") > 0){
@@ -220,6 +235,7 @@ public class GameServlet extends HttpServlet{
 					}
 				}
 				
+				database.addGameLog(game_id, text.toString());
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -234,16 +250,6 @@ public class GameServlet extends HttpServlet{
 			if((int)req.getSession(false).getAttribute("playerY") > 0) {
 				// Move player
 				int newY = (int)req.getSession(false).getAttribute("playerY") - 1;
-
-				// These:
-				//database.updatePlayerX(player_id, newX);
-				//database.updatePlayerY(player_id, player.getLocation().getY());
-
-				// Do This:
-				//player.setLocation(map.getTile(newX, player.getLocation().getY()));
-
-				//nextMove = map.getTile(player.getLocation().getX(), newY);
-				//ses.setAttribute("playerX",player.getLocation().getX());
 				ses.setAttribute("playerY",newY);
 
 				System.out.println("Move up");
@@ -251,9 +257,17 @@ public class GameServlet extends HttpServlet{
 				System.out.println("Y: " + (int)req.getSession(false).getAttribute("playerY"));
 
 				engine.movePlayer((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY"));
-
-				database.addGameLog(game_id, "You Moved Up.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
 				
+				//action and tile description
+				text.append("You Moved Up.<br/>" + map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getDescription());
+				
+				//damage from blank space
+				if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
+					text.append("<br/>You walked through a prickly mass.  -5 HP");
+					engine.blankSpaceDamage(player);
+				}
+				
+				//visibility
 				if((int)req.getSession(false).getAttribute("playerY") > 0){
 					//if there is space to the left
 					if((int)req.getSession(false).getAttribute("playerX") > 0){
@@ -268,6 +282,7 @@ public class GameServlet extends HttpServlet{
 					}
 				}
 				
+				database.addGameLog(game_id, text.toString());
 				response = database.getGameLog(game_id);
 			}
 			else {
@@ -303,8 +318,11 @@ public class GameServlet extends HttpServlet{
 		}
 
 		// Player views their health
-		else if(input.equalsIgnoreCase("health") || input.equalsIgnoreCase("health")) {
-			database.addGameLog(game_id, String.valueOf(player.getHealth()));
+		else if(input.equalsIgnoreCase("view health") || input.equalsIgnoreCase("health")) {
+			//database.addGameLog(game_id, String.valueOf(player.getHealth()));
+			text.append("Health: ");
+			text.append(Integer.toString(database.getPlayer(game_id).getHealth()));
+			database.addGameLog(game_id, text.toString());
 			response = database.getGameLog(game_id);
 		}
 
@@ -389,6 +407,13 @@ public class GameServlet extends HttpServlet{
 		}
 		
 		else if(input.equalsIgnoreCase("view log") || input.equalsIgnoreCase("log")){
+			response = database.getGameLog(game_id);
+		}
+		
+		else if(input.equalsIgnoreCase("view area") || input.equalsIgnoreCase("scan") || 
+				input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")){
+			//return long descriptions of bordering tiles
+			database.addGameLog(game_id, "unimplemented.  TODO: FEED THE HAMSTERS!");
 			response = database.getGameLog(game_id);
 		}
 
