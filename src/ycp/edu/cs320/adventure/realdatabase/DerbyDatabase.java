@@ -361,16 +361,16 @@ public class DerbyDatabase implements IDatabase{
 							" SELECT games.game_id " +
 									"FROM games " + 
 									"WHERE games.account_id = ?"
-									
+
 							);
 					id.setInt(1, account_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
 					}
-					
+
 
 					return result;
 
@@ -499,24 +499,24 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(6, health);
 					stmt.setInt(7, quest_id);
 					stmt.setInt(8, value);
-					
+
 					stmt.executeUpdate();
-					
+
 					id = conn.prepareStatement(
 							" SELECT items.item_id " +
 									"FROM items " + 
 									"WHERE items.game_id = ?"
-									
+
 							);
 					id.setInt(1, game_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
 					}
 
-					
+
 
 					return result;
 
@@ -1379,7 +1379,7 @@ public class DerbyDatabase implements IDatabase{
 				PreparedStatement stmt = null;
 				PreparedStatement id = null;
 				ResultSet resultSet = null;
-				
+
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
@@ -1391,22 +1391,22 @@ public class DerbyDatabase implements IDatabase{
 					stmt.setInt(3, width);
 
 					stmt.executeUpdate();
-					
+
 					id = conn.prepareStatement(
 							" SELECT maps.map_id " +
 									"FROM maps " + 
 									"WHERE maps.game_id = ?"
-									
+
 							);
 					id.setInt(1, game_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
 					}
 
-					
+
 
 					return result;
 
@@ -1573,7 +1573,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public int createTile(final int game_id, final int type, final boolean visible, final String description, final int damage, final int x, final int y) {
+	public int createTile(final int game_id, final int type, final boolean visible, final boolean hidden, final boolean active, final boolean prompt, final int question, final String description, final int damage, final int x, final int y) {
 		return executeTransaction(new Transaction<Integer>() {
 			@Override
 			public Integer execute(Connection conn) throws SQLException {
@@ -1584,16 +1584,20 @@ public class DerbyDatabase implements IDatabase{
 				try {
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
-							" INSERT INTO tiles (game_id, type, visible, description, damage, x, y) " + 
-									"	VALUES (?, ?, ?, ?, ?, ?, ?)	"
+							" INSERT INTO tiles (game_id, type, visible, hidden, active, prompt, question, description, damage, x, y) " + 
+									"	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)	"
 							);
 					stmt.setInt(1, game_id);
 					stmt.setInt(2, type);
 					stmt.setBoolean(3, visible);
-					stmt.setString(4, description);
-					stmt.setInt(5, damage);
-					stmt.setInt(6, x);
-					stmt.setInt(7, y);
+					stmt.setBoolean(4, hidden);
+					stmt.setBoolean(5, active);
+					stmt.setBoolean(6, prompt);
+					stmt.setInt(7, question);
+					stmt.setString(8, description);
+					stmt.setInt(9, damage);
+					stmt.setInt(10, x);
+					stmt.setInt(11, y);
 
 					stmt.executeUpdate();
 
@@ -1601,11 +1605,11 @@ public class DerbyDatabase implements IDatabase{
 							" SELECT tiles.tile_id " +
 									"FROM tiles " + 
 									"WHERE tiles.game_id = ?"
-									
+
 							);
 					id.setInt(1, game_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
@@ -1623,7 +1627,7 @@ public class DerbyDatabase implements IDatabase{
 	}
 
 	//@Override
-	public boolean updateTileAll(final int type, final boolean visible, final String description, final int x, final int y, final int tile_id) {
+	public boolean updateTileAll(final int type, final boolean visible, final boolean hidden, final boolean active, final boolean prompt, final int question, final String description, final int x, final int y, final int tile_id) {
 		return executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
@@ -1633,15 +1637,19 @@ public class DerbyDatabase implements IDatabase{
 					// retreive all attributes from both Books and Authors tables
 					stmt = conn.prepareStatement(
 							" UPDATE tiles " + 
-									"SET type = ?, visible = ?, description = ?, x = ?, y = ? " +
+									"SET type = ?, visible = ?, hidden = ?, active = ?, prompt = ?, question = ?, description = ?, x = ?, y = ? " +
 									"WHERE tiles.tile_id = ?"
 							);
 					stmt.setInt(1, type);
 					stmt.setBoolean(2, visible);
-					stmt.setString(3, description);
-					stmt.setInt(4, x);
-					stmt.setInt(5, y);
-					stmt.setInt(6, tile_id);
+					stmt.setBoolean(3, hidden);
+					stmt.setBoolean(4, active);
+					stmt.setBoolean(5, prompt);
+					stmt.setInt(6, question);
+					stmt.setString(7, description);
+					stmt.setInt(8, x);
+					stmt.setInt(9, y);
+					stmt.setInt(10, tile_id);
 
 					stmt.executeUpdate();
 
@@ -1681,34 +1689,146 @@ public class DerbyDatabase implements IDatabase{
 			}
 		});
 	}
+
+	//@Override
+	public boolean updateTileVisible(final boolean visible, final int tile_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE tiles " + 
+									"SET visible = ? " +
+									"WHERE tiles.tile_id = ?"
+							);
+					stmt.setBoolean(1, visible);
+					stmt.setInt(2, tile_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
 	
 	//@Override
-		public boolean updateTileVisible(final boolean visible, final int tile_id) {
-			return executeTransaction(new Transaction<Boolean>() {
-				@Override
-				public Boolean execute(Connection conn) throws SQLException {
-					PreparedStatement stmt = null;
+	public boolean updateTileHidden(final boolean hidden, final int tile_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
 
-					try {
-						// retreive all attributes from both Books and Authors tables
-						stmt = conn.prepareStatement(
-								" UPDATE tiles " + 
-										"SET visible = ? " +
-										"WHERE tiles.tile_id = ?"
-								);
-						stmt.setBoolean(1, visible);
-						stmt.setInt(2, tile_id);
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE tiles " + 
+									"SET hidden = ? " +
+									"WHERE tiles.tile_id = ?"
+							);
+					stmt.setBoolean(1, hidden);
+					stmt.setInt(2, tile_id);
 
-						stmt.executeUpdate();
+					stmt.executeUpdate();
 
-						return true;
+					return true;
 
-					} finally {
-						DBUtil.closeQuietly(stmt);
-					}
+				} finally {
+					DBUtil.closeQuietly(stmt);
 				}
-			});
-		}
+			}
+		});
+	}
+	
+	//@Override
+	public boolean updateTileActive(final boolean active, final int tile_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE tiles " + 
+									"SET active = ? " +
+									"WHERE tiles.tile_id = ?"
+							);
+					stmt.setBoolean(1, active);
+					stmt.setInt(2, tile_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+	
+	//@Override
+	public boolean updateTilePrompt(final boolean prompt, final int tile_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE tiles " + 
+									"SET prompt = ? " +
+									"WHERE tiles.tile_id = ?"
+							);
+					stmt.setBoolean(1, prompt);
+					stmt.setInt(2, tile_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+	
+	//@Override
+	public boolean updateTileQuestion(final int question, final int tile_id) {
+		return executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+
+				try {
+					// retreive all attributes from both Books and Authors tables
+					stmt = conn.prepareStatement(
+							" UPDATE tiles " + 
+									"SET question = ? " +
+									"WHERE tiles.tile_id = ?"
+							);
+					stmt.setInt(1, question);
+					stmt.setInt(2, tile_id);
+
+					stmt.executeUpdate();
+
+					return true;
+
+				} finally {
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
 
 	//@Override
 	public boolean updateTileDescription(final String description, final int tile_id) {
@@ -1977,6 +2097,10 @@ public class DerbyDatabase implements IDatabase{
 		tile.setGameId(resultSet.getInt(index++));
 		tile.setType(resultSet.getInt(index++));
 		tile.setVisible(resultSet.getBoolean(index++));
+		tile.setHidden(resultSet.getBoolean(index++));
+		tile.setActive(resultSet.getBoolean(index++));
+		tile.setPrompt(resultSet.getBoolean(index++));
+		tile.setQuestion(resultSet.getInt(index++));
 		tile.setDescription(resultSet.getString(index++));
 		tile.setDamage(resultSet.getInt(index++));
 		tile.setX(resultSet.getInt(index++));
@@ -2012,11 +2136,11 @@ public class DerbyDatabase implements IDatabase{
 							" SELECT creatures.creature_id " +
 									"FROM creatures " + 
 									"WHERE creatures.creature_id = ?"
-									
+
 							);
 					id.setInt(1, game_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
@@ -2388,11 +2512,11 @@ public class DerbyDatabase implements IDatabase{
 							" SELECT items.item_id " +
 									"FROM items " + 
 									"WHERE items.game_id = ?"
-									
+
 							);
 					id.setInt(1, game_id);
 					resultSet = id.executeQuery();
-					
+
 					int result = -1;
 					while(resultSet.next()){
 						result = resultSet.getInt(1);
@@ -2698,7 +2822,7 @@ public class DerbyDatabase implements IDatabase{
 						strings = Arrays.copyOf(strings, strings.length+1);
 						strings[strings.length-1] = (resultTile.getString(1) + "<br/><br/>");
 					}
-					
+
 					for(int i = strings.length-1; i >= 0; i--){
 						builder.append(strings[i]);
 					}
@@ -2781,6 +2905,9 @@ public class DerbyDatabase implements IDatabase{
 		int item_id = resultSet.getInt(index++);
 		if(item_id > 0){	//if item exists
 			player.setEquippedItem(getItem(item_id));
+		}
+		else{
+			player.setEquippedItem(player.equipBlankItem());
 		}
 		player.setHealth(resultSet.getInt(index++));
 		player.setLocation(getTile(player.getGameId(), resultSet.getInt(index++), resultSet.getInt(index++)));
@@ -2917,6 +3044,10 @@ public class DerbyDatabase implements IDatabase{
 									"	game_id integer, " +
 									"	type integer," +
 									"	visible boolean," +
+									"	hidden boolean," +
+									"	active boolean," +
+									"	prompt boolean," +
+									"	question integer," +
 									"	description varchar(500), " +
 									"	damage integer," +
 									"   x integer," +

@@ -318,13 +318,29 @@ public class Map {
 					}
 				}
 			}
+			Random rand = new Random();
 			for(int i = 0; i < height; i++){
 				for(int j = 0; j < width; j++){
 					map[i][j] = new Tile();
 					map[i][j].setType(mapData[i][j]);
 					map[i][j].setX(j);
 					map[i][j].setY(i);
+					
+					if(map[i][j].getType() == 2){
+						//question 0 to 2
+						map[i][j].setQuestion(rand.nextInt(3));
+						map[i][j].setDamage(10);
+						map[i][j].setHidden(true);
+						map[i][j].setActive(true);
+					}
 				}
 			}
+			map[0][0].setVisible(true);
+			map[0][1].setVisible(true);
+			map[1][0].setVisible(true);
+			map[1][1].setVisible(true);
+			
+			//exit
+			map[15][17].setType(3);
 		}
 }

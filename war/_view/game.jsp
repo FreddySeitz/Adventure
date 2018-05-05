@@ -12,7 +12,7 @@
 			}
 		
 			td.label {
-				text-align: right;
+				text-align: center;
 			}
 			.input {
   				position: fixed;
@@ -21,13 +21,12 @@
 			}
 			.textbox{
 				width: 500px;
-				height: 300px;
+				height: 400px;
    				border: 25px solid green;
     			padding: 25px;
     			margin: 25px;
     			overflow-x: visible;
     			overflow-y: scroll;
-    			overflow-
 			}
 			.success{
 				color:green;

@@ -52,14 +52,24 @@ public class LoadGameServlet extends HttpServlet{
 		String input = req.getParameter("userInput");
 
 		String button = req.getParameter("viewGames");
-
-		System.out.println("games: " + database.getGames(account_id));
-		response = database.getGames(account_id).toString();
+		List<Integer> games = database.getGames(account_id);
+		System.out.println("games: " + games);
+		
+		StringBuilder text = new StringBuilder();
+		for(int i = 0; i < games.size(); i++){
+			text.append(i+1 + "---");
+			text.append("Health: " + database.getPlayer(games.get(i)).getHealth() + "---");
+			text.append("Damage: " + database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()+ "---");
+			text.append("Score: " + database.getPlayer(games.get(i)).getHealth() + "<br/><br/>");
+		}
+		
+		response = text.toString();
 
 		int choice = -1;
 
 		try {
-			choice = Integer.parseInt(input);
+			//choice = Integer.parseInt(input) - 1;
+			choice = games.get(Integer.parseInt(input) - 1);
 		}
 		catch(NumberFormatException e) {
 			System.out.println(e);
@@ -70,7 +80,7 @@ public class LoadGameServlet extends HttpServlet{
 		}
 
 
-		List<Integer> games = database.getGames(account_id);
+//		List<Integer> games = database.getGames(account_id);
 
 		// if the choice is valid 
 		if(games.contains(choice)) {

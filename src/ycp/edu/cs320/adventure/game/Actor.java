@@ -106,4 +106,8 @@ public class Actor {
 	public void move(Tile newLocation) {
 		this.setLocation(newLocation);
 	}
+	
+	public Item equipBlankItem(){
+		return new Item(" ", " ", 0, 0, 0, 0, 0, 0, 0);
+	}
 }

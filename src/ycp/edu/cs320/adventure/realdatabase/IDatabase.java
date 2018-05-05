@@ -72,10 +72,14 @@ public interface IDatabase {
 	public Map getMap(int game_id);
 	
 	//tiles
-	public int createTile(int game_id, int type, boolean visible, String description, int damage, int x, int y);
-	public boolean updateTileAll(int type, boolean visible, String description, int x, int y, int tile_id);
+	public int createTile(int game_id, int type, boolean visible, boolean hidden, boolean active, boolean prompt, int question, String description, int damage, int x, int y);
+	public boolean updateTileAll(int type, boolean visible, boolean hidden, boolean active, boolean prompt, int question, String description, int x, int y, int tile_id);
 	public boolean updateTileType(int type, int tile_id);
 	public boolean updateTileVisible(boolean visible, int tile_id);
+	public boolean updateTileHidden(boolean hidden, int tile_id);
+	public boolean updateTileActive(boolean active, int tile_id);
+	public boolean updateTilePrompt(boolean prompt, int tile_id);
+	public boolean updateTileQuestion(int question, int tile_id);
 	public boolean updateTileDescription(String description, int tile_id);
 	public boolean updateTileDamage(int damage, int tile_id);
 	public boolean updateTileX(int x, int tile_id);
