@@ -420,21 +420,24 @@ public class GameServlet extends HttpServlet{
 			}
 
 			// Player picks up item from tile 
-			else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up") ||
-					input.equalsIgnoreCase("take")) {
-
+			else if(input.toLowerCase().contains("pick up ") || input.toLowerCase().contains("take ")) {
 				// If tile has an item 
-				if(database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
-					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
-
-					database.addGameLog(game_id, "You found an item! View inventory to see it.");
+//				if(database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
+					player = database.getPlayer(game_id);
+					
+					database.addGameLog(game_id, engine.takeItem(input, player));
+					
 					response = database.getGameLog(game_id);
-				}
+//					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
+//
+//					database.addGameLog(game_id, "You found an item! View inventory to see it.");
+//					response = database.getGameLog(game_id);
+//				}
 
-				else {
-					database.addGameLog(game_id, "Theres nothing here but dirt!");
-					response = database.getGameLog(game_id);
-				}
+//				else {
+//					database.addGameLog(game_id, "Theres nothing here but dirt!");
+//					response = database.getGameLog(game_id);
+//				}
 			}
 
 
@@ -498,8 +501,20 @@ public class GameServlet extends HttpServlet{
 			
 			// Player equips item
 			else if(input.toLowerCase().contains("equip ") || input.toLowerCase().contains("hold ")){
-				String itemName = engine.equipItem(input, database.getPlayer(game_id));
-				if(!itemName.equals("")){
+				boolean equipped = engine.equipItem(input, database.getPlayer(game_id));
+				
+				//getting item name
+				String itemName = "";
+				for(int i = input.length()-1; i > 0; i--){
+					if(input.charAt(i) == ' '){
+						break;
+					}
+					else{
+						itemName = input.charAt(i) + itemName;
+					}
+				}
+				
+				if(equipped == true){
 					text.append(itemName + " was equipped.");
 				}
 				else{
@@ -517,8 +532,9 @@ public class GameServlet extends HttpServlet{
 				player = database.getPlayer(game_id);
 				//if an item is equipped
 				if(player.getEquippedItem().getItemId() != 0){
+					String name = database.getPlayer(game_id).getEquippedItem().getName();
 					database.updatePlayerEquippedItem(player.getPlayerId(), 0);
-					text.append("The item has been unequipped.");
+					text.append("The " + name.toLowerCase() + " has been unequipped.");
 				}
 				else{	//if no item is equipped
 					text.append("You are not holding an item.");

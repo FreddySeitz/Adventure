@@ -170,7 +170,7 @@ public class GameEngine {
 	public void movePlayer(int X, int Y) {
 		// Getting player from database
 		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
-		
+
 		// Updates the player's location in the database
 		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), X);
 		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), Y);
@@ -255,13 +255,15 @@ public class GameEngine {
 					database.removeFromPlayerInventory(((Player)actor).getPlayerId(), item.getInventoryId());
 					//add to tile inventory
 					database.addToTileInventory(database.getPlayer(currentGame.getGameId()).getLocation().getTileId(), item.getItemId());
+					//drop score
+					database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() - item.getValue());
 					itemExists = true;
 				}
 				else if(itemName.toLowerCase().equals(item.getName().toLowerCase()) && itemExistsAgain == false){
 					itemExistsAgain = true;
 				}
 			}
-			
+
 			if(itemExistsAgain == false && itemExists == true &&
 					database.getPlayer(currentGame.getGameId()).getEquippedItem().getName().equalsIgnoreCase(itemName.toLowerCase())){
 				database.updatePlayerEquippedItem(((Player)actor).getPlayerId(), 0);
@@ -307,8 +309,8 @@ public class GameEngine {
 			return "";
 		}
 	}
-	
-	public String equipItem(String input, Actor actor){
+
+	public boolean equipItem(String input, Actor actor){
 		String itemName = "";
 		for(int i = input.length()-1; i > 0; i--){
 			if(input.charAt(i) == ' '){
@@ -324,7 +326,7 @@ public class GameEngine {
 				//if item exists in player's inventory
 				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
 					database.updatePlayerEquippedItem(((Player) actor).getPlayerId(), item.getItemId());
-					return itemName.toLowerCase();
+					return true;
 				}
 			}
 		}
@@ -334,13 +336,13 @@ public class GameEngine {
 			List<Item> items = database.getCreatureInventory(((Creature)actor).getCreatureId());
 			for(Item item : items){	//adds item if it exists in inventory
 				database.updateCreatureEquippedItem(((Creature) actor).getCreatureId(), item.getItemId());
-				return itemName.toLowerCase();
+				return true;
 			}
 		}
-		
-		return "";
+
+		return false;
 	}
-	
+
 	public String inspectItem(String input, Player player){
 		String itemName = "";
 		for(int i = input.length()-1; i > 0; i--){
@@ -351,16 +353,63 @@ public class GameEngine {
 				itemName = input.charAt(i) + itemName;
 			}
 		}
-			List<Item> items = database.getPlayerInventory(player.getPlayerId());
+		List<Item> items = database.getPlayerInventory(player.getPlayerId());
+		for(Item item : items){
+			//if item exists in player's inventory
+			if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+				return itemName.toLowerCase() + ": " + item.getDescription();
+			}
+		}
+
+
+		return itemName.toLowerCase() + " is not in the inventory";
+	}
+
+	public String takeItem(String input, Actor actor){
+		String itemName = "";
+		for(int i = input.length()-1; i > 0; i--){
+			if(input.charAt(i) == ' '){
+				break;
+			}
+			else{
+				itemName = input.charAt(i) + itemName;
+			}
+		}
+		if(database.getTileInventory(database.getTile(currentGame.getGameId(), actor.getLocation().getX(), actor.getLocation().getY()).getTileId()).size() > 0){
+		if(actor instanceof Player){
+			Tile tile = database.getTile(currentGame.getGameId(), ((Player)actor).getLocation().getX(), ((Player)actor).getLocation().getY());
+			List<Item> items = database.getTileInventory(tile.getTileId());
 			for(Item item : items){
 				//if item exists in player's inventory
 				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
-					return itemName.toLowerCase() + ": " + item.getDescription();
+					database.addToPlayerInventory(((Player)actor).getPlayerId(), item.getItemId());
+					database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
+					database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() + item.getValue());
+					return "You took a " + itemName.toLowerCase();
 				}
 			}
+			return "You cannot obtain a " + itemName + " from your surroundings";
+		}
+		else if(actor instanceof Creature){
+			Tile tile = database.getTile(currentGame.getGameId(), ((Creature)actor).getLocation().getX(), ((Creature)actor).getLocation().getY());
+			List<Item> items = database.getTileInventory(tile.getTileId());
+			for(Item item : items){
+				//if item exists in player's inventory
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+					database.addToCreatureInventory(((Creature)actor).getCreatureId(), item.getItemId());
+					database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
+					return "You took a " + itemName.toLowerCase();
+				}
+			}
+			return "You cannot obtain a " + itemName + " from your surroundings";
+		}
 		
-		
-		return itemName + " is not in the inventory";
+		//null actor I guess
+		return "";
+		}
+		else{
+			return "You cannot obtain a " + itemName + " from your surroundings";
+		}
 	}
 
 	// Called when a creature attacks a player
@@ -566,16 +615,16 @@ public class GameEngine {
 		text.append("<br/>");
 		text.append("<br/>To the North: ");
 		if((playerLoc/width) - 1 >= 0){
-			if(tiles.get((playerLoc/width) - 1).getType() == 0){
+			if(tiles.get(playerLoc - width).getType() == 0){
 				text.append("thick vegetation");
 			}
-			if(tiles.get((playerLoc/width) - 1).getType() == 1){
+			if(tiles.get(playerLoc - width).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc/width) - 1).getType() == 2){
+			if(tiles.get(playerLoc - width).getType() == 2){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc/width) - 1).getType() == 3){
+			if(tiles.get(playerLoc - width).getType() == 3){
 				text.append("a small light shines through the darkness");
 			}
 		}
@@ -584,16 +633,16 @@ public class GameEngine {
 		}
 		text.append("<br/>To the East: ");
 		if((playerLoc%width) + 1 < width){
-			if(tiles.get((playerLoc%width) + 1).getType() == 0){
+			if(tiles.get(playerLoc + 1).getType() == 0){
 				text.append("thick vegetation");
 			}
-			if(tiles.get((playerLoc%width) + 1).getType() == 1){
+			if(tiles.get(playerLoc + 1).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc%width) + 1).getType() == 2){
+			if(tiles.get(playerLoc + 1).getType() == 2){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc%width) + 1).getType() == 3){
+			if(tiles.get(playerLoc + 1).getType() == 3){
 				text.append("a small light shines through the darkness");
 			}
 		}
@@ -602,16 +651,16 @@ public class GameEngine {
 		}
 		text.append("<br/>To the South: ");
 		if((playerLoc/width) + 1 < height){
-			if(tiles.get((playerLoc/width) + 1).getType() == 0){
+			if(tiles.get(playerLoc + width).getType() == 0){
 				text.append("thick vegetation");
 			}
-			if(tiles.get((playerLoc/width) + 1).getType() == 1){
+			if(tiles.get(playerLoc + width).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc/width) + 1).getType() == 2){
+			if(tiles.get(playerLoc + width).getType() == 2){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc/width) + 1).getType() == 3){
+			if(tiles.get(playerLoc + width).getType() == 3){
 				text.append("a small light shines through the darkness");
 			}
 		}
@@ -620,16 +669,16 @@ public class GameEngine {
 		}
 		text.append("<br/>To the West: ");
 		if((playerLoc%width) - 1 > 0){
-			if(tiles.get((playerLoc%width) - 1).getType() == 0){
+			if(tiles.get(playerLoc - 1).getType() == 0){
 				text.append("thick vegetation");
 			}
-			if(tiles.get((playerLoc%width) - 1).getType() == 1){
+			if(tiles.get(playerLoc - 1).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc%width) - 1).getType() == 2){
+			if(tiles.get(playerLoc - 1).getType() == 2){
 				text.append("open space");
 			}
-			if(tiles.get((playerLoc%width) - 1).getType() == 3){
+			if(tiles.get(playerLoc - 1).getType() == 3){
 				text.append("a small light shines through the darkness");
 			}
 		}
