@@ -24,7 +24,7 @@ td.label {
 .textbox {
 	width: 500px;
 	height: 400px;
-	border: 25px solid green;
+	border: 10px solid green;
 	padding: 25px;
 	margin: 25px;
 	overflow-x: visible;
