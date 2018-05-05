@@ -124,15 +124,32 @@ public class Map {
 			width = 20;
 			map = new Tile[height][width];
 			mapData = new int[height][width];
-
+			for(int i = 0; i < width; i++){
+				for(int j = 0; j < height; j++){
+					map[i][j] = new Tile();
+				}
+			}
 			mapData[0][0] = 1;
+			map[0][0].setDescription("The entrance. The doors have closed and wild growth prevents them from reopening.");
 			mapData[0][1] = 1;
+			map[0][1].setDescription("This area has several thick trees, the path is thin and the lighting is dim.");
 			mapData[0][2] = 1;
+			map[0][2].setDescription("This area has several thick trees, the path is thin and the lighting is dim. There is an opening to the south.");
 			mapData[0][3] = 1;
+			map[0][3].setDescription("You are in a large opening, large trees make a thick wall around the perimeter. "
+					+ "There is a path to the north that leads into the forest. "
+					+ "There is a short obelisk in front of the path, it's purpose is unknown.");
 			mapData[0][4] = 1;
+			map[0][4].setDescription("You are in a large opening, large trees make a thick wall around the perimeter.");
 			mapData[0][5] = 1;
+			map[0][5].setDescription("You are in a large opening, large trees make a thick wall around the perimeter. "
+					+ "To the south, there is a path leading through the trees. ");
 			mapData[0][6] = 1;
+			map[0][6].setDescription("This area is thick with trees and other growth. The vegetation dwarfs those that grow "
+					+ "deeper in the forest.");
 			mapData[0][7] = 1;
+			map[0][7].setDescription("This area is thick with trees and other growth. The vegetation dwarfs those that grow "
+					+ "deeper in the forest. an opening is seen ahead");
 			mapData[0][8] = 1;
 			mapData[0][9] = 1;
 			mapData[0][10] = 1;
@@ -315,13 +332,14 @@ public class Map {
 				for(int j = 0; j < width; j++){
 					if(mapData[i][j] != 1 && mapData[i][j] != 2){
 						mapData[i][j] = 0;
+						map[i][j].setDescription("This area has dangerous vegetation. There's nothing of interest here.");
 					}
 				}
 			}
 			Random rand = new Random();
 			for(int i = 0; i < height; i++){
 				for(int j = 0; j < width; j++){
-					map[i][j] = new Tile();
+					//map[i][j] = new Tile();
 					map[i][j].setType(mapData[i][j]);
 					map[i][j].setX(j);
 					map[i][j].setY(i);

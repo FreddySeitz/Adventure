@@ -121,7 +121,7 @@ public class GameServlet extends HttpServlet{
 					
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
 						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
@@ -191,7 +191,7 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
 						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
@@ -252,7 +252,7 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
 						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
@@ -311,7 +311,7 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
 						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
