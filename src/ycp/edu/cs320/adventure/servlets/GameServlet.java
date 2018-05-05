@@ -420,7 +420,8 @@ public class GameServlet extends HttpServlet{
 			}
 
 			// Player picks up item from tile 
-			else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up")) {
+			else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up") ||
+					input.equalsIgnoreCase("take")) {
 
 				// If tile has an item 
 				if(database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
@@ -467,10 +468,32 @@ public class GameServlet extends HttpServlet{
 			
 			// Player views the tiles around them
 			else if(input.equalsIgnoreCase("view area") || input.equalsIgnoreCase("scan") || 
-					input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")){
-				//return long descriptions of bordering tiles
-				database.addGameLog(game_id, "unimplemented.  TODO: FEED THE HAMSTERS!");
-				response = database.getGameLog(game_id);
+					input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")
+					|| input.equalsIgnoreCase("look around")){
+				
+				text.append("You observe your surroundings");
+				
+				//list items at the location
+				player = database.getPlayer(game_id);
+				List<Tile> tiles = database.getAllTiles(game_id);
+				int playerLoc = player.getLocation().getY() * map.getWidth() + player.getLocation().getX();
+				List<Item> items = database.getTileInventory(tiles.get(playerLoc).getTileId());
+				if(items.size() > 0){
+					if(items.size() > 1){
+						text.append("<br/>You spot some items:");
+					}
+					else{
+						text.append("<br/>you spot an item:");
+					}
+					for(Item item : items){
+						text.append("<br/>" + item.getName());
+					}
+				}
+				//data entry so player knows they looked around.
+				database.addGameLog(game_id, text.toString());
+				
+				//not adding whole description to game log, would be too wordy
+				response = engine.lookAround(player);
 			}
 			
 			// Player equips item

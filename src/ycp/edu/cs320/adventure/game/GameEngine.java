@@ -2,6 +2,7 @@ package ycp.edu.cs320.adventure.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -531,6 +532,112 @@ public class GameEngine {
 			}
 		}
 		return builder.toString();
+	}
+
+	public String lookAround(Player player){
+		StringBuilder text = new StringBuilder();
+		int width = currentGame.getMap().getWidth();
+		int height = currentGame.getMap().getHeight();
+
+		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
+		int playerLoc = player.getLocation().getY() * width + player.getLocation().getX();
+
+		//tile description
+		text.append(tiles.get(playerLoc).getDescription());
+		if(tiles.get(playerLoc).getType() == 2 && tiles.get(playerLoc).getActive() == false){
+			text.append("<br/>There appears to be a disabled trap here");
+		}
+		System.out.println("PLAYER LOCATION: " + playerLoc%width + "," + playerLoc/width);
+		//list items at the location
+		List<Item> items = database.getTileInventory(tiles.get(playerLoc).getTileId());
+		if(items.size() > 0){
+			if(items.size() > 1){
+				text.append("<br/><br/>A few items are scattered around:");
+			}
+			else{
+				text.append("<br/><br/>you spot an item nearby:");
+			}
+			for(Item item : items){
+				text.append("<br/>" + item.getName());
+			}
+		}
+
+		//describe adjacent tiles
+		text.append("<br/>");
+		text.append("<br/>To the North: ");
+		if((playerLoc/width) - 1 >= 0){
+			if(tiles.get((playerLoc/width) - 1).getType() == 0){
+				text.append("thick vegetation");
+			}
+			if(tiles.get((playerLoc/width) - 1).getType() == 1){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc/width) - 1).getType() == 2){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc/width) - 1).getType() == 3){
+				text.append("a small light shines through the darkness");
+			}
+		}
+		else{
+			text.append("an unpassable wall.");
+		}
+		text.append("<br/>To the East: ");
+		if((playerLoc%width) + 1 < width){
+			if(tiles.get((playerLoc%width) + 1).getType() == 0){
+				text.append("thick vegetation");
+			}
+			if(tiles.get((playerLoc%width) + 1).getType() == 1){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc%width) + 1).getType() == 2){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc%width) + 1).getType() == 3){
+				text.append("a small light shines through the darkness");
+			}
+		}
+		else{
+			text.append("an unpassable wall.");
+		}
+		text.append("<br/>To the South: ");
+		if((playerLoc/width) + 1 < height){
+			if(tiles.get((playerLoc/width) + 1).getType() == 0){
+				text.append("thick vegetation");
+			}
+			if(tiles.get((playerLoc/width) + 1).getType() == 1){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc/width) + 1).getType() == 2){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc/width) + 1).getType() == 3){
+				text.append("a small light shines through the darkness");
+			}
+		}
+		else{
+			text.append("an unpassable wall.");
+		}
+		text.append("<br/>To the West: ");
+		if((playerLoc%width) - 1 > 0){
+			if(tiles.get((playerLoc%width) - 1).getType() == 0){
+				text.append("thick vegetation");
+			}
+			if(tiles.get((playerLoc%width) - 1).getType() == 1){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc%width) - 1).getType() == 2){
+				text.append("open space");
+			}
+			if(tiles.get((playerLoc%width) - 1).getType() == 3){
+				text.append("a small light shines through the darkness");
+			}
+		}
+		else{
+			text.append("an unpassable wall.");
+		}
+
+		return text.toString();
 	}
 
 	// Updates the current Game object
