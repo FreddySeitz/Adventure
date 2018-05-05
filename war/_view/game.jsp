@@ -21,7 +21,7 @@
 			}
 			.textbox{
 				width: 500px;
-				height: 300px;
+				height: 400px;
    				border: 25px solid green;
     			padding: 25px;
     			margin: 25px;

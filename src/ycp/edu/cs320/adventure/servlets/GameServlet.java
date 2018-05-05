@@ -453,10 +453,12 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("exit")) {
 
 				// If player is on an exit tile
-				if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription().contains("exit")) {
+				player = database.getPlayer(game_id);
+				if(player.getLocation().getType() == 3) {
 					String exitMessage = "Congrats You Escaped! Final Score: ";
 					String finalScore = String.valueOf(database.getPlayer(game_id).getScore());
 					database.addGameLog(game_id, exitMessage.concat(finalScore));
+					response = database.getGameLog(game_id);
 					engine.endGame();
 				}
 				else {
