@@ -204,10 +204,10 @@ public class GameEngine {
 	// Called when a player chooses to pickup an item
 	public void dropItem(Actor actor, Item item) {
 		// Adds the item to the inventory of the tile the actor is located on
-//		actor.getLocation().addItem(item);
+		//		actor.getLocation().addItem(item);
 
 		// Removes the item from the actor's inventory
-//		actor.getInventory().removeFromInventory(item);
+		//		actor.getInventory().removeFromInventory(item);
 
 		// Updates the inventory of the actor in the database
 		if(actor instanceof Player) {
@@ -230,6 +230,40 @@ public class GameEngine {
 
 		// Updates database to reflect change in Player health
 		database.updatePlayerHealth(currentGame.getPlayer().getPlayerId(), currentGame.getPlayer().getHealth());
+	}
+
+	public boolean equipItem(String input, Actor actor){
+		String itemName = "";
+		for(int i = input.length()-1; i > 0; i--){
+			if(input.charAt(i) == ' '){
+				break;
+			}
+			else{
+				itemName = input.charAt(i) + itemName;
+			}
+		}
+		System.out.println(itemName);
+		if(actor instanceof Player) {
+			List<Item> items = database.getPlayerInventory(((Player) actor).getPlayerId());
+			for(Item item : items){
+				//if item exists in player's inventory
+				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+					database.updatePlayerEquippedItem(((Player) actor).getPlayerId(), item.getItemId());
+					return true;
+				}
+			}
+		}
+
+		//creatures immediately take damage
+		else if(actor instanceof Creature) {
+			List<Item> items = database.getCreatureInventory(((Creature)actor).getCreatureId());
+			for(Item item : items){	//adds item if it exists in inventory
+				database.updateCreatureEquippedItem(((Creature) actor).getCreatureId(), item.getItemId());
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	// Called when a creature attacks a player
@@ -423,9 +457,9 @@ public class GameEngine {
 		int width = database.getMap(currentGame.getGameId()).getWidth();
 		int height = database.getMap(currentGame.getGameId()).getHeight();
 		Random rand = new Random();
-		
+
 		int location = 0;
-		
+
 		for(Creature creature : creatures){
 			int direction[] = new int[0];	//1 = up, 2 = right, 3 = down, 4 = left, 5 = no motion
 			location = creature.getLocation().getY() * width + creature.getLocation().getX();
@@ -461,8 +495,8 @@ public class GameEngine {
 			}
 			direction = Arrays.copyOf(direction, direction.length+1);
 			direction[direction.length-1] = 5;
-			
-			
+
+
 			//randomly chooses an available space
 			int move = direction[rand.nextInt(direction.length)];
 			if(move == 1){	//up
@@ -484,7 +518,7 @@ public class GameEngine {
 			else if(move == 5){	//don't move
 
 			}
-			
+
 			//checks if walked on a trap
 			Tile tile = database.getCreature(creature.getCreatureId()).getLocation();
 			if(tile.getActive() == true){
@@ -492,7 +526,7 @@ public class GameEngine {
 			}
 		}
 	}
-	
+
 	public void deadCreatures(){
 		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
 		for(Creature creature : creatures){
@@ -502,7 +536,7 @@ public class GameEngine {
 				for(Item item : items){
 					dropItem(creature, item);
 				}
-				
+
 				database.removeCreature(creature.getCreatureId());
 			}
 		}

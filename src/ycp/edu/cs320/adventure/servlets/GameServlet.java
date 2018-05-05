@@ -486,10 +486,24 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			// Player equips item
-			else if(input.equalsIgnoreCase("equip ") || input.equalsIgnoreCase("hold ")){
-				StringBuilder itemName = new StringBuilder();
+			else if(input.toLowerCase().contains("equip ") || input.toLowerCase().contains("hold ")){
+				boolean validation = engine.equipItem(input, database.getPlayer(game_id));
+				System.out.println(validation);
+				if(validation == true){
+					text.append("Item was equipped.");
+				}
+				else if(validation == false){
+					text.append("Item was not found in inventory.");
+				}
 				
+				database.addGameLog(game_id, text.toString());
+
+				response = database.getGameLog(game_id);
 			}
+			
+			//unequip
+			
+			//drop item
 
 			// Player enters unknown command
 			else {
@@ -505,7 +519,10 @@ public class GameServlet extends HttpServlet{
 			//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
 			//}
 		}
-
+		//an attempt to make gamelog show up at start of game
+		if(response.length() == 0){
+			response = database.getGameLog(game_id);
+		}
 		req.setAttribute("response",  response);
 
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
