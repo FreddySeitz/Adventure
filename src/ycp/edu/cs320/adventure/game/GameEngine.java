@@ -78,7 +78,8 @@ public class GameEngine {
 		map.buildDefault();
 
 		// Initialize game logs
-		database.addGameLog(gameId, " ");
+		database.addGameLog(gameId, "You enter the fabled \"Greed's Hunt\" in search for treasure."
+				+ "<br/>Darkness swallows you as you begin your adventure.");
 
 		// Add all Tiles in Map to database
 		Tile tile = new Tile();
@@ -166,15 +167,15 @@ public class GameEngine {
 
 	// Moves the player based on command
 	public void movePlayer(int X, int Y) {
-		// Changes the player's location
-		currentGame.getPlayer().setLocation(currentGame.getMap().getTile(X, Y));
-
+		// Getting player from database
+		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
+		
 		// Updates the player's location in the database
 		database.updatePlayerX(currentGame.getPlayer().getPlayerId(), X);
 		database.updatePlayerY(currentGame.getPlayer().getPlayerId(), Y);
 
-		// Need to get player from database after Tile location is updated
-		currentGame.setPlayer(database.getPlayer(currentGame.getGameId()));
+		// Changes the player's location
+		currentGame.getPlayer().setLocation(currentGame.getMap().getTile(X, Y));
 
 		// Update the game when the player moves
 		update();
@@ -285,14 +286,13 @@ public class GameEngine {
 	}
 
 	public void blankSpaceDamage(Actor actor) {
-		actor.setHealth(actor.getHealth() - 5);
 		if(actor instanceof Player) {
 			database.updatePlayerHealth(((Player) actor).getPlayerId(), actor.getHealth()-5);
 		}
 		else if(actor instanceof Creature) {
 			database.updateCreatureHealth(((Creature) actor).getCreatureId(), actor.getHealth()-5);
 		}
-
+		actor.setHealth(actor.getHealth() - 5);
 	}
 
 	public void promptTrap(Actor actor, Tile tile, String input, StringBuilder text) {

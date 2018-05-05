@@ -22,15 +22,7 @@ public class GameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doGet");
 		
-		DerbyDatabase database = new DerbyDatabase();
-		
-		int game_id = (int)req.getSession(false).getAttribute("game_id");
-		String response = database.getGameLog(game_id);
-		req.setAttribute("response",  response);
-
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
-		
-		req.setAttribute("userInput", "test");
 	}
 
 	@Override
@@ -130,7 +122,7 @@ public class GameServlet extends HttpServlet{
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
 						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -200,7 +192,7 @@ public class GameServlet extends HttpServlet{
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
 						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -261,7 +253,7 @@ public class GameServlet extends HttpServlet{
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
 						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -320,7 +312,7 @@ public class GameServlet extends HttpServlet{
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
 						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -410,7 +402,7 @@ public class GameServlet extends HttpServlet{
 			}
 
 			// Player views their inventory
-			else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory")) {
+			else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory") || input.equalsIgnoreCase("inv")) {
 				// If inventory is NOT empty
 				List<Item> inventory = database.getPlayerInventory(database.getPlayer(game_id).getPlayerId());
 				if(inventory.size() > 0){
@@ -442,7 +434,7 @@ public class GameServlet extends HttpServlet{
 			else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up")) {
 
 				// If tile has an item 
-				if(database.getTileInventory(map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
+				if(database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
 					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
 
 					database.addGameLog(game_id, "You found an item! View inventory to see it.");
