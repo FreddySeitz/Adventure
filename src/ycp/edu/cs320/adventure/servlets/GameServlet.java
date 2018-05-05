@@ -21,14 +21,21 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Game Servlet: doGet");
+		
+		DerbyDatabase database = new DerbyDatabase();
+		
+		int game_id = (int)req.getSession(false).getAttribute("game_id");
+		String response = database.getGameLog(game_id);
+		req.setAttribute("response",  response);
 
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
+		
+		req.setAttribute("userInput", "test");
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
 		// Necessary objects & game setup
 
 		// gets account_id of the account that was signed in from the index servlet 
@@ -87,7 +94,7 @@ public class GameServlet extends HttpServlet{
 
 		//********** Play Game Below **********
 
-		System.out.println(game_id);
+		System.out.println("GAME ID : " + game_id);
 		/* Handling user input */
 	
 		//location before movement from this turn, used for traps
@@ -502,6 +509,21 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			//unequip
+			else if(input.equalsIgnoreCase("unequip") || input.equalsIgnoreCase("take off") || 
+					input.equalsIgnoreCase("unhand") || input.equalsIgnoreCase("put away")){
+				player = database.getPlayer(game_id);
+				//if an item is equipped
+				if(player.getEquippedItem().getItemId() != 0){
+					database.updatePlayerEquippedItem(player.getPlayerId(), 0);
+					text.append("The item has been unequipped.");
+				}
+				else{	//if no item is equipped
+					text.append("You are not holding an item.");
+				}
+				
+				database.addGameLog(game_id, text.toString());
+				response = database.getGameLog(game_id);
+			}
 			
 			//drop item
 

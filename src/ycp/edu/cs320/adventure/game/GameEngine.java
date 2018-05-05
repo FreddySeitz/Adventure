@@ -375,7 +375,6 @@ public class GameEngine {
 
 		Tile playerTile = database.getPlayer(currentGame.getGameId()).getLocation();
 		int playerLoc = (playerTile.getY() * currentGame.getMap().getWidth()) + playerTile.getX();
-
 		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
 
 		for(int i = 0; i < tiles.size(); i++){

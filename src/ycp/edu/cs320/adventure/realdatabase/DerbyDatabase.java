@@ -2906,6 +2906,9 @@ public class DerbyDatabase implements IDatabase{
 		if(item_id > 0){	//if item exists
 			player.setEquippedItem(getItem(item_id));
 		}
+		else{
+			player.setEquippedItem(player.equipBlankItem());
+		}
 		player.setHealth(resultSet.getInt(index++));
 		player.setLocation(getTile(player.getGameId(), resultSet.getInt(index++), resultSet.getInt(index++)));
 		player.setBaseDamage(resultSet.getInt(index++));
