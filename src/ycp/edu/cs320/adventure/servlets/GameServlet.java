@@ -80,7 +80,7 @@ public class GameServlet extends HttpServlet{
 
 		//List<Integer> game_ids = database.getGames((int)account_id);
 		int game_id = (int)req.getSession(false).getAttribute("game_id");
-
+		engine.getGame().setGameId(game_id);
 		//int player_id = database.getPlayer(game_id).getPlayerId();
 
 		//Tile nextMove = new Tile(); 
@@ -151,6 +151,8 @@ public class GameServlet extends HttpServlet{
 							database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
 						}
 					}
+					
+					engine.update();
 
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -219,6 +221,8 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
+					engine.update();
+					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
 				}
@@ -278,6 +282,8 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
+					engine.update();
+					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
 				}
@@ -335,6 +341,8 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
+					engine.update();
+					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
 				}
@@ -447,7 +455,7 @@ public class GameServlet extends HttpServlet{
 				// If player is on an exit tile
 				if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getDescription().contains("exit")) {
 					String exitMessage = "Congrats You Escaped! Final Score: ";
-					String finalScore = String.valueOf(player.getScore());
+					String finalScore = String.valueOf(database.getPlayer(game_id).getScore());
 					database.addGameLog(game_id, exitMessage.concat(finalScore));
 					engine.endGame();
 				}
@@ -479,9 +487,9 @@ public class GameServlet extends HttpServlet{
 
 				response = database.getGameLog(game_id);
 			}
-
+			
 			/* Checking for environment conditions */
-
+			
 			// If player steps on trap
 			//if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
 			//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());

@@ -1,6 +1,7 @@
 package ycp.edu.cs320.adventure.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -47,10 +48,11 @@ public class GameEngine {
 
 		// Checks if the player's score is high enough and that they are on
 		// the exit tile
-		if(currentGame.getPlayer().getScore() == 500 &&
-				currentGame.getPlayer().getLocation().getType() == 3) {
-			return true;
-		}
+		//		if(currentGame.getPlayer().getScore() == 500 &&
+		//				currentGame.getPlayer().getLocation().getType() == 3) {
+		//			return true;
+		//		}
+		//there is a command to exit
 
 		return false;
 	}
@@ -74,7 +76,7 @@ public class GameEngine {
 
 		// Build map
 		map.buildDefault();
-		
+
 		// Initialize game logs
 		database.addGameLog(gameId, " ");
 
@@ -108,9 +110,15 @@ public class GameEngine {
 			creature.setMovementSpeed(i);
 
 			// Generates random X and Y locations for Creature's starting Tile
-			newX = (int)(Math.random() * map.getWidth()-1);
-			newY = (int)(Math.random() * map.getHeight()-1);
-			creature.setLocation(map.getTile(newX, newY));
+			while(true){
+				newX = (int)(Math.random() * map.getWidth()-1);
+				newY = (int)(Math.random() * map.getHeight()-1);
+				if(map.getTile(newX, newY).getType() == 1 || map.getTile(newX, newY).getType() == 2 ||
+						map.getTile(newX, newY).getType() == 3){
+					creature.setLocation(map.getTile(newX, newY));
+					break;
+				}
+			}
 
 			// Update database to contain creature
 			creatureId = database.createCreature(gameId, 0, creature.getHealth(), newX, newY, i, i);
@@ -196,14 +204,16 @@ public class GameEngine {
 	// Called when a player chooses to pickup an item
 	public void dropItem(Actor actor, Item item) {
 		// Adds the item to the inventory of the tile the actor is located on
-		actor.getLocation().addItem(item);
+//		actor.getLocation().addItem(item);
 
 		// Removes the item from the actor's inventory
-		actor.getInventory().removeFromInventory(item);
+//		actor.getInventory().removeFromInventory(item);
 
 		// Updates the inventory of the actor in the database
 		if(actor instanceof Player) {
 			database.removeFromPlayerInventory(((Player) actor).getPlayerId(), item.getItemId());
+			//modifies score
+			database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() - item.getValue());
 		}
 		else if(actor instanceof Creature) {
 			database.removeFromCreatureInventory(((Creature) actor).getCreatureId(), item.getItemId());
@@ -239,7 +249,7 @@ public class GameEngine {
 		// Updates the database to show change in creature health
 		database.updatePlayerHealth(creature.getCreatureId(), creature.getHealth());
 	}
-	
+
 	public void blankSpaceDamage(Actor actor) {
 		actor.setHealth(actor.getHealth() - 5);
 		if(actor instanceof Player) {
@@ -248,9 +258,9 @@ public class GameEngine {
 		else if(actor instanceof Creature) {
 			database.updateCreatureHealth(((Creature) actor).getCreatureId(), actor.getHealth()-5);
 		}
-		
+
 	}
-	
+
 	public void promptTrap(Actor actor, Tile tile, String input, StringBuilder text) {
 		if(actor instanceof Player) {
 			//check answer
@@ -268,7 +278,7 @@ public class GameEngine {
 			//setting prompt to false, will allow player to move
 			database.updateTilePrompt(false, tile.getTileId());
 		}
-		
+
 		//creatures immediately take damage
 		else if(actor instanceof Creature) {
 			database.updateCreatureHealth(((Creature) actor).getCreatureId(), actor.getHealth() - actor.getLocation().getDamage());
@@ -328,14 +338,29 @@ public class GameEngine {
 		//getting tiles from database
 		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
 		int width = currentGame.getMap().getWidth();
+
 		Tile playerTile = database.getPlayer(currentGame.getGameId()).getLocation();
 		int playerLoc = (playerTile.getY() * currentGame.getMap().getWidth()) + playerTile.getX();
-		System.out.println(playerTile.getX() + " " + playerTile.getY() + " " + playerLoc);
+
+		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
+
 		for(int i = 0; i < tiles.size(); i++){
 			if(tiles.get(i).getVisible() == true){
 				//int type = currentGame.getMap().getTile(i%width, i/width).getType();
+				boolean toggle = true;
+				for(Creature creature : creatures){
+					if(i == creature.getLocation().getY() * width + creature.getLocation().getX()){	//location of a creature
+						builder.append("6 ");
+						toggle = false;
+						break;
+					}
+				}
+
 				int type = tiles.get(i).getType();
-				if(i == playerLoc){	//location of the player
+				if(toggle == false){
+					//if false do nothing, a creature is present
+				}
+				else if(i == playerLoc){	//location of the player
 					//builder.append('y');
 					//builder.append('$');
 					builder.append("4 ");
@@ -383,12 +408,103 @@ public class GameEngine {
 	// Updates the current Game object
 	public void update() {
 		// Update creature location
-		//moveCreatures();
-
+		moveCreatures();
+		deadCreatures();
 		// Check for end game conditions
 		if(checkEndGame()) {
 			// Ask user if they would like to end game
 			// Call endGame if yes
+		}
+	}
+
+	public void moveCreatures(){
+		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
+		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
+		int width = database.getMap(currentGame.getGameId()).getWidth();
+		int height = database.getMap(currentGame.getGameId()).getHeight();
+		Random rand = new Random();
+		
+		int location = 0;
+		
+		for(Creature creature : creatures){
+			int direction[] = new int[0];	//1 = up, 2 = right, 3 = down, 4 = left, 5 = no motion
+			location = creature.getLocation().getY() * width + creature.getLocation().getX();
+
+			//checking for all available spaces
+			//space above
+			if(creature.getLocation().getY() - 1 > 0){
+				if(tiles.get(location - width).getType() == 1){
+					direction = Arrays.copyOf(direction, direction.length+1);
+					direction[direction.length-1] = 1;
+				}
+			}
+			//space to right
+			if(creature.getLocation().getX() + 1 < width){
+				if(tiles.get(location + 1).getType() == 1){
+					direction = Arrays.copyOf(direction, direction.length+1);
+					direction[direction.length-1] = 2;
+				}
+			}
+			//space below
+			if(creature.getLocation().getY() + 1 < height){
+				if(tiles.get(location + width).getType() == 1){
+					direction = Arrays.copyOf(direction, direction.length+1);
+					direction[direction.length-1] = 3;
+				}
+			}
+			//space to left
+			if(creature.getLocation().getX() - 1 >= 0){
+				if(tiles.get(location - 1).getType() == 1){
+					direction = Arrays.copyOf(direction, direction.length+1);
+					direction[direction.length-1] = 4;
+				}
+			}
+			direction = Arrays.copyOf(direction, direction.length+1);
+			direction[direction.length-1] = 5;
+			
+			
+			//randomly chooses an available space
+			int move = direction[rand.nextInt(direction.length)];
+			if(move == 1){	//up
+				database.updateCreatureY(creature.getCreatureId(), creature.getLocation().getY() - 1);
+			}
+
+			else if(move == 2){	//right
+				database.updateCreatureX(creature.getCreatureId(), creature.getLocation().getX() + 1);
+			}
+
+			else if(move == 3){	//down
+				database.updateCreatureY(creature.getCreatureId(), creature.getLocation().getY() + 1);
+			}
+
+			else if(move == 4){	//left
+				database.updateCreatureX(creature.getCreatureId(), creature.getLocation().getX() - 1);
+			}
+
+			else if(move == 5){	//don't move
+
+			}
+			
+			//checks if walked on a trap
+			Tile tile = database.getCreature(creature.getCreatureId()).getLocation();
+			if(tile.getActive() == true){
+				promptTrap(creature, tile, null, null);
+			}
+		}
+	}
+	
+	public void deadCreatures(){
+		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
+		for(Creature creature : creatures){
+			//if a creature has died
+			if(creature.getHealth() <= 0){
+				List<Item> items = database.getCreatureInventory(creature.getCreatureId());
+				for(Item item : items){
+					dropItem(creature, item);
+				}
+				
+				database.removeCreature(creature.getCreatureId());
+			}
 		}
 	}
 

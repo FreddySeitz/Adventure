@@ -339,5 +339,8 @@ public class Map {
 			map[0][1].setVisible(true);
 			map[1][0].setVisible(true);
 			map[1][1].setVisible(true);
+			
+			//exit
+			map[15][17].setType(3);
 		}
 }
