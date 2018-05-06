@@ -151,7 +151,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 					
-					engine.update();
+					text.append(engine.update());
 
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -220,7 +220,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -281,7 +281,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -340,7 +340,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -553,6 +553,16 @@ public class GameServlet extends HttpServlet{
 
 				response = database.getGameLog(game_id);
 			}
+			
+			//the player does nothing, but the rest of the map continues
+			else if(input.equalsIgnoreCase("wait") || input.equalsIgnoreCase("do nothing")){
+				
+				text.append("You wait");
+				text.append(engine.update());
+				database.addGameLog(game_id, text.toString());
+
+				response = database.getGameLog(game_id);
+			}
 
 			// Player enters unknown command
 			else {
@@ -561,12 +571,8 @@ public class GameServlet extends HttpServlet{
 				response = database.getGameLog(game_id);
 			}
 			
-			/* Checking for environment conditions */
+			//check if player has died (do after all other actions of this turn)
 			
-			// If player steps on trap
-			//if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
-			//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
-			//}
 		}
 		//an attempt to make gamelog show up at start of game
 		if(response.length() == 0){

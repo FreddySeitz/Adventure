@@ -104,12 +104,12 @@ public class GameEngine {
 
 		// Add creatures to list of creatures
 		for(int i=1; i<3; i++) {
-			creature = new Creature(i);
-			creature.setBaseDamage(i);
+			creature = new Creature();
+			creature.setBaseDamage(8);
 			creature.setGameId(gameId);
-			creature.setHealth(100);
+			creature.setHealth(75);
 			creature.setInventory(new Inventory());
-			creature.setMovementSpeed(i);
+			creature.setMovementSpeed(1);
 
 			// Generates random X and Y locations for Creature's starting Tile
 			while(true){
@@ -376,36 +376,36 @@ public class GameEngine {
 			}
 		}
 		if(database.getTileInventory(database.getTile(currentGame.getGameId(), actor.getLocation().getX(), actor.getLocation().getY()).getTileId()).size() > 0){
-		if(actor instanceof Player){
-			Tile tile = database.getTile(currentGame.getGameId(), ((Player)actor).getLocation().getX(), ((Player)actor).getLocation().getY());
-			List<Item> items = database.getTileInventory(tile.getTileId());
-			for(Item item : items){
-				//if item exists in player's inventory
-				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
-					database.addToPlayerInventory(((Player)actor).getPlayerId(), item.getItemId());
-					database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
-					database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() + item.getValue());
-					return "You took a " + itemName.toLowerCase();
+			if(actor instanceof Player){
+				Tile tile = database.getTile(currentGame.getGameId(), ((Player)actor).getLocation().getX(), ((Player)actor).getLocation().getY());
+				List<Item> items = database.getTileInventory(tile.getTileId());
+				for(Item item : items){
+					//if item exists in player's inventory
+					if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+						database.addToPlayerInventory(((Player)actor).getPlayerId(), item.getItemId());
+						database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
+						database.updatePlayerScore(((Player) actor).getPlayerId(), ((Player) actor).getScore() + item.getValue());
+						return "You took a " + itemName.toLowerCase();
+					}
 				}
+				return "You cannot obtain a " + itemName + " from your surroundings";
 			}
-			return "You cannot obtain a " + itemName + " from your surroundings";
-		}
-		else if(actor instanceof Creature){
-			Tile tile = database.getTile(currentGame.getGameId(), ((Creature)actor).getLocation().getX(), ((Creature)actor).getLocation().getY());
-			List<Item> items = database.getTileInventory(tile.getTileId());
-			for(Item item : items){
-				//if item exists in player's inventory
-				if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
-					database.addToCreatureInventory(((Creature)actor).getCreatureId(), item.getItemId());
-					database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
-					return "You took a " + itemName.toLowerCase();
+			else if(actor instanceof Creature){
+				Tile tile = database.getTile(currentGame.getGameId(), ((Creature)actor).getLocation().getX(), ((Creature)actor).getLocation().getY());
+				List<Item> items = database.getTileInventory(tile.getTileId());
+				for(Item item : items){
+					//if item exists in player's inventory
+					if(itemName.toLowerCase().equals(item.getName().toLowerCase())){
+						database.addToCreatureInventory(((Creature)actor).getCreatureId(), item.getItemId());
+						database.removeFromTileInventory(tile.getTileId(), item.getInventoryId());
+						return "You took a " + itemName.toLowerCase();
+					}
 				}
+				return "You cannot obtain a " + itemName + " from your surroundings";
 			}
-			return "You cannot obtain a " + itemName + " from your surroundings";
-		}
-		
-		//null actor I guess
-		return "";
+
+			//null actor I guess
+			return "";
 		}
 		else{
 			return "You cannot obtain a " + itemName + " from your surroundings";
@@ -428,6 +428,31 @@ public class GameEngine {
 
 		// Updates the database to show change in creature health
 		database.updatePlayerHealth(creature.getCreatureId(), creature.getHealth());
+	}
+
+	// Called to determine if player and creature attack each other
+	public String battle(){
+		Player player = database.getPlayer(currentGame.getGameId());
+		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
+		StringBuilder text = new StringBuilder();
+
+		for(Creature creature : creatures){
+			//if on same square
+			if(player.getLocation().getX() == creature.getLocation().getX() && 
+					player.getLocation().getY() == creature.getLocation().getY()){
+				//damage each other
+				database.updatePlayerHealth(player.getPlayerId(), player.getHealth() - (creature.getBaseDamage() + creature.getEquippedItem().getDamage()));
+				database.updateCreatureHealth(creature.getCreatureId(), creature.getHealth() - (player.getBaseDamage() + player.getEquippedItem().getDamage()));
+				System.out.print("CREATURE HEALTH: " + database.getCreature(creature.getCreatureId()).getHealth());
+				//reset player since hp changed
+				player = database.getPlayer(currentGame.getGameId());
+				text.append("<br/>You fight a creature!<br/>");
+				text.append("You hit for " + (player.getBaseDamage() + player.getEquippedItem().getDamage()) + " damage<br/>");
+				text.append("The creature hit you for " + (creature.getBaseDamage() + creature.getEquippedItem().getDamage()) + " damage<br/>");
+			}
+		}
+
+		return text.toString();
 	}
 
 	public void blankSpaceDamage(Actor actor) {
@@ -596,7 +621,6 @@ public class GameEngine {
 		if(tiles.get(playerLoc).getType() == 2 && tiles.get(playerLoc).getActive() == false){
 			text.append("<br/>There appears to be a disabled trap here");
 		}
-		System.out.println("PLAYER LOCATION: " + playerLoc%width + "," + playerLoc/width);
 		//list items at the location
 		List<Item> items = database.getTileInventory(tiles.get(playerLoc).getTileId());
 		if(items.size() > 0){
@@ -616,13 +640,16 @@ public class GameEngine {
 		text.append("<br/>To the North: ");
 		if((playerLoc/width) - 1 >= 0){
 			if(tiles.get(playerLoc - width).getType() == 0){
-				text.append("thick vegetation");
+				text.append("dangerous vegetation");
 			}
 			if(tiles.get(playerLoc - width).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get(playerLoc - width).getType() == 2){
+			if(tiles.get(playerLoc - width).getType() == 2 && tiles.get(playerLoc - width).getHidden() == true){
 				text.append("open space");
+			}
+			else if(tiles.get(playerLoc - width).getType() == 2){
+				text.append("a dangerous trap");
 			}
 			if(tiles.get(playerLoc - width).getType() == 3){
 				text.append("a small light shines through the darkness");
@@ -634,13 +661,16 @@ public class GameEngine {
 		text.append("<br/>To the East: ");
 		if((playerLoc%width) + 1 < width){
 			if(tiles.get(playerLoc + 1).getType() == 0){
-				text.append("thick vegetation");
+				text.append("dangerous vegetation");
 			}
 			if(tiles.get(playerLoc + 1).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get(playerLoc + 1).getType() == 2){
+			if(tiles.get(playerLoc + 1).getType() == 2 && tiles.get(playerLoc + 1).getHidden() == true){
 				text.append("open space");
+			}
+			else if(tiles.get(playerLoc + 1).getType() == 2){
+				text.append("a dangerous trap");
 			}
 			if(tiles.get(playerLoc + 1).getType() == 3){
 				text.append("a small light shines through the darkness");
@@ -652,13 +682,16 @@ public class GameEngine {
 		text.append("<br/>To the South: ");
 		if((playerLoc/width) + 1 < height){
 			if(tiles.get(playerLoc + width).getType() == 0){
-				text.append("thick vegetation");
+				text.append("dangerous vegetation");
 			}
 			if(tiles.get(playerLoc + width).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get(playerLoc + width).getType() == 2){
+			if(tiles.get(playerLoc + width).getType() == 2 && tiles.get(playerLoc + width).getHidden() == true){
 				text.append("open space");
+			}
+			else if(tiles.get(playerLoc + width).getType() == 2){
+				text.append("a dangerous trap");
 			}
 			if(tiles.get(playerLoc + width).getType() == 3){
 				text.append("a small light shines through the darkness");
@@ -668,15 +701,18 @@ public class GameEngine {
 			text.append("an unpassable wall.");
 		}
 		text.append("<br/>To the West: ");
-		if((playerLoc%width) - 1 > 0){
+		if((playerLoc%width) - 1 >= 0){
 			if(tiles.get(playerLoc - 1).getType() == 0){
-				text.append("thick vegetation");
+				text.append("dangerous vegetation");
 			}
 			if(tiles.get(playerLoc - 1).getType() == 1){
 				text.append("open space");
 			}
-			if(tiles.get(playerLoc - 1).getType() == 2){
+			if(tiles.get(playerLoc - 1).getType() == 2 && tiles.get(playerLoc - 1).getHidden() == true){
 				text.append("open space");
+			}
+			else if(tiles.get(playerLoc - 1).getType() == 2){
+				text.append("a dangerous trap");
 			}
 			if(tiles.get(playerLoc - 1).getType() == 3){
 				text.append("a small light shines through the darkness");
@@ -690,61 +726,109 @@ public class GameEngine {
 	}
 
 	// Updates the current Game object
-	public void update() {
+	public String update() {
+		StringBuilder text = new StringBuilder();
 		// Update creature location
-		moveCreatures();
-		deadCreatures();
+		text.append(moveCreatures());
+		//if they are on same tile
+		text.append(battle());
+		//if any creatures run out of health at end of turn
+		text.append(deadCreatures());
+
 		// Check for end game conditions
 		if(checkEndGame()) {
 			// Ask user if they would like to end game
 			// Call endGame if yes
 		}
+
+		return text.toString();
 	}
 
-	public void moveCreatures(){
+	public String moveCreatures(){
 		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
 		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
 		int width = database.getMap(currentGame.getGameId()).getWidth();
 		int height = database.getMap(currentGame.getGameId()).getHeight();
 		Random rand = new Random();
+		
+		Player player = database.getPlayer(currentGame.getGameId());
+		int playerX = player.getLocation().getX();
+		int playerY = player.getLocation().getY();
+
+		StringBuilder text = new StringBuilder();
 
 		int location = 0;
-
 		for(Creature creature : creatures){
+			int creatureX = creature.getLocation().getX();
+			int creatureY = creature.getLocation().getY();
 			int direction[] = new int[0];	//1 = up, 2 = right, 3 = down, 4 = left, 5 = no motion
 			location = creature.getLocation().getY() * width + creature.getLocation().getX();
 
-			//checking for all available spaces
-			//space above
-			if(creature.getLocation().getY() - 1 > 0){
-				if(tiles.get(location - width).getType() == 1){
-					direction = Arrays.copyOf(direction, direction.length+1);
-					direction[direction.length-1] = 1;
-				}
+			//if the player is next to the creature
+			//above creature
+			if(creatureY-1 == playerY && creatureX == playerX && player.getLocation().getType() != 0){
+				text.append("<br/>A creature chases you!");
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 1;
 			}
-			//space to right
-			if(creature.getLocation().getX() + 1 < width){
-				if(tiles.get(location + 1).getType() == 1){
-					direction = Arrays.copyOf(direction, direction.length+1);
-					direction[direction.length-1] = 2;
-				}
+			//right of creature
+			else if(creatureX+1 == playerX && creatureY == playerY && player.getLocation().getType() != 0){
+				text.append("<br/>A creature chases you!");
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 2;
 			}
-			//space below
-			if(creature.getLocation().getY() + 1 < height){
-				if(tiles.get(location + width).getType() == 1){
-					direction = Arrays.copyOf(direction, direction.length+1);
-					direction[direction.length-1] = 3;
-				}
+			//below creature
+			else if(creatureY+1 == playerY && creatureX == playerX && player.getLocation().getType() != 0){
+				text.append("<br/>A creature chases you!");
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 3;
 			}
-			//space to left
-			if(creature.getLocation().getX() - 1 >= 0){
-				if(tiles.get(location - 1).getType() == 1){
-					direction = Arrays.copyOf(direction, direction.length+1);
-					direction[direction.length-1] = 4;
-				}
+			//left of creature
+			else if(creatureX-1 == playerX && creatureY == playerY && player.getLocation().getType() != 0){
+				text.append("<br/>A creature chases you!");
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 4;
 			}
-			direction = Arrays.copyOf(direction, direction.length+1);
-			direction[direction.length-1] = 5;
+			//on creature
+			else if(creatureY == playerY && creatureX == playerX){
+				text.append("<br/>A creature chases you!");
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 5;
+			}
+			//if not next to player, or player is on a 0 tile.
+			else{
+				//checking for all available spaces
+				//space above
+				if(creature.getLocation().getY() - 1 > 0){
+					if(tiles.get(location - width).getType() == 1){
+						direction = Arrays.copyOf(direction, direction.length+1);
+						direction[direction.length-1] = 1;
+					}
+				}
+				//space to right
+				if(creature.getLocation().getX() + 1 < width){
+					if(tiles.get(location + 1).getType() == 1){
+						direction = Arrays.copyOf(direction, direction.length+1);
+						direction[direction.length-1] = 2;
+					}
+				}
+				//space below
+				if(creature.getLocation().getY() + 1 < height){
+					if(tiles.get(location + width).getType() == 1){
+						direction = Arrays.copyOf(direction, direction.length+1);
+						direction[direction.length-1] = 3;
+					}
+				}
+				//space to left
+				if(creature.getLocation().getX() - 1 >= 0){
+					if(tiles.get(location - 1).getType() == 1){
+						direction = Arrays.copyOf(direction, direction.length+1);
+						direction[direction.length-1] = 4;
+					}
+				}
+				direction = Arrays.copyOf(direction, direction.length+1);
+				direction[direction.length-1] = 5;
+			}
 
 
 			//randomly chooses an available space
@@ -775,10 +859,13 @@ public class GameEngine {
 				promptTrap(creature, tile, null, null);
 			}
 		}
+		
+		return text.toString();
 	}
 
-	public void deadCreatures(){
+	public String deadCreatures(){
 		List<Creature> creatures = database.getAllCreatures(currentGame.getGameId());
+		StringBuilder text = new StringBuilder();
 		for(Creature creature : creatures){
 			//if a creature has died
 			if(creature.getHealth() <= 0){
@@ -786,10 +873,15 @@ public class GameEngine {
 				for(Item item : items){
 					dropItem(creature, item);
 				}
-
+				Player player = database.getPlayer(currentGame.getGameId());
+				database.updatePlayerScore(player.getPlayerId(), player.getScore() + 100);
 				database.removeCreature(creature.getCreatureId());
+
+				text.append("<br/>A deep thump echoes through the map.  A creature falls, defeated.");
 			}
 		}
+
+		return text.toString();
 	}
 
 	// Creates a new item given an item ID
