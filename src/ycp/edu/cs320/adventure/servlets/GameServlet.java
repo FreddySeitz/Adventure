@@ -154,8 +154,6 @@ public class GameServlet extends HttpServlet{
 							database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY+1).getTileId());
 						}
 					}
-					
-					text.append(engine.update());
 
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -223,8 +221,6 @@ public class GameServlet extends HttpServlet{
 							database.updateTileVisible(true, database.getTile(game_id, newX-1, (int)req.getSession(false).getAttribute("playerY")+1).getTileId());
 						}
 					}
-
-					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -284,8 +280,6 @@ public class GameServlet extends HttpServlet{
 							database.updateTileVisible(true, database.getTile(game_id, newX+1, (int)req.getSession(false).getAttribute("playerY")+1).getTileId());
 						}
 					}
-
-					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -343,8 +337,6 @@ public class GameServlet extends HttpServlet{
 							database.updateTileVisible(true, database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX")+1, newY-1).getTileId());
 						}
 					}
-
-					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);

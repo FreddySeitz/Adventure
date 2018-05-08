@@ -622,6 +622,7 @@ public class GameEngine {
 			text.append("<br/>There appears to be a disabled trap here");
 		}
 		//list items at the location
+		playerLoc = player.getLocation().getY() * width + player.getLocation().getX();
 		List<Item> items = database.getTileInventory(tiles.get(playerLoc).getTileId());
 		if(items.size() > 0){
 			if(items.size() > 1){
