@@ -61,7 +61,7 @@ public class IndexServlet extends HttpServlet {
         	id = database.getAccount(username);    	
         	ses = req.getSession(true);
         	ses.setAttribute("id",id);
-        	resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
+        	resp.sendRedirect(req.getContextPath() + "/titleScreen");
         	return;
         }
         
