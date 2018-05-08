@@ -117,7 +117,7 @@ public class LoadGameServlet extends HttpServlet{
 
 			ses = req.getSession(true);
 
-			resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
+			resp.sendRedirect(req.getContextPath() + "/game");
 			return; 
 
 		}
