@@ -7,6 +7,14 @@
 <title>Play Adventure</title>
 
 <style type="text/css">
+html { 
+  		background: url(_view/game_background.png) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+		}
+
 .error {
 	color: red;
 }
@@ -29,6 +37,7 @@ td.label {
 	margin: 25px;
 	overflow-x: visible;
 	overflow-y: scroll;
+	background: white;
 }
 
 .success {

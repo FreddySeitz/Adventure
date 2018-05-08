@@ -6,6 +6,14 @@
 	<head>
 		<title>Adventure - Sign In</title>
 		<style type="text/css">
+		html { 
+  		background: url(_view/game_background.png) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+		}
+		
 		.error {
 			color: red;
 		}
@@ -42,7 +50,7 @@
 		<!--<form action="${pageContext.servletContext.contextPath}/game" method="get">-->
     		<input type="submit" name="button" value="New Game" />
 		<!--</form>-->
-		<!--<form action="${pageContext.servletContext.contextPath}/editGame" method="get">-->
+		<!--<form action="${pageContext.servletContext.contextPath}/editGame" method="get">
     		<input type="submit" name="button" value="Edit Game" />
     	<!--</form>-->
 	</form>

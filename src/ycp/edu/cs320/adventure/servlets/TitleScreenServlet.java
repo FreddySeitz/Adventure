@@ -61,7 +61,7 @@ public class TitleScreenServlet extends HttpServlet{
 	        	Player player = engine.getGame().getPlayer();
 	        	ses.setAttribute("player", player);
 	        	
-	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
+	          	resp.sendRedirect(req.getContextPath() + "/game");
 	            return; 
 	        } 
 	        
@@ -75,7 +75,7 @@ public class TitleScreenServlet extends HttpServlet{
 	        else if (button.equals("Load Game")){
 	        	ses = req.getSession(true);
 	        	ses.setAttribute("id",(int)account_id);
-	          	resp.sendRedirect(req.getContextPath() + "/_view/loadGame.jsp");
+	          	resp.sendRedirect(req.getContextPath() + "/loadGame");
 	          	return; 
 	        }
 	    }
