@@ -60,6 +60,7 @@ public class TitleScreenServlet extends HttpServlet{
 	        	ses.setAttribute("game_id", game_id);
 	        	Player player = engine.getGame().getPlayer();
 	        	ses.setAttribute("player", player);
+	        	ses.setAttribute("playing", true);
 	        	
 	          	resp.sendRedirect(req.getContextPath() + "/game");
 	            return; 

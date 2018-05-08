@@ -48,6 +48,8 @@ public class GameServlet extends HttpServlet{
 
 		HttpSession ses = req.getSession(true);
 
+		boolean playing = ((boolean)req.getSession(false).getAttribute("playing"));
+		
 		Map map = (Map) req.getSession(false).getAttribute("map");
 		System.out.println("map: " + map.toString());
 
@@ -568,7 +570,12 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			//check if player has died (do after all other actions of this turn)
-			
+			if(playing && player.getHealth()<= 0) {
+				player.setHealth(-100000);
+				playing = false;
+				ses.setAttribute("playing", playing);
+				database.addGameLog(game_id, "You lost! Final Score " + player.getScore() + " Now entering Sandbox Mode.");
+			}
 		}
 		//an attempt to make gamelog show up at start of game
 		if(response.length() == 0){
