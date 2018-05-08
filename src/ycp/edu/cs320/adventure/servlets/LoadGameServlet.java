@@ -29,6 +29,7 @@ public class LoadGameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doGet");
 
+		req.setAttribute("response", "THERE IS TEXT HERE <br/> MORE TEXT");
 		req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
 	}
 
@@ -59,7 +60,7 @@ public class LoadGameServlet extends HttpServlet{
 		for(int i = 0; i < games.size(); i++){
 			text.append(i+1 + "---");
 			text.append("Health: " + database.getPlayer(games.get(i)).getHealth() + "---");
-			text.append("Damage: " + database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()+ "---");
+			text.append("Damage: " + (database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()) + "---");
 			text.append("Score: " + database.getPlayer(games.get(i)).getHealth() + "<br/><br/>");
 		}
 		
@@ -69,7 +70,9 @@ public class LoadGameServlet extends HttpServlet{
 
 		try {
 			//choice = Integer.parseInt(input) - 1;
-			choice = games.get(Integer.parseInt(input) - 1);
+			if(Integer.parseInt(input) > 0){
+				choice = games.get(Integer.parseInt(input) - 1);
+			}
 		}
 		catch(NumberFormatException e) {
 			System.out.println(e);

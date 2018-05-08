@@ -22,15 +22,7 @@ public class GameServlet extends HttpServlet{
 
 		System.out.println("Game Servlet: doGet");
 		
-		DerbyDatabase database = new DerbyDatabase();
-		
-		int game_id = (int)req.getSession(false).getAttribute("game_id");
-		String response = database.getGameLog(game_id);
-		req.setAttribute("response",  response);
-
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
-		
-		req.setAttribute("userInput", "test");
 	}
 
 	@Override
@@ -129,8 +121,8 @@ public class GameServlet extends HttpServlet{
 					
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -159,7 +151,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 					
-					engine.update();
+					text.append(engine.update());
 
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -199,8 +191,8 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -228,7 +220,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -260,8 +252,8 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -289,7 +281,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -319,8 +311,8 @@ public class GameServlet extends HttpServlet{
 
 					//damage from blank space
 					if(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getType() == 0){
-						text.append("<br/>You walked through a prickly mass.  -5 HP");
-						engine.blankSpaceDamage(player);
+						text.append("<br/>You tavel through a harsh environment.  -5 HP");
+						engine.blankSpaceDamage(database.getPlayer(game_id));
 					}
 
 					//if walking on a trap
@@ -348,7 +340,7 @@ public class GameServlet extends HttpServlet{
 						}
 					}
 
-					engine.update();
+					text.append(engine.update());
 					
 					database.addGameLog(game_id, text.toString());
 					response = database.getGameLog(game_id);
@@ -392,25 +384,14 @@ public class GameServlet extends HttpServlet{
 				response = database.getGameLog(game_id);
 			}
 
-			// Player views current equipped item 
-			else if(input.equalsIgnoreCase("inspect item") || input.equalsIgnoreCase("view item") || input.equalsIgnoreCase("item")) {
-
-				// If player actually has an item 
-				try {
-					if(player.getEquippedItem().getName().equalsIgnoreCase("")) {
-						database.addGameLog(game_id, player.getEquippedItem().getName());
-						response = database.getGameLog(game_id);
-					}
-				}
-				// If player has no item equipped
-				catch(NullPointerException e) {
-					database.addGameLog(game_id, "No item equipped.");
+			// Player views an inventory item
+			else if(input.toLowerCase().contains("inspect") || input.toLowerCase().contains("view")) {
+					database.addGameLog(game_id, engine.inspectItem(input, database.getPlayer(game_id)));
 					response = database.getGameLog(game_id);
-				}
 			}
 
 			// Player views their inventory
-			else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory")) {
+			else if(input.equalsIgnoreCase("view inventory") || input.equalsIgnoreCase("inventory") || input.equalsIgnoreCase("inv")) {
 				// If inventory is NOT empty
 				List<Item> inventory = database.getPlayerInventory(database.getPlayer(game_id).getPlayerId());
 				if(inventory.size() > 0){
@@ -439,20 +420,24 @@ public class GameServlet extends HttpServlet{
 			}
 
 			// Player picks up item from tile 
-			else if(input.equalsIgnoreCase("pick up item") || input.equalsIgnoreCase("pick up")) {
-
+			else if(input.toLowerCase().contains("pick up ") || input.toLowerCase().contains("take ")) {
 				// If tile has an item 
-				if(database.getTileInventory(map.getTile((int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
-					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
-
-					database.addGameLog(game_id, "You found an item! View inventory to see it.");
+//				if(database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).size() > 0){
+					player = database.getPlayer(game_id);
+					
+					database.addGameLog(game_id, engine.takeItem(input, player));
+					
 					response = database.getGameLog(game_id);
-				}
+//					engine.pickupItem(database.getPlayer(game_id), database.getTileInventory(database.getTile(game_id, (int)req.getSession(false).getAttribute("playerX"), (int)req.getSession(false).getAttribute("playerY")).getTileId()).get(0));
+//
+//					database.addGameLog(game_id, "You found an item! View inventory to see it.");
+//					response = database.getGameLog(game_id);
+//				}
 
-				else {
-					database.addGameLog(game_id, "Theres nothing here but dirt!");
-					response = database.getGameLog(game_id);
-				}
+//				else {
+//					database.addGameLog(game_id, "Theres nothing here but dirt!");
+//					response = database.getGameLog(game_id);
+//				}
 			}
 
 
@@ -486,21 +471,54 @@ public class GameServlet extends HttpServlet{
 			
 			// Player views the tiles around them
 			else if(input.equalsIgnoreCase("view area") || input.equalsIgnoreCase("scan") || 
-					input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")){
-				//return long descriptions of bordering tiles
-				database.addGameLog(game_id, "unimplemented.  TODO: FEED THE HAMSTERS!");
-				response = database.getGameLog(game_id);
+					input.equalsIgnoreCase("look") || input.equalsIgnoreCase("glance")
+					|| input.equalsIgnoreCase("look around")){
+				
+				text.append("You observe your surroundings");
+				
+				//list items at the location
+				player = database.getPlayer(game_id);
+				List<Tile> tiles = database.getAllTiles(game_id);
+				int playerLoc = player.getLocation().getY() * map.getWidth() + player.getLocation().getX();
+				List<Item> items = database.getTileInventory(tiles.get(playerLoc).getTileId());
+				if(items.size() > 0){
+					if(items.size() > 1){
+						text.append("<br/>You spot some items:");
+					}
+					else{
+						text.append("<br/>you spot an item:");
+					}
+					for(Item item : items){
+						text.append("<br/>" + item.getName());
+					}
+				}
+				//data entry so player knows they looked around.
+				database.addGameLog(game_id, text.toString());
+				
+				//not adding whole description to game log, would be too wordy
+				response = engine.lookAround(player);
 			}
 			
 			// Player equips item
 			else if(input.toLowerCase().contains("equip ") || input.toLowerCase().contains("hold ")){
-				boolean validation = engine.equipItem(input, database.getPlayer(game_id));
-				System.out.println(validation);
-				if(validation == true){
-					text.append("Item was equipped.");
+				boolean equipped = engine.equipItem(input, database.getPlayer(game_id));
+				
+				//getting item name
+				String itemName = "";
+				for(int i = input.length()-1; i > 0; i--){
+					if(input.charAt(i) == ' '){
+						break;
+					}
+					else{
+						itemName = input.charAt(i) + itemName;
+					}
 				}
-				else if(validation == false){
-					text.append("Item was not found in inventory.");
+				
+				if(equipped == true){
+					text.append(itemName + " was equipped.");
+				}
+				else{
+					text.append(itemName + " was not found in inventory.");
 				}
 				
 				database.addGameLog(game_id, text.toString());
@@ -514,8 +532,9 @@ public class GameServlet extends HttpServlet{
 				player = database.getPlayer(game_id);
 				//if an item is equipped
 				if(player.getEquippedItem().getItemId() != 0){
+					String name = database.getPlayer(game_id).getEquippedItem().getName();
 					database.updatePlayerEquippedItem(player.getPlayerId(), 0);
-					text.append("The item has been unequipped.");
+					text.append("The " + name.toLowerCase() + " has been unequipped.");
 				}
 				else{	//if no item is equipped
 					text.append("You are not holding an item.");
@@ -526,6 +545,24 @@ public class GameServlet extends HttpServlet{
 			}
 			
 			//drop item
+			else if(input.toLowerCase().contains("drop ") || input.toLowerCase().contains("release ") || 
+					input.toLowerCase().contains("dispose ")){
+				text.append(engine.dropItem(input, database.getPlayer(game_id)));
+				
+				database.addGameLog(game_id, text.toString());
+
+				response = database.getGameLog(game_id);
+			}
+			
+			//the player does nothing, but the rest of the map continues
+			else if(input.equalsIgnoreCase("wait") || input.equalsIgnoreCase("do nothing")){
+				
+				text.append("You wait");
+				text.append(engine.update());
+				database.addGameLog(game_id, text.toString());
+
+				response = database.getGameLog(game_id);
+			}
 
 			// Player enters unknown command
 			else {
@@ -534,12 +571,8 @@ public class GameServlet extends HttpServlet{
 				response = database.getGameLog(game_id);
 			}
 			
-			/* Checking for environment conditions */
+			//check if player has died (do after all other actions of this turn)
 			
-			// If player steps on trap
-			//if(player.getLocation() == map.getTile(player.getLocation().getX(), player.getLocation().getY()) && map.getTile(player.getLocation().getX(), player.getLocation().getY()).getType() == 2) {
-			//	player.hurt((map.getTile(player.getLocation().getX(), player.getLocation().getY())).getDamage());
-			//}
 		}
 		//an attempt to make gamelog show up at start of game
 		if(response.length() == 0){

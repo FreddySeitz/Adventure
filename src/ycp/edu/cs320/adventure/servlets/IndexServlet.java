@@ -58,7 +58,7 @@ public class IndexServlet extends HttpServlet {
         	
         	// sends account id to the session to be retrieved by title screen 
 
-        	id = database.getAccount(username);        	
+        	id = database.getAccount(username);    	
         	ses = req.getSession(true);
         	ses.setAttribute("id",id);
         	resp.sendRedirect(req.getContextPath() + "/_view/titleScreen.jsp");
