@@ -126,6 +126,14 @@ public class LoadGameServlet extends HttpServlet{
 			ses.setAttribute("playerY", game.getPlayer().getLocation().getY());
 			ses.setAttribute("id", account_id);
 			ses.setAttribute("game_id", choice);
+			
+			if(game.getPlayer().getHealth()>0) {
+				ses.setAttribute("playing", true);
+			}
+			else {
+				ses.setAttribute("playing", false);
+			}
+			
 
 			ses = req.getSession(true);
 
