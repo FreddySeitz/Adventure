@@ -61,7 +61,7 @@ public class TitleScreenServlet extends HttpServlet{
 	        	Player player = engine.getGame().getPlayer();
 	        	ses.setAttribute("player", player);
 	        	
-	          	resp.sendRedirect(req.getContextPath() + "/_view/game.jsp");
+	          	resp.sendRedirect(req.getContextPath() + "/game");
 	            return; 
 	        } 
 	        
