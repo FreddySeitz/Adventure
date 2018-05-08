@@ -614,7 +614,7 @@ public class GameEngine {
 		int height = currentGame.getMap().getHeight();
 
 		List<Tile> tiles = database.getAllTiles(currentGame.getGameId());
-		int playerLoc = player.getLocation().getY() * width + player.getLocation().getX();
+		int playerLoc = player.getLocation().getX() * width + player.getLocation().getY();
 
 		//tile description
 		text.append(tiles.get(playerLoc).getDescription());
