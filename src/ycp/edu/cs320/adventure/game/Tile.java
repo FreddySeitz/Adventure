@@ -34,7 +34,7 @@ public class Tile {
 		y = 0;
 		items = new ArrayList<Item>();
 		damage = 0;
-		description = "tile description";
+		description = "This area is barren and there are no signs that it was ever important.";
 	}
 	
 	public void setGameId(int g){
