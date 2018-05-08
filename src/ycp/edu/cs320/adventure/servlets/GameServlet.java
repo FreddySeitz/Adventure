@@ -21,6 +21,10 @@ public class GameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Game Servlet: doGet");
+		DerbyDatabase database = new DerbyDatabase();
+		int game_id = (int)req.getSession(false).getAttribute("game_id");
+		String response = database.getGameLog(game_id);
+		req.setAttribute("response",  response);
 		
 		req.getRequestDispatcher("/_view/game.jsp").forward(req, resp);
 	}

@@ -28,8 +28,20 @@ public class LoadGameServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Game Servlet: doGet");
+		int account_id = (int)req.getSession(false).getAttribute("id");
+		DerbyDatabase database = new DerbyDatabase();
+		StringBuilder text = new StringBuilder();
+		List<Integer> games = database.getGames(account_id);
+		for(int i = 0; i < games.size(); i++){
+			text.append(i+1 + "---");
+			text.append("Health: " + database.getPlayer(games.get(i)).getHealth() + "---");
+			text.append("Damage: " + (database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()) + "---");
+			text.append("Score: " + database.getPlayer(games.get(i)).getHealth() + "<br/><br/>");
+		}
+		
+		String response = text.toString();
 
-		req.setAttribute("response", "THERE IS TEXT HERE <br/> MORE TEXT");
+		req.setAttribute("response", response);
 		req.getRequestDispatcher("/_view/loadGame.jsp").forward(req, resp);
 	}
 

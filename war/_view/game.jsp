@@ -37,6 +37,7 @@ td.label {
 	margin: 25px;
 	overflow-x: visible;
 	overflow-y: scroll;
+	background: white;
 }
 
 .success {
