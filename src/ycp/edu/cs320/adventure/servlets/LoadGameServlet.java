@@ -36,7 +36,7 @@ public class LoadGameServlet extends HttpServlet{
 			text.append(i+1 + "---");
 			text.append("Health: " + database.getPlayer(games.get(i)).getHealth() + "---");
 			text.append("Damage: " + (database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()) + "---");
-			text.append("Score: " + database.getPlayer(games.get(i)).getHealth() + "<br/><br/>");
+			text.append("Score: " + database.getPlayer(games.get(i)).getScore() + "<br/><br/>");
 		}
 		
 		String response = text.toString();
@@ -73,7 +73,7 @@ public class LoadGameServlet extends HttpServlet{
 			text.append(i+1 + "---");
 			text.append("Health: " + database.getPlayer(games.get(i)).getHealth() + "---");
 			text.append("Damage: " + (database.getPlayer(games.get(i)).getBaseDamage() + database.getPlayer(games.get(i)).getEquippedItem().getDamage()) + "---");
-			text.append("Score: " + database.getPlayer(games.get(i)).getHealth() + "<br/><br/>");
+			text.append("Score: " + database.getPlayer(games.get(i)).getScore() + "<br/><br/>");
 		}
 		
 		response = text.toString();
