@@ -179,7 +179,7 @@ public class GameEngine {
 		currentGame.getPlayer().setLocation(currentGame.getMap().getTile(X, Y));
 
 		// Update the game when the player moves
-		update();
+		//update();
 	}
 
 	// Called when a player chooses to pickup an item
